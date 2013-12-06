@@ -17,6 +17,7 @@ import org.appcelerator.kroll.common.Log;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.view.ViewConfiguration;
 
 
 @Kroll.module(name="Actionbarextras", id="com.alcoapps.actionbarextras")
@@ -39,6 +40,18 @@ public class ActionbarextrasModule extends KrollModule
 	{
 		Log.d(TAG, "inside onAppCreate");
 		// put module init code that needs to run when the application is created
+		
+		// hack taken from: http://stackoverflow.com/questions/9286822/how-to-force-use-of-overflow-menu-on-devices-with-menu-button
+		try {
+	        ViewConfiguration config = ViewConfiguration.get(app);
+	        java.lang.reflect.Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+	        if(menuKeyField != null) {
+	            menuKeyField.setAccessible(true);
+	            menuKeyField.setBoolean(config, false);
+	        }
+	    } catch (Exception ex) {
+	        // Ignore
+	    }
 	}
 
 	// Methods
