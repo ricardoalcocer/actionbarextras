@@ -1,8 +1,8 @@
 # ActionBarExtras
 
-Titanium only exposes the Title property of the ActionBar.  With this module, you can set a Title and Subtitle.
+Titanium only exposes the Title property of the ActionBar.  With this module, you can set a Title and Subtitle.  Also, Titanium's implementation of the ActionBar shows the ActionBar menu overflow icon ONLY on devices with no hardware menu button, like the Nexus.  This module forces the ActionBar to show the overflow.
 
-![example](http://s17.postimg.org/bzh4h1fmn/Screen_Shot_2013_12_02_at_4_51_24_PM.png)
+![example](http://s9.postimg.org/w9wwqbu3z/abextras.png)
 
 The module is so simple that I can actually write the function in the README:
 
