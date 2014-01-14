@@ -19,6 +19,8 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.view.ViewConfiguration;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 
 @Kroll.module(name="Actionbarextras", id="com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule
@@ -73,6 +75,10 @@ public class ActionbarextrasModule extends KrollModule
                 
                 if (args.containsKey("subtitle")){
                     actionBar.setSubtitle((String) args.get("subtitle"));
+                }
+                
+                if (args.containsKey("backgroundColor")) {
+                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor((String) args.get("backgroundColor"))));
                 }
             }
     }
