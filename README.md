@@ -19,23 +19,19 @@ The module is so simple that I can actually write the function in the README:
             // from the activity get the actionbar
             ActionBar actionBar = activity.getActionBar();
             
-            String mTitle="";
-            String mSubtitle="";
-            
-            // get arguments from Javascript
-            
-            if (args.containsKey("title")){
-            	mTitle=(String) args.get("title");
-            }
-            
-            if (args.containsKey("subtitle")){
-            	mSubtitle=(String) args.get("subtitle");
-            }
-            
-            // apply new values to actionbar
             if (!TiApplication.isUIThread()) {
-				actionBar.setTitle(mTitle);
-				actionBar.setSubtitle(mSubtitle);
+                
+                if (args.containsKey("title")){
+                    actionBar.setTitle((String) args.get("title"));
+                }
+                
+                if (args.containsKey("subtitle")){
+                    actionBar.setSubtitle((String) args.get("subtitle"));
+                }
+                
+                if (args.containsKey("backgroundColor")) {
+                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor((String) args.get("backgroundColor"))));
+                }
             }
     }
     
@@ -64,7 +60,8 @@ In your app.js (or any Window for that matter)
 	    // setting title and subtitle via module
         abextras.setExtras({
 		    title:'This is the title',
-            subtitle:'This is the subtitle'
+            subtitle:'This is the subtitle',
+            backgroundColor:'#ff4f00'
         });
         //
     
