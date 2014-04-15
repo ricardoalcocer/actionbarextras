@@ -1,39 +1,43 @@
-# actionbarextras Module
+# ActionBarExtras
 
-## Description
+This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer. It lets you set a subtitle to the ActionBar title, it forces to show the Overflow menu button on devices with hardware menu buttons and gives you the opportunity to change the ActionBar font (of both, title and subtitle or separately).
 
-TODO: Enter your module description here
+![example](http://s15.postimg.org/bqpkegtsb/20140415_143615.jpg)
 
-## Accessing the actionbarextras Module
+## Features
+  * Title and Subtitle
+  * force overflow
+  * backgroundColor
+  * custom fonts
 
-To access this module from JavaScript, you would do the following:
+## Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
+Download the latest distribution ZIP-file and consult the [Titanium Documentation](http://docs.appcelerator.com/titanium/latest/#!/guide/Using_a_Module) on how install it, or simply use the [gitTio CLI](http://gitt.io/cli):
 
-	var actionbarextras = require("com.alcoapps.actionbarextras");
+`$ gittio install com.alcoapps.actionbarextras`
 
-The actionbarextras variable is a reference to the Module object.	
+## Using it
 
-## Reference
+First require it:
 
-TODO: If your module has an API, you should document
-the reference here.
+	var abextras = require('com.alcoapps.actionbarextras');
 
-### ___PROJECTNAMEASIDENTIFIER__.function
+At this point the feature for forcing the "menu overflow" has been attached to your Activity, so if that's the only thing you were looking for, you're set.
 
-TODO: This is an example of a module function.
+To set the ActionBar custom features, simply call the **setExtras** method:
 
-### ___PROJECTNAMEASIDENTIFIER__.property
+	// setting extras
+	abextras.setExtras({
+		title:'This is the title',
+	  	subtitle:'This is the subtitle',
+	  	font: 'my_custom_font.otf',
+	  	backgroundColor:'#ff4f00'
+	});
 
-TODO: This is an example of a module property.
+## Contribuitors
 
-## Usage
-
-TODO: Enter your usage example here
-
-## Author
-
-TODO: Enter your author name, email and other contact
-details you want to share here. 
+* [Ricardo Alcocer](https://github.com/ricardoalcocer)
+* [Timan Rebel](https://github.com/timanrebel)
+* [Manuel Lehner](https://github.com/manumaticx)
 
 ## License
-
-TODO: Enter your license/legal information here.
+MIT License - [http://alco.mit-license.org](http://alco.mit-license.org)
