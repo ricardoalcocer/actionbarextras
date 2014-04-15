@@ -1,84 +1,31 @@
 # ActionBarExtras
 
-Titanium only exposes the Title property of the ActionBar.  With this module, you can set a Title and Subtitle.  Also, Titanium's implementation of the ActionBar shows the ActionBar menu overflow icon ONLY on devices with no hardware menu button, like the Nexus.  This module forces the ActionBar to show the overflow.
+This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer. It lets you set a subtitle to the ActionBar title, it forces to show the Overflow menu button on devices with hardware menu buttons and gives you the oppertunity to change the ActionBar font (of both, title and subtitle or seperatly).
 
-![example](http://s9.postimg.org/w9wwqbu3z/abextras.png)
+![example](http://s15.postimg.org/bqpkegtsb/20140415_143615.jpg)
 
-The module is so simple that I can actually write the function in the README:
+## Features
+  * Title and Subtitle
+  * force overflow
+  * backgroundColor
+  * custom fonts
 
-     public void setExtras(KrollDict args)
-     {
-            Log.d(TAG, "called the setextras method");
-            
-            // Get the app context
-            TiApplication appContext = TiApplication.getInstance();
-            
-            // from the context get the activity
-            Activity activity = appContext.getCurrentActivity();
-            
-            // from the activity get the actionbar
-            ActionBar actionBar = activity.getActionBar();
-            
-            if (!TiApplication.isUIThread()) {
-                
-                if (args.containsKey("title")){
-                    actionBar.setTitle((String) args.get("title"));
-                }
-                
-                if (args.containsKey("subtitle")){
-                    actionBar.setSubtitle((String) args.get("subtitle"));
-                }
-                
-                if (args.containsKey("backgroundColor")) {
-                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor((String) args.get("backgroundColor"))));
-                }
-            }
-    }
-    
-This module is a great starting point for anyone how'd like to get into Native Android Development for Titanium.
+## Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
+Download the latest distribution ZIP-file and consult the [Titanium Documentation](http://docs.appcelerator.com/titanium/latest/#!/guide/Using_a_Module) on how install it, or simply use the [gitTio CLI](http://gitt.io/cli):
 
-# Using it
+`$ gittio install com.alcoapps.actionbarextras`
 
-Download the module ZIP file, decompress it and drop the module folder in your app's folder, at the same level as the Resources folder.  Go all the way into the folder structure and delete the two jar files inside the lib folder.
+## Using it
 
-Edit your tiapp.xml to add a reference to the module:
+```javascript
+var abextras = require('com.alcoapps.actionbarextras');
 
-     <modules>
-          <module version="1.0" platform="android">com.alcoapps.actionbarextras</module>
-     </modules>
+// setting extras
+abextras.setExtras({
+  title:'This is the title',
+  subtitle:'This is the subtitle',
+  font: 'my_custom_font.otf',
+  backgroundColor:'#ff4f00'
+});
 
-In your app.js (or any Window for that matter)
-
-    var abextras = require('com.alcoapps.actionbarextras');
-
-    var win = Titanium.UI.createWindow({  
-        backgroundColor:'#fff',
-        navBarHidden: false
-    });
-
-    win.addEventListener('open',function(e){
-	    // setting title and subtitle via module
-        abextras.setExtras({
-		    title:'This is the title',
-            subtitle:'This is the subtitle',
-            backgroundColor:'#ff4f00'
-        });
-        //
-    
-        // setting other stuff via TiAPI
-        var activity=win.activity;
-        if(activity){
-            var ab=activity.actionBar;
-            if (ab){
-    	            ab.displayHomeAsUp=true
-            }else{
-    		        alert('no actionbar');
-            }
-        }else{
-    	        alert('no activity');
-        }
-        //
-    })
-
-    win.open();
-
+```
