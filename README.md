@@ -1,6 +1,6 @@
 # ActionBarExtras
 
-This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer. It lets you set a subtitle to the ActionBar title, it forces to show the Overflow menu button on devices with hardware menu buttons and gives you the oppertunity to change the ActionBar font (of both, title and subtitle or seperatly).
+This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer. It lets you set a subtitle to the ActionBar title, it forces to show the Overflow menu button on devices with hardware menu buttons and gives you the opportunity to change the ActionBar font (of both, title and subtitle or separately).
 
 ![example](http://s15.postimg.org/bqpkegtsb/20140415_143615.jpg)
 
@@ -17,15 +17,21 @@ Download the latest distribution ZIP-file and consult the [Titanium Documentatio
 
 ## Using it
 
-```javascript
-var abextras = require('com.alcoapps.actionbarextras');
+	var abextras = require('com.alcoapps.actionbarextras');
 
-// setting extras
-abextras.setExtras({
-  title:'This is the title',
-  subtitle:'This is the subtitle',
-  font: 'my_custom_font.otf',
-  backgroundColor:'#ff4f00'
-});
+	// setting extras
+	abextras.setExtras({
+		title:'This is the title',
+	  	subtitle:'This is the subtitle',
+	  	font: 'my_custom_font.otf',
+	  	backgroundColor:'#ff4f00'
+	});
 
-```
+## Contribuitors
+
+* [Ricardo Alcocer](https://github.com/ricardoalcocer)
+* [Timan Rebel](https://github.com/timanrebel)
+* [Manuel Lehner](https://github.com/manumaticx)
+
+## License
+MIT License - [http://alco.mit-license.org](http://alco.mit-license.org)
