@@ -17,7 +17,13 @@ Download the latest distribution ZIP-file and consult the [Titanium Documentatio
 
 ## Using it
 
+First require it:
+
 	var abextras = require('com.alcoapps.actionbarextras');
+
+At this point the feature for forcing the "menu overflow" has been attached to your Activity, so if that's the only thing you were looking for, you're set.
+
+To set the ActionBar custom features, simply call the **setExtras** method:
 
 	// setting extras
 	abextras.setExtras({
