@@ -13,6 +13,7 @@ import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 
 import org.appcelerator.titanium.TiApplication;
+import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.kroll.common.Log;
 
 import android.app.Activity;
@@ -21,6 +22,9 @@ import android.view.ViewConfiguration;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
+import android.text.Spannable;
+import android.text.SpannableString;
 
 @Kroll.module(name="Actionbarextras", id="com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule
@@ -80,7 +84,58 @@ public class ActionbarextrasModule extends KrollModule
                 if (args.containsKey("backgroundColor")) {
                     actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor((String) args.get("backgroundColor"))));
                 }
+                
+                if (args.containsKey("font")) {
+                    setFont(TiConvert.toString(args.get("font")));
+                }
             }
     }
+
+    @Kroll.method
+	public void setFont(String value)
+	{
+    	setTitleFont(value);
+    	setSubtitleFont(value);
+	}
+    
+	@Kroll.method
+	public void setTitleFont(String value)
+	{
+		Log.d(TAG, "setTitleFont: " + value);
+		try{
+			TiApplication appContext = TiApplication.getInstance();
+			Activity activity = appContext.getCurrentActivity();
+			ActionBar actionBar = activity.getActionBar();
+
+			String abTitle = TiConvert.toString(actionBar.getTitle());
+			SpannableString s = new SpannableString(abTitle);
+			s.setSpan(new TypefaceSpan(appContext, value), 0, s.length(),
+				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			actionBar.setTitle(s);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Kroll.method
+	public void setSubtitleFont(String value)
+	{
+		Log.d(TAG, "setSubtitleFont: " + value);
+		try{
+			TiApplication appContext = TiApplication.getInstance();
+			Activity activity = appContext.getCurrentActivity();
+			ActionBar actionBar = activity.getActionBar();
+
+			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
+			SpannableString s = new SpannableString(abSubtitle);
+			s.setSpan(new TypefaceSpan(appContext, value), 0, s.length(),
+				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			actionBar.setSubtitle(s);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}	
 }
 
