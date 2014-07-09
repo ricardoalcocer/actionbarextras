@@ -32,6 +32,7 @@ public class ActionbarextrasModule extends KrollModule {
 
 	// Standard Debugging variables
 	private static final String TAG = "ActionbarextrasModule";
+	private Activity activity;
 
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
@@ -65,10 +66,13 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method
 	public void setExtras(KrollDict args) {
 		Log.d(TAG, "called the setextras method");
-
-		// declare stuff
-		TiApplication appContext = TiApplication.getInstance();
-		Activity activity = appContext.getCurrentActivity();
+		
+		if (activity == null){
+			// declare stuff
+			TiApplication appContext = TiApplication.getInstance();
+			activity = appContext.getCurrentActivity();
+		}
+		
 		ActionBar actionBar = activity.getActionBar();
 
 		if (!TiApplication.isUIThread()) {
