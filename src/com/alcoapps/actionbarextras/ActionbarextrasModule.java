@@ -127,11 +127,13 @@ public class ActionbarextrasModule extends KrollModule {
 			ActionBar actionBar = activity.getActionBar();
 
 			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
-			SpannableString s = new SpannableString(abSubtitle);
-			s.setSpan(new TypefaceSpan(appContext, value), 0, s.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			if (abSubtitle != null){
+				SpannableString s = new SpannableString(abSubtitle);
+				s.setSpan(new TypefaceSpan(appContext, value), 0, s.length(),
+						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-			actionBar.setSubtitle(s);
+				actionBar.setSubtitle(s);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
