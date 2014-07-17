@@ -13,96 +13,121 @@ import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 
 import org.appcelerator.titanium.TiApplication;
+import org.appcelerator.titanium.TiC;
 import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.kroll.common.Log;
 
 import android.app.Activity;
 import android.app.ActionBar;
 import android.view.ViewConfiguration;
+import android.widget.TextView;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
+import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 
-@Kroll.module(name="Actionbarextras", id="com.alcoapps.actionbarextras")
-public class ActionbarextrasModule extends KrollModule
-{
+@Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
+public class ActionbarextrasModule extends KrollModule {
 
 	// Standard Debugging variables
 	private static final String TAG = "ActionbarextrasModule";
+	private Activity activity;
 
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
-	
-	public ActionbarextrasModule()
-	{
+
+	public ActionbarextrasModule() {
 		super();
 	}
 
 	@Kroll.onAppCreate
-	public static void onAppCreate(TiApplication app)
-	{
+	public static void onAppCreate(TiApplication app) {
 		Log.d(TAG, "inside onAppCreate");
-		// put module init code that needs to run when the application is created
-		
-		// hack taken from: http://stackoverflow.com/questions/9286822/how-to-force-use-of-overflow-menu-on-devices-with-menu-button
+		// put module init code that needs to run when the application is
+		// created
+
+		// hack taken from:
+		// http://stackoverflow.com/questions/9286822/how-to-force-use-of-overflow-menu-on-devices-with-menu-button
 		try {
-	        ViewConfiguration config = ViewConfiguration.get(app);
-	        java.lang.reflect.Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-	        if(menuKeyField != null) {
-	            menuKeyField.setAccessible(true);
-	            menuKeyField.setBoolean(config, false);
-	        }
-	    } catch (Exception ex) {
-	        // Ignore
-	    }
+			ViewConfiguration config = ViewConfiguration.get(app);
+			java.lang.reflect.Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception ex) {
+			// Ignore
+		}
 	}
 
 	// Methods
-    @Kroll.method
-    public void setExtras(KrollDict args)
-    {
-            Log.d(TAG, "called the setextras method");
-            
-            // declare stuff
-            TiApplication appContext = TiApplication.getInstance();
-            Activity activity = appContext.getCurrentActivity();
-            ActionBar actionBar = activity.getActionBar();
-            
-            if (!TiApplication.isUIThread()) {
-				
-                if (args.containsKey("title")){
-                    actionBar.setTitle((String) args.get("title"));
-                }
-                
-                if (args.containsKey("subtitle")){
-                    actionBar.setSubtitle((String) args.get("subtitle"));
-                }
-                
-                if (args.containsKey("backgroundColor")) {
-                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor((String) args.get("backgroundColor"))));
-                }
-                
-                if (args.containsKey("font")) {
-                    setFont(TiConvert.toString(args.get("font")));
-                }
-            }
-    }
-
-    @Kroll.method
-	public void setFont(String value)
-	{
-    	setTitleFont(value);
-    	setSubtitleFont(value);
-	}
-    
 	@Kroll.method
-	public void setTitleFont(String value)
-	{
+	public void setExtras(KrollDict args) {
+		Log.d(TAG, "called the setextras method");
+		
+		if (activity == null){
+			// declare stuff
+			TiApplication appContext = TiApplication.getInstance();
+			activity = appContext.getCurrentActivity();
+		}
+
+		if (!TiApplication.isUIThread()) {
+			
+			if (Looper.myLooper() == Looper.getMainLooper()) {
+				processExtrasProperties(args);
+	        }else {
+	        	final KrollDict mArgs = args;
+	        	activity.runOnUiThread(new Runnable() {
+	      			@Override
+	      			public void run() {
+	      				processExtrasProperties(mArgs);
+	      			}
+	      		});
+	        }
+		}
+	}
+	
+	private void processExtrasProperties(KrollDict args){
+		
+		ActionBar actionBar = activity.getActionBar();
+		
+		if (args.containsKey(TiC.PROPERTY_TITLE)) {
+			actionBar.setTitle((String) args.get(TiC.PROPERTY_TITLE));
+		}
+
+		if (args.containsKey(TiC.PROPERTY_SUBTITLE)) {
+			actionBar.setSubtitle((String) args.get(TiC.PROPERTY_SUBTITLE));
+		}
+
+		if (args.containsKey(TiC.PROPERTY_BACKGROUND_COLOR)) {
+			actionBar.setBackgroundDrawable(new ColorDrawable(Color
+					.parseColor((String) args
+							.get(TiC.PROPERTY_BACKGROUND_COLOR))));
+		}
+
+		if (args.containsKey(TiC.PROPERTY_FONT)) {
+			setFont(TiConvert.toString(args.get(TiC.PROPERTY_FONT)));
+		}
+		
+		if (args.containsKey(TiC.PROPERTY_COLOR)) {
+			setColor(TiConvert.toString(args.get(TiC.PROPERTY_COLOR)));
+		}
+	}
+
+	@Kroll.method
+	public void setFont(String value) {
+		setTitleFont(value);
+		setSubtitleFont(value);
+	}
+
+	@Kroll.method
+	public void setTitleFont(String value) {
 		Log.d(TAG, "setTitleFont: " + value);
-		try{
+		try {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
 			ActionBar actionBar = activity.getActionBar();
@@ -110,32 +135,45 @@ public class ActionbarextrasModule extends KrollModule
 			String abTitle = TiConvert.toString(actionBar.getTitle());
 			SpannableString s = new SpannableString(abTitle);
 			s.setSpan(new TypefaceSpan(appContext, value), 0, s.length(),
-				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 			actionBar.setTitle(s);
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Kroll.method
-	public void setSubtitleFont(String value)
-	{
+	public void setSubtitleFont(String value) {
 		Log.d(TAG, "setSubtitleFont: " + value);
-		try{
+		try {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
 			ActionBar actionBar = activity.getActionBar();
 
 			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
-			SpannableString s = new SpannableString(abSubtitle);
-			s.setSpan(new TypefaceSpan(appContext, value), 0, s.length(),
-				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			if (abSubtitle != null){
+				SpannableString s = new SpannableString(abSubtitle);
+				s.setSpan(new TypefaceSpan(appContext, value), 0, s.length(),
+						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-			actionBar.setSubtitle(s);
-		}catch(Exception e){
+				actionBar.setSubtitle(s);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}	
+	}
+	
+	@Kroll.method
+	public void setColor(String color) {
+		Log.d(TAG, "setColor: " + color);
+		
+		int titleId = activity.getResources().getIdentifier("action_bar_title", "id", "android");
+		TextView abTitle = (TextView) activity.findViewById(titleId);
+		abTitle.setTextColor(TiConvert.toColor(color));
+		
+		int subtitleId = activity.getResources().getIdentifier("action_bar_subtitle", "id", "android");
+		TextView abSubTitle = (TextView) activity.findViewById(subtitleId);
+		abSubTitle.setTextColor(TiConvert.toColor(color));
+	}
 }
-

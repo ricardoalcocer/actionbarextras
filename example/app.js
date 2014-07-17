@@ -7,11 +7,12 @@ var win = Titanium.UI.createWindow({
 
 win.addEventListener('open',function(e){
 
-    // setting title, subtitle and font
+    // setting title, subtitle, font and color
     abextras.setExtras({
         title:'This is the title',
         subtitle:'This is the subtitle',
-        font: 'burnstown_dam.otf'
+        font: 'burnstown_dam.otf',
+        color: 'red'
     });
 
     // setting the different fonts for title and subtitle

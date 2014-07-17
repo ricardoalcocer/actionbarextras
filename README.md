@@ -9,6 +9,7 @@ This module provides some extra functionality to configure the ActionBar that Ti
   * force overflow
   * backgroundColor
   * custom fonts
+  * font color
 
 ## Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
 Download the latest distribution ZIP-file and consult the [Titanium Documentation](http://docs.appcelerator.com/titanium/latest/#!/guide/Using_a_Module) on how install it, or simply use the [gitTio CLI](http://gitt.io/cli):
@@ -30,7 +31,8 @@ To set the ActionBar custom features, simply call the **setExtras** method:
 		title:'This is the title',
 	  	subtitle:'This is the subtitle',
 	  	font: 'my_custom_font.otf',
-	  	backgroundColor:'#ff4f00'
+	  	backgroundColor:'#ff4f00',
+        color: 'red'
 	});
 
 ## Contribuitors
