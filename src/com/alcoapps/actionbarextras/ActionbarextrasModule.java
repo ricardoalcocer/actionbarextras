@@ -20,10 +20,12 @@ import org.appcelerator.kroll.common.Log;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.view.ViewConfiguration;
+import android.widget.TextView;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
+import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 
@@ -72,28 +74,47 @@ public class ActionbarextrasModule extends KrollModule {
 			TiApplication appContext = TiApplication.getInstance();
 			activity = appContext.getCurrentActivity();
 		}
-		
-		ActionBar actionBar = activity.getActionBar();
 
 		if (!TiApplication.isUIThread()) {
+			
+			if (Looper.myLooper() == Looper.getMainLooper()) {
+				processExtrasProperties(args);
+	        }else {
+	        	final KrollDict mArgs = args;
+	        	activity.runOnUiThread(new Runnable() {
+	      			@Override
+	      			public void run() {
+	      				processExtrasProperties(mArgs);
+	      			}
+	      		});
+	        }
+		}
+	}
+	
+	private void processExtrasProperties(KrollDict args){
+		
+		ActionBar actionBar = activity.getActionBar();
+		
+		if (args.containsKey(TiC.PROPERTY_TITLE)) {
+			actionBar.setTitle((String) args.get(TiC.PROPERTY_TITLE));
+		}
 
-			if (args.containsKey(TiC.PROPERTY_TITLE)) {
-				actionBar.setTitle((String) args.get(TiC.PROPERTY_TITLE));
-			}
+		if (args.containsKey(TiC.PROPERTY_SUBTITLE)) {
+			actionBar.setSubtitle((String) args.get(TiC.PROPERTY_SUBTITLE));
+		}
 
-			if (args.containsKey(TiC.PROPERTY_SUBTITLE)) {
-				actionBar.setSubtitle((String) args.get(TiC.PROPERTY_SUBTITLE));
-			}
+		if (args.containsKey(TiC.PROPERTY_BACKGROUND_COLOR)) {
+			actionBar.setBackgroundDrawable(new ColorDrawable(Color
+					.parseColor((String) args
+							.get(TiC.PROPERTY_BACKGROUND_COLOR))));
+		}
 
-			if (args.containsKey(TiC.PROPERTY_BACKGROUND_COLOR)) {
-				actionBar.setBackgroundDrawable(new ColorDrawable(Color
-						.parseColor((String) args
-								.get(TiC.PROPERTY_BACKGROUND_COLOR))));
-			}
-
-			if (args.containsKey(TiC.PROPERTY_FONT)) {
-				setFont(TiConvert.toString(args.get(TiC.PROPERTY_FONT)));
-			}
+		if (args.containsKey(TiC.PROPERTY_FONT)) {
+			setFont(TiConvert.toString(args.get(TiC.PROPERTY_FONT)));
+		}
+		
+		if (args.containsKey(TiC.PROPERTY_COLOR)) {
+			setColor(TiConvert.toString(args.get(TiC.PROPERTY_COLOR)));
 		}
 	}
 
@@ -141,5 +162,18 @@ public class ActionbarextrasModule extends KrollModule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Kroll.method
+	public void setColor(String color) {
+		Log.d(TAG, "setColor: " + color);
+		
+		int titleId = activity.getResources().getIdentifier("action_bar_title", "id", "android");
+		TextView abTitle = (TextView) activity.findViewById(titleId);
+		abTitle.setTextColor(TiConvert.toColor(color));
+		
+		int subtitleId = activity.getResources().getIdentifier("action_bar_subtitle", "id", "android");
+		TextView abSubTitle = (TextView) activity.findViewById(subtitleId);
+		abSubTitle.setTextColor(TiConvert.toColor(color));
 	}
 }
