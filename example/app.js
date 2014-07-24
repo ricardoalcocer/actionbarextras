@@ -21,19 +21,30 @@ win.addEventListener('open',function(e){
     abextras.setTitleFont('burnstown_dam.otf'); // actually redundant, because it's already set in setExtras
     abextras.setSubtitleFont('SpicyRice-Regular.ttf');
 
-    // setting other stuff via TiAPI
+    
     var activity=win.activity;
     if(activity){
-        var ab=activity.actionBar;
-        if (ab){
-            ab.displayHomeAsUp=true;
-        }else{
-            alert('no actionbar');
-        }
-    }else{
-        alert('no activity');
+        
+        // This is how you add a basic Share Action to your ActionBar
+        // this should be done within the onCreateOptionsMenu
+        // because we need to pass a reference to the menu
+        
+        activity.onCreateOptionsMenu = function(e){
+            
+            // at first, create a basic share intent
+            var intent = Ti.Android.createIntent({
+               action: Ti.Android.ACTION_SEND,
+               type: 'text/plain'
+            });
+            intent.putExtra(Ti.Android.EXTRA_TEXT, 'Hello world!');
+            
+            // now pass over the menu and the intent like this
+            abextras.addShareAction({
+                menu: e.menu,
+                intent: intent
+            });
+        };
     }
-    //
 });
 
 win.open();

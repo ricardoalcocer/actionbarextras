@@ -11,30 +11,34 @@ package com.alcoapps.actionbarextras;
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
-
+import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiC;
+import org.appcelerator.titanium.proxy.IntentProxy;
+import org.appcelerator.titanium.proxy.MenuProxy;
 import org.appcelerator.titanium.util.TiConvert;
-import org.appcelerator.kroll.common.Log;
+import org.appcelerator.titanium.util.TiUIHelper;
 
-import android.app.Activity;
 import android.app.ActionBar;
-import android.view.ViewConfiguration;
-import android.widget.TextView;
-
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-
-import android.os.Looper;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.ViewConfiguration;
+import android.widget.TextView;
 
 @Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule {
 
 	// Standard Debugging variables
 	private static final String TAG = "ActionbarextrasModule";
-	private Activity activity;
+	
+	private ShareActionProvider mShareActionProvider;
 
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
@@ -66,32 +70,22 @@ public class ActionbarextrasModule extends KrollModule {
 
 	// Methods
 	@Kroll.method
-	public void setExtras(KrollDict args) {
+	public void setExtras(final KrollDict args) {
 		Log.d(TAG, "called the setextras method");
 		
-		if (activity == null){
-			// declare stuff
-			TiApplication appContext = TiApplication.getInstance();
-			activity = appContext.getCurrentActivity();
-		}
+		// declare stuff
+		TiApplication appContext = TiApplication.getInstance();
+		final Activity activity = appContext.getCurrentActivity();
 
-		if (!TiApplication.isUIThread()) {
-			
-			if (Looper.myLooper() == Looper.getMainLooper()) {
-				processExtrasProperties(args);
-	        }else {
-	        	final KrollDict mArgs = args;
-	        	activity.runOnUiThread(new Runnable() {
-	      			@Override
-	      			public void run() {
-	      				processExtrasProperties(mArgs);
-	      			}
-	      		});
-	        }
-		}
+		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
+  			@Override
+  			public void run() {
+  				processExtrasProperties(args, activity);
+  			}
+  		});
 	}
 	
-	private void processExtrasProperties(KrollDict args){
+	private void processExtrasProperties(KrollDict args, Activity activity){
 		
 		ActionBar actionBar = activity.getActionBar();
 		
@@ -168,12 +162,46 @@ public class ActionbarextrasModule extends KrollModule {
 	public void setColor(String color) {
 		Log.d(TAG, "setColor: " + color);
 		
-		int titleId = activity.getResources().getIdentifier("action_bar_title", "id", "android");
-		TextView abTitle = (TextView) activity.findViewById(titleId);
-		abTitle.setTextColor(TiConvert.toColor(color));
+		try{
+			TiApplication appContext = TiApplication.getInstance();
+			Activity activity = appContext.getCurrentActivity();
+			
+			int titleId = activity.getResources().getIdentifier("action_bar_title", "id", "android");
+			TextView abTitle = (TextView) activity.findViewById(titleId);
+			abTitle.setTextColor(TiConvert.toColor(color));
+			
+			int subtitleId = activity.getResources().getIdentifier("action_bar_subtitle", "id", "android");
+			TextView abSubTitle = (TextView) activity.findViewById(subtitleId);
+			abSubTitle.setTextColor(TiConvert.toColor(color));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Kroll.method
+	public void addShareAction(KrollDict args) {
+		Log.d(TAG, "addShareAction: " + args.toString());
 		
-		int subtitleId = activity.getResources().getIdentifier("action_bar_subtitle", "id", "android");
-		TextView abSubTitle = (TextView) activity.findViewById(subtitleId);
-		abSubTitle.setTextColor(TiConvert.toColor(color));
+		MenuProxy menu_proxy = (MenuProxy) args.get(TiC.PROPERTY_MENU);
+		IntentProxy intent_proxy = (IntentProxy) args.get(TiC.PROPERTY_INTENT);
+		
+		try{
+			TiApplication appContext = TiApplication.getInstance();
+			Activity activity = appContext.getCurrentActivity();
+			
+			mShareActionProvider = new ShareActionProvider(activity);
+			
+			Menu menu = menu_proxy.getMenu();
+			MenuItem item = menu.add("Share");
+			
+			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			MenuItemCompat.setActionProvider(item, mShareActionProvider);
+			
+			mShareActionProvider.setShareIntent(intent_proxy.getIntent());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

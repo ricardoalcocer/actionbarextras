@@ -2,10 +2,11 @@
 
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer. It lets you set a subtitle to the ActionBar title, it forces to show the Overflow menu button on devices with hardware menu buttons and gives you the opportunity to change the ActionBar font (of both, title and subtitle or separately).
 
-![example](http://s15.postimg.org/bqpkegtsb/20140415_143615.jpg)
+![example](example.png)
 
 ## Features
   * Title and Subtitle
+  * Sharing Action Provider
   * force overflow
   * backgroundColor
   * custom fonts
