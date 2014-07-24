@@ -14,6 +14,8 @@ import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiC;
+import org.appcelerator.titanium.proxy.IntentProxy;
+import org.appcelerator.titanium.proxy.MenuProxy;
 import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.titanium.util.TiUIHelper;
 
@@ -21,8 +23,12 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewConfiguration;
 import android.widget.TextView;
 
@@ -31,6 +37,8 @@ public class ActionbarextrasModule extends KrollModule {
 
 	// Standard Debugging variables
 	private static final String TAG = "ActionbarextrasModule";
+	
+	private ShareActionProvider mShareActionProvider;
 
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
@@ -165,6 +173,32 @@ public class ActionbarextrasModule extends KrollModule {
 			int subtitleId = activity.getResources().getIdentifier("action_bar_subtitle", "id", "android");
 			TextView abSubTitle = (TextView) activity.findViewById(subtitleId);
 			abSubTitle.setTextColor(TiConvert.toColor(color));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Kroll.method
+	public void addShareAction(KrollDict args) {
+		Log.d(TAG, "addShareAction: " + args.toString());
+		
+		MenuProxy menu_proxy = (MenuProxy) args.get(TiC.PROPERTY_MENU);
+		IntentProxy intent_proxy = (IntentProxy) args.get(TiC.PROPERTY_INTENT);
+		
+		try{
+			TiApplication appContext = TiApplication.getInstance();
+			Activity activity = appContext.getCurrentActivity();
+			
+			mShareActionProvider = new ShareActionProvider(activity);
+			
+			Menu menu = menu_proxy.getMenu();
+			MenuItem item = menu.add("Share");
+			
+			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			MenuItemCompat.setActionProvider(item, mShareActionProvider);
+			
+			mShareActionProvider.setShareIntent(intent_proxy.getIntent());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

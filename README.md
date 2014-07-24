@@ -2,10 +2,11 @@
 
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer. It lets you set a subtitle to the ActionBar title, it forces to show the Overflow menu button on devices with hardware menu buttons and gives you the opportunity to change the ActionBar font (of both, title and subtitle or separately).
 
-![example](http://s15.postimg.org/bqpkegtsb/20140415_143615.jpg)
+![example](documentation/example.png)
 
 ## Features
   * Title and Subtitle
+  * Sharing Action Provider
   * force overflow
   * backgroundColor
   * custom fonts
@@ -26,14 +27,38 @@ At this point the feature for forcing the "menu overflow" has been attached to y
 
 To set the ActionBar custom features, simply call the **setExtras** method:
 
-	// setting extras
-	abextras.setExtras({
-		title:'This is the title',
-	  	subtitle:'This is the subtitle',
-	  	font: 'my_custom_font.otf',
-	  	backgroundColor:'#ff4f00',
-        color: 'red'
-	});
+```javascript
+// setting extras
+abextras.setExtras({
+    title:'This is the title',
+    subtitle:'This is the subtitle',
+    font: 'my_custom_font.otf',
+    backgroundColor:'#ff4f00',
+    color: 'red'
+});
+```
+
+To add a sharing action to the ActionBar call `addSharingAction`:
+```javascript
+// this should be done within the onCreateOptionsMenu
+// because we need to pass a reference to the menu
+
+activity.onCreateOptionsMenu = function(e){
+
+    // at first, create a basic share intent
+    var intent = Ti.Android.createIntent({
+       action: Ti.Android.ACTION_SEND,
+       type: 'text/plain'
+    });
+    intent.putExtra(Ti.Android.EXTRA_TEXT, 'Hello world!');
+
+    // now pass over the menu and the intent like this
+    abextras.addShareAction({
+        menu: e.menu,
+        intent: intent
+    });
+};
+```
 
 ## Contribuitors
 
