@@ -41,7 +41,9 @@ win.addEventListener('open',function(e){
             // now pass over the menu and the intent like this
             abextras.addShareAction({
                 menu: e.menu,
-                intent: intent
+                intent: intent,
+                showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS, // optional - default: SHOW_AS_ACTION_IF_ROOM
+                title: "Share Hello World" // optional - default: "Share"
             });
         };
     }
