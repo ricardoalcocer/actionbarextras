@@ -17,6 +17,7 @@ import org.appcelerator.titanium.TiC;
 import org.appcelerator.titanium.proxy.IntentProxy;
 import org.appcelerator.titanium.proxy.MenuProxy;
 import org.appcelerator.titanium.util.TiConvert;
+import org.appcelerator.titanium.util.TiRHelper;
 import org.appcelerator.titanium.util.TiUIHelper;
 
 import android.app.ActionBar;
@@ -210,6 +211,21 @@ public class ActionbarextrasModule extends KrollModule {
 			
 			mShareActionProvider.setShareIntent(intent_proxy.getIntent());
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Kroll.method
+	public void disableIcon(){
+		Log.d(TAG, "disableIcon");
+		
+		try {
+			TiApplication appContext = TiApplication.getInstance();
+			Activity activity = appContext.getCurrentActivity();
+			ActionBar actionBar = activity.getActionBar();
+			
+			actionBar.setIcon(new ColorDrawable(TiRHelper.getAndroidResource("color.transparent")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
