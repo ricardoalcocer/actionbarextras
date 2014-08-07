@@ -42,13 +42,15 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_DISABLE_ICON = MSG_FIRST_ID + 107;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
-
-	private ShareActionProvider mShareActionProvider;
-
+	
 	public ActionbarextrasModule() {
 		super();
 	}
-
+	
+	/**
+	 * message handler
+	 * @param message
+	 */
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
@@ -91,6 +93,10 @@ public class ActionbarextrasModule extends KrollModule {
 
 	}
 	
+	/**
+	 * Sets Actionbar title
+	 * @param obj
+	 */
 	private void handleSetTitle(Object obj){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -104,6 +110,10 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * Sets Actionbar subtitle
+	 * @param obj
+	 */
 	private void handleSetSubtitle(Object obj){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -117,6 +127,10 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * Sets Actionbar background color
+	 * @param obj
+	 */
 	private void handleSetBackgroundColor(String color){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -129,6 +143,10 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * Sets Actionbar title font
+	 * @param obj
+	 */
 	private void handleSetTitleFont(String font){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -146,6 +164,10 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * Sets Actionbar subtitle font
+	 * @param obj
+	 */
 	private void handleSetSubtitleFont(String font){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -165,6 +187,10 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * Sets Actionbar title color
+	 * @param obj
+	 */
 	private void handleSetTitleColor(String color){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -180,6 +206,10 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * Sets Actionbar subtitle color
+	 * @param obj
+	 */
 	private void handleSetSubtitleColor(String color){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -195,6 +225,10 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * Disables or enables Actionbar icon
+	 * @param obj
+	 */
 	private void handleDisableIcon(){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -208,7 +242,11 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 
-
+	/**
+	 * set multiple properties at once
+	 * this method will be removed soon
+	 * @param args
+	 */
 	@Kroll.method
 	@Deprecated
 	public void setExtras(final KrollDict args) {
@@ -225,7 +263,11 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 		});
 	}
-
+	
+	/**
+	 * this method will be removed soon
+	 */
+	@Deprecated
 	private void processExtrasProperties(KrollDict args, Activity activity) {
 
 		if (args.containsKey(TiC.PROPERTY_TITLE)) {
@@ -249,54 +291,140 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * You can set just the title with setTitle("title")
+	 * or title, color and font at once with:
+	 * setTitle({
+	 *     title: "title",
+	 *     color: "#f00",
+	 *     font: "MyFont.otf"
+	 * })
+	 * 
+	 * @param obj
+	 */
 	@Kroll.method @Kroll.setProperty
-	public void setTitle(String value) {
-		Message message = getMainHandler().obtainMessage(MSG_TITLE, value);
+	public void setTitle(Object obj) {
+		
+		String title;
+		
+		if (obj instanceof String){
+			title = (String) obj;
+		}else{
+			KrollDict d = (KrollDict) obj;
+			title = (String) d.get(TiC.PROPERTY_TITLE);
+			
+			if (d.containsKey(TiC.PROPERTY_COLOR)){
+				setTitleColor((String) d.get(TiC.PROPERTY_COLOR));
+			}
+			
+			if (d.containsKey(TiC.PROPERTY_FONT)){
+				setTitleFont((String) d.get(TiC.PROPERTY_FONT));
+			}
+		}
+		
+		Message message = getMainHandler().obtainMessage(MSG_TITLE, title);
 		message.sendToTarget();
 	}
 	
+	/**
+	 * You can set just the subtitle with setSubtitle("subtitle")
+	 * or subtitle, color and font at once with:
+	 * setSubtitle({
+	 *     subtitle: "subtitle",
+	 *     color: "#f00",
+	 *     font: "MyFont.otf"
+	 * })
+	 * 
+	 * @param obj
+	 */
 	@Kroll.method @Kroll.setProperty
-	public void setSubtitle(String value) {
-		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE, value);
+	public void setSubtitle(Object obj) {
+		
+		String subtitle;
+		
+		if (obj instanceof String){
+			subtitle = (String) obj;
+		}else{
+			KrollDict d = (KrollDict) obj;
+			subtitle = (String) d.get(TiC.PROPERTY_SUBTITLE);
+			
+			if (d.containsKey(TiC.PROPERTY_COLOR)){
+				setSubtitleColor((String) d.get(TiC.PROPERTY_COLOR));
+			}
+			
+			if (d.containsKey(TiC.PROPERTY_FONT)){
+				setSubtitleFont((String) d.get(TiC.PROPERTY_FONT));
+			}
+		}
+		
+		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE, subtitle);
 		message.sendToTarget();
 	}
 	
+	/**
+	 * Set the Actionbar background color
+	 * @param color
+	 */
 	@Kroll.method @Kroll.setProperty
 	public void setBackgroundColor(String color) {
 		Message message = getMainHandler().obtainMessage(MSG_BACKGROUND_COLOR, color);
 		message.sendToTarget();
 	}
 	
+	/**
+	 * Set title and subtitle font at once
+	 * @param value
+	 */
 	@Kroll.method @Kroll.setProperty
 	public void setFont(String value) {
 		setTitleFont(value);
 		setSubtitleFont(value);
 	}
 	
+	/**
+	 * set title font
+	 * @param value
+	 */
 	@Kroll.method @Kroll.setProperty
 	public void setTitleFont(String value) {
 		Message message = getMainHandler().obtainMessage(MSG_TITLE_FONT, value);
 		message.sendToTarget();
 	}
-
+	
+	/**
+	 * set subtitle font
+	 * @param value
+	 */
 	@Kroll.method @Kroll.setProperty
 	public void setSubtitleFont(String value) {
 		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE_FONT, value);
 		message.sendToTarget();
 	}
-
+	
+	/**
+	 * Set title and subtitle color at once
+	 * @param value
+	 */
 	@Kroll.method @Kroll.setProperty
 	public void setColor(String color) {
 		setTitleColor(color);
 		setSubtitleColor(color);
 	}
 	
+	/**
+	 * set title color
+	 * @param color
+	 */
 	@Kroll.method @Kroll.setProperty
 	public void setTitleColor(String color){
 		Message message = getMainHandler().obtainMessage(MSG_TITLE_COLOR, color);
 		message.sendToTarget();
 	}
 	
+	/**
+	 * set subtitle color
+	 * @param color
+	 */
 	@Kroll.method @Kroll.setProperty
 	public void setSubtitleColor(String color){
 		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE_COLOR, color);
@@ -319,11 +447,16 @@ public class ActionbarextrasModule extends KrollModule {
 		Message message = getMainHandler().obtainMessage(MSG_DISABLE_ICON, disabled);
 		message.sendToTarget();
 	}
-
+	
+	/**
+	 * add share action provider to Actionbar
+	 * @param args
+	 */
 	@Kroll.method
 	public void addShareAction(KrollDict args) {
-		Log.d(TAG, "addShareAction: " + args.toString());
-
+		
+		ShareActionProvider mShareActionProvider;
+		
 		MenuProxy menu_proxy = (MenuProxy) args.get(TiC.PROPERTY_MENU);
 		IntentProxy intent_proxy = (IntentProxy) args.get(TiC.PROPERTY_INTENT);
 		String title = "Share";
