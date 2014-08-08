@@ -1,47 +1,70 @@
-# ActionBarExtras
+# ActionBarExtras - Documentation
 
-This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer. It lets you set a subtitle to the ActionBar title, it forces to show the Overflow menu button on devices with hardware menu buttons and gives you the opportunity to change the ActionBar font (of both, title and subtitle or separately).
+## Content
 
-![example](example.png)
+* [1. Installation](#instalation)
+* [2. Properties](#properties)
+* [3. Methods](#methods)
 
-## Features
-  * Title and Subtitle
-  * Sharing Action Provider
-  * force overflow
-  * backgroundColor
-  * custom fonts
-  * font color
-  * disable icon
+## 1. Installation
 
-## Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
+#### Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
 Download the latest distribution ZIP-file and consult the [Titanium Documentation](http://docs.appcelerator.com/titanium/latest/#!/guide/Using_a_Module) on how install it, or simply use the [gitTio CLI](http://gitt.io/cli):
 
-`$ gittio install com.alcoapps.actionbarextras`
+##### `$ gittio install com.alcoapps.actionbarextras`
 
-## Using it
+#### Using it
+```javascript
+var abextras = require('com.alcoapps.actionbarextras');
+```
 
-First require it:
+## 2. Properties
 
-    var abextras = require('com.alcoapps.actionbarextras');
+* `title` _(String)_ - sets the Actionbar title
 
-At this point the feature for forcing the "menu overflow" has been attached to your Activity, so if that's the only thing you were looking for, you're set.
+* `subtitle` _(String)_ - sets the Actionbar subtitle
 
-To set the ActionBar custom features, simply call the **setExtras** method:
+* `backgroundColor` _(String)_ - sets the Actionbar backgroundColor
 
-    // setting extras
-    abextras.setExtras({
-        title:'This is the title',
-          subtitle:'This is the subtitle',
-          font: 'my_custom_font.otf',
-          backgroundColor:'#ff4f00',
-        color: 'red'
-    });
+* `titleFont` _(String)_ - sets the Actionbar title font
 
-## Contribuitors
+* `subtitleFont` _(String)_ - sets the Actionbar subtitle font
 
-* [Ricardo Alcocer](https://github.com/ricardoalcocer)
-* [Timan Rebel](https://github.com/timanrebel)
-* [Manuel Lehner](https://github.com/manumaticx)
+* `titleColor` _(String)_ - sets the Actionbar title color
 
-## License
-MIT License - [http://alco.mit-license.org](http://alco.mit-license.org)
+* `subtitleColor` _(String)_ - sets the Actionbar subtitle color
+
+* `disableIcon` _(Boolean)_ - disables / enables the Actionbar icon
+
+
+## 3. Methods
+
+* `setTitle(  )`  - sets the `title` property
+
+* `setSubtitle(  )`  - sets `subtitle` property
+
+* `setBackgroundColor(  )` - sets the `backgroundColor` property
+
+* `setTitleFont(  )` - sets the `titleFont` property
+
+* `setSubtitleFont(  )` - sets the `subtitleFont` property
+
+* `setTitleColor(  )` - sets the `titleColor` property
+
+* `setSubtitleColor(  )` - sets the `subtitleColor` property
+
+* `setDisableIcon(  )` - sets the `disableIcon` property
+
+* `setColor( )` - sets the color of title and subtitle
+
+* `setFont( )` - sets the font of title and subtitle
+
+* ~~`setExtras( )` - _DEPRECATED_~~
+
+* `addShareAction( (Object) parameters )` - adds a Share action to the Actionbar
+
+    _parameters:_
+    - `menu` _(Ti.Android.Menu)_ - a reference to the menu
+    - `intent` _(Ti.Android.Intent)_ - sharing Intent
+    - `title` _(String)_ - __optional__ default: "Share"
+    - `showAsAction` _(Number)_ - __optional__ default: Ti.Android.SHOW_AS_ACTION_IF_ROOM
