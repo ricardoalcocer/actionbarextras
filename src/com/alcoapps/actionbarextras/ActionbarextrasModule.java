@@ -47,6 +47,11 @@ public class ActionbarextrasModule extends KrollModule {
 		super();
 	}
 	
+	@Kroll.onAppCreate
+	public static void onAppCreate(TiApplication app) {
+		// we need this
+	}
+	
 	/**
 	 * message handler
 	 * @param message
@@ -83,7 +88,7 @@ public class ActionbarextrasModule extends KrollModule {
 				return true;
 			}
 			case MSG_DISABLE_ICON: {
-				handleDisableIcon();
+				handleDisableIcon((Boolean) msg.obj);
 				return true;
 			}
 			default: {
@@ -229,14 +234,19 @@ public class ActionbarextrasModule extends KrollModule {
 	 * Disables or enables Actionbar icon
 	 * @param obj
 	 */
-	private void handleDisableIcon(){
+	private void handleDisableIcon(Boolean disabled){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
 			ActionBar actionBar = activity.getActionBar();
-
-			actionBar.setIcon(new ColorDrawable(TiRHelper
-					.getAndroidResource("color.transparent")));
+			
+			if (disabled){
+				actionBar.setIcon(new ColorDrawable(TiRHelper
+						.getAndroidResource("color.transparent")));
+			}else{
+				actionBar.setIcon(null);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
