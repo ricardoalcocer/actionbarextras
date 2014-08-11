@@ -23,7 +23,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewConfiguration;
 import android.widget.TextView;
 @Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule {
@@ -244,6 +243,7 @@ public class ActionbarextrasModule extends KrollModule {
 				actionBar.setIcon(new ColorDrawable(TiRHelper
 						.getAndroidResource("color.transparent")));
 			}else{
+				// FIXME: How to show the icon again once hidden?
 				actionBar.setIcon(null);
 			}
 			
@@ -446,7 +446,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param arg
 	 */
 	@Kroll.method @Kroll.setProperty
-	public void disableIcon(@Kroll.argument(optional = true) Boolean arg) {
+	public void setDisableIcon(@Kroll.argument(optional = true) Boolean arg) {
 		
 		Boolean disabled = true;
 		
