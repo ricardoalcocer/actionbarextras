@@ -28,8 +28,7 @@ var abx = require('com.alcoapps.actionbarextras');
 
 At this point the feature for forcing the "menu overflow" has been attached to your Activity, so if that's the only thing you were looking for, you're set.
 
-To set the ActionBar custom features, simply call the **setExtras** method:
-
+Now, you can set custom properties like this:
 ```javascript
 // setting extras
 abx.title = "The Title";
@@ -39,7 +38,7 @@ abx.titleColor = "blue";
 
 To see what else you can do, see:
 * [Example project](example/)
-* [Documentation](documatation/index.md)
+* [Documentation](documentation/index.md)
 
 ## Contribuitors
 
