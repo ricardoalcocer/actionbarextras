@@ -1,4 +1,4 @@
-# ActionBarExtras [![gittio](http://img.shields.io/badge/gittio-1.3.0-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
+# ActionBarExtras [![gittio](http://img.shields.io/badge/gittio-1.3.1-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
 
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer.
 

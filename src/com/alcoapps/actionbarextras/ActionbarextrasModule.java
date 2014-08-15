@@ -1,5 +1,7 @@
 package com.alcoapps.actionbarextras;
 
+import java.util.HashMap;
+
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
@@ -320,7 +322,8 @@ public class ActionbarextrasModule extends KrollModule {
 		if (obj instanceof String){
 			title = (String) obj;
 		}else{
-			KrollDict d = (KrollDict) obj;
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> d = (HashMap<String, String>) obj;
 			title = (String) d.get(TiC.PROPERTY_TITLE);
 			
 			if (d.containsKey(TiC.PROPERTY_COLOR)){
@@ -355,7 +358,8 @@ public class ActionbarextrasModule extends KrollModule {
 		if (obj instanceof String){
 			subtitle = (String) obj;
 		}else{
-			KrollDict d = (KrollDict) obj;
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> d = (HashMap<String, String>) obj;
 			subtitle = (String) d.get(TiC.PROPERTY_SUBTITLE);
 			
 			if (d.containsKey(TiC.PROPERTY_COLOR)){
