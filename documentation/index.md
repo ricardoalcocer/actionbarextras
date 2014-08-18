@@ -2,9 +2,9 @@
 
 ## Content
 
-* [1. Installation](#instalation)
-* [2. Properties](#properties)
-* [3. Methods](#methods)
+* [1. Installation](#1-instalation)
+* [2. Properties](#2-properties)
+* [3. Methods](#3-methods)
 
 ## 1. Installation
 
@@ -21,8 +21,16 @@ var abextras = require('com.alcoapps.actionbarextras');
 ## 2. Properties
 
 * `title` _(String)_ - sets the Actionbar title
+    * instead of a String, you can also pass an Object with these properties:
+        * title _(String)_
+        * font _(String)_
+        * color _(String)_
 
 * `subtitle` _(String)_ - sets the Actionbar subtitle
+    * instead of a String, you can also pass an Object with these properties:
+        * subtitle _(String)_
+        * font _(String)_
+        * color _(String)_
 
 * `backgroundColor` _(String)_ - sets the Actionbar backgroundColor
 
@@ -39,32 +47,43 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 ## 3. Methods
 
-* `setTitle(  )`  - sets the `title` property
+* `setTitle( arg )`  - sets the `title` property
+    * arg _(Object | String)_ - title
 
-* `setSubtitle(  )`  - sets `subtitle` property
+* `setSubtitle( arg )`  - sets `subtitle` property
+    * arg _(Object | String)_ - subtitle
 
-* `setBackgroundColor(  )` - sets the `backgroundColor` property
+* `setBackgroundColor( arg )` - sets the `backgroundColor` property
+    * arg _(String)_ - color
 
-* `setTitleFont(  )` - sets the `titleFont` property
+* `setTitleFont( arg )` - sets the `titleFont` property
+    * arg _(String)_ - font
 
-* `setSubtitleFont(  )` - sets the `subtitleFont` property
+* `setSubtitleFont( arg )` - sets the `subtitleFont` property
+    * arg _(String)_ - font
 
-* `setTitleColor(  )` - sets the `titleColor` property
+* `setTitleColor( arg )` - sets the `titleColor` property
+    * arg _(String)_ - color
 
-* `setSubtitleColor(  )` - sets the `subtitleColor` property
+* `setSubtitleColor( arg )` - sets the `subtitleColor` property
+    * arg _(String)_ - color
 
-* `setDisableIcon(  )` - sets the `disableIcon` property
+* `setDisableIcon( arg )` - sets the `disableIcon` property
+    * arg _(Boolean)_ (optional) - enabled / disabled
 
-* `setColor( )` - sets the color of title and subtitle
+* `setColor( arg )` - sets the color of title and subtitle
+    * arg _(String)_ - color
 
-* `setFont( )` - sets the font of title and subtitle
+* `setFont( arg )` - sets the font of title and subtitle
+    * arg _(String)_ - color
 
-* ~~`setExtras( )` - _DEPRECATED_~~
+* ~~`setExtras( arg )` - _DEPRECATED_~~
+    * arg _(Object)_ - extras
 
-* `addShareAction( (Object) parameters )` - adds a Share action to the Actionbar
+* `addShareAction( arg )` - adds a Share action to the Actionbar
 
-    _parameters:_
-    - `menu` _(Ti.Android.Menu)_ - a reference to the menu
-    - `intent` _(Ti.Android.Intent)_ - sharing Intent
-    - `title` _(String)_ - __optional__ default: "Share"
-    - `showAsAction` _(Number)_ - __optional__ default: Ti.Android.SHOW_AS_ACTION_IF_ROOM
+    * arg _(Object)_:
+        * `menu` _(Ti.Android.Menu)_ - a reference to the menu
+        * `intent` _(Ti.Android.Intent)_ - sharing Intent
+        * `title` _(String)_ - __optional__ default: "Share"
+        * `showAsAction` _(Number)_ - __optional__ default: Ti.Android.SHOW_AS_ACTION_IF_ROOM
