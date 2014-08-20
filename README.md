@@ -40,6 +40,13 @@ To see what else you can do, see:
 * [Example project](example/)
 * [Documentation](documentation/index.md)
 
+## Some apps using ActionBarExtras
+
+* [Collapp](https://play.google.com/store/apps/details?id=tv.collapp.app)
+* [Peerby](https://play.google.com/store/apps/details?id=com.peerby.peerby)
+
+> Make sure you send me your app links or a PR with an updated README.md
+
 ## Contribuitors
 
 * [Ricardo Alcocer](https://github.com/ricardoalcocer)
