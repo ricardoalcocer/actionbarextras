@@ -50,7 +50,19 @@ public class ActionbarextrasModule extends KrollModule {
 	
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app) {
-		// we need this
+		// hack taken from:
+		// http://stackoverflow.com/questions/9286822/how-to-force-use-of-overflow-menu-on-devices-with-menu-button
+		try {
+			ViewConfiguration config = ViewConfiguration.get(app);
+			java.lang.reflect.Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception ex) {
+			// Ignore
+		}
 	}
 	
 	/**
