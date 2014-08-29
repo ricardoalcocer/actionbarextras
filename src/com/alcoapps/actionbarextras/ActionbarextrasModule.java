@@ -25,6 +25,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 import android.widget.TextView;
 @Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule {
@@ -319,7 +320,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 * You can set just the title with setTitle("title")
 	 * or title, color and font at once with:
 	 * setTitle({
-	 *     title: "title",
+	 *     text: "title",
 	 *     color: "#f00",
 	 *     font: "MyFont.otf"
 	 * })
@@ -336,7 +337,7 @@ public class ActionbarextrasModule extends KrollModule {
 		}else{
 			@SuppressWarnings("unchecked")
 			HashMap<String, String> d = (HashMap<String, String>) obj;
-			title = (String) d.get(TiC.PROPERTY_TITLE);
+			title = (String) d.get(TiC.PROPERTY_TEXT);
 			
 			if (d.containsKey(TiC.PROPERTY_COLOR)){
 				setTitleColor((String) d.get(TiC.PROPERTY_COLOR));
@@ -355,7 +356,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 * You can set just the subtitle with setSubtitle("subtitle")
 	 * or subtitle, color and font at once with:
 	 * setSubtitle({
-	 *     subtitle: "subtitle",
+	 *     text: "subtitle",
 	 *     color: "#f00",
 	 *     font: "MyFont.otf"
 	 * })
@@ -372,7 +373,7 @@ public class ActionbarextrasModule extends KrollModule {
 		}else{
 			@SuppressWarnings("unchecked")
 			HashMap<String, String> d = (HashMap<String, String>) obj;
-			subtitle = (String) d.get(TiC.PROPERTY_SUBTITLE);
+			subtitle = (String) d.get(TiC.PROPERTY_TEXT);
 			
 			if (d.containsKey(TiC.PROPERTY_COLOR)){
 				setSubtitleColor((String) d.get(TiC.PROPERTY_COLOR));

@@ -22,13 +22,13 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * `title` _(String)_ - sets the Actionbar title
     * instead of a String, you can also pass an Object with these properties:
-        * title _(String)_
+        * text _(String)_
         * font _(String)_
         * color _(String)_
 
 * `subtitle` _(String)_ - sets the Actionbar subtitle
     * instead of a String, you can also pass an Object with these properties:
-        * subtitle _(String)_
+        * text _(String)_
         * font _(String)_
         * color _(String)_
 
