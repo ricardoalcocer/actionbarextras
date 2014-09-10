@@ -3,7 +3,8 @@ var abx = require('com.alcoapps.actionbarextras'),
         shareAction: false,
         titleFont: false,
         subtitleFont: false,
-        disableIcon: false
+        disableIcon: false,
+        dropdown: false
     };
 
 var win = Titanium.UI.createWindow({
@@ -102,5 +103,26 @@ btn_sharingAction.addEventListener('click', function(){
     win.activity.invalidateOptionsMenu();
 });
 win.add(btn_sharingAction);
+
+// DROPDOWN
+var dropdown;
+var btn_dropdown = Ti.UI.createButton({ title: 'Dropdown' });
+btn_dropdown.addEventListener('click', function(){
+    opts.dropdown = !opts.dropdown;
+    
+    if (opts.dropdown){
+        dropdown = abx.createDropdown({
+            titles: ["First", "Second", "Third"]
+        });
+        
+        dropdown.addEventListener('change', function(e){
+            Ti.API.info("dropdown changed to: " + e.index);
+        });
+    }else{
+        dropdown.remove();
+    }
+    
+});
+win.add(btn_dropdown);
 
 win.open();
