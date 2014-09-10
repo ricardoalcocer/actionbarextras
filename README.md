@@ -1,4 +1,4 @@
-# ActionBarExtras [![gittio](http://img.shields.io/badge/gittio-1.3.2-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
+# ActionBarExtras [![gittio](http://img.shields.io/badge/gittio-1.3.3-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
 
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer.
 
@@ -7,6 +7,7 @@ This module provides some extra functionality to configure the ActionBar that Ti
 ## Features
   * Title and Subtitle
   * Sharing Action Provider
+  * Dropdown menu
   * force overflow
   * backgroundColor
   * custom fonts

@@ -5,6 +5,7 @@
 * [1. Installation](#1-instalation)
 * [2. Properties](#2-properties)
 * [3. Methods](#3-methods)
+* [4. Dropdown](#4-dropdown)
 
 ## 1. Installation
 
@@ -87,3 +88,23 @@ var abextras = require('com.alcoapps.actionbarextras');
         * `intent` _(Ti.Android.Intent)_ - sharing Intent
         * `title` _(String)_ - __optional__ default: "Share"
         * `showAsAction` _(Number)_ - __optional__ default: Ti.Android.SHOW_AS_ACTION_IF_ROOM
+
+## 4. Dropdown
+
+An ActionBar [Dropdown](http://developer.android.com/guide/topics/ui/actionbar.html#Dropdown) can be created with `createDropdown`. Make sure you pass a String-Array as `titles`
+ property. Example:
+
+```javascript
+var dropdown = abextras.createDropdown({
+    titles: [ "Home", "Search", "Likes", "Settings" ]
+});
+```
+
+#### Properties
+
+* `activeItem` _(Number)_ - the index of the current active dropdown item
+
+#### Events
+
+* `change` - fired when dropdown item is changed
+    * `index` _(Number)_ - index of the selected dropdown item
