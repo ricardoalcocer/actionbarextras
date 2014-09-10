@@ -65,6 +65,20 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 
 		super.handleCreationDict(options);
 	}
+	
+	@Kroll.method
+	public void remove(){
+		
+		final ActionBar actionBar = getActivity().getActionBar();
+		
+		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
+			@Override
+			public void run() {
+				actionBar.setDisplayShowTitleEnabled(true);
+			    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+			}
+		});
+	}
     
 	@Override
 	public void propertyChanged(String key, Object oldValue, Object newValue, KrollProxy proxy) {
