@@ -89,6 +89,12 @@ var abextras = require('com.alcoapps.actionbarextras');
         * `title` _(String)_ - __optional__ default: "Share"
         * `showAsAction` _(Number)_ - __optional__ default: Ti.Android.SHOW_AS_ACTION_IF_ROOM
 
+* `createDropdown( arg )` - adds a [dropdown](#4-dropdown) menu to the ActionBar
+
+    * arg _(Object)_:
+        * `titles` _(String[])_ - an Array of Strings, representing the dropdown items
+        * `keepTitle` _(Boolean)_ - if set to true, it shows both, title and dropdown, otherwise the title get replaced by the dropdown (Optional, default: false)
+
 ## 4. Dropdown
 
 An ActionBar [Dropdown](http://developer.android.com/guide/topics/ui/actionbar.html#Dropdown) can be created with `createDropdown`. Make sure you pass a String-Array as `titles`
@@ -103,6 +109,10 @@ var dropdown = abextras.createDropdown({
 #### Properties
 
 * `activeItem` _(Number)_ - the index of the current active dropdown item
+
+#### Methods
+
+* `remove` - removes the drop-down from the ActionBar
 
 #### Events
 
