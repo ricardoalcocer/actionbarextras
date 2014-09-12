@@ -18,6 +18,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
@@ -258,8 +259,8 @@ public class ActionbarextrasModule extends KrollModule {
 				actionBar.setIcon(new ColorDrawable(TiRHelper
 						.getAndroidResource("color.transparent")));
 			}else{
-				// FIXME: How to show the icon again once hidden?
-				actionBar.setIcon(null);
+				Drawable icon = activity.getPackageManager().getApplicationIcon(appContext.getApplicationContext().getPackageName());
+				actionBar.setIcon(icon);
 			}
 			
 		} catch (Exception e) {

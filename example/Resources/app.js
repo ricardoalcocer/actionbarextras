@@ -91,8 +91,8 @@ win.add(btn_backgroundColor);
 // DISABLE ICON
 var btn_disableIcon = Ti.UI.createButton({ title: 'Disable Icon' });
 btn_disableIcon.addEventListener('click', function(){
-    abx.setDisableIcon( opts.disableIcon );
     opts.disableIcon = !opts.disableIcon;
+    abx.setDisableIcon( opts.disableIcon );
 });
 win.add(btn_disableIcon);
 
