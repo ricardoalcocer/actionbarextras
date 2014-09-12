@@ -42,11 +42,18 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 	public void handleCreationDict(KrollDict options) {
 		
 		final ActionBar actionBar = getActivity().getActionBar();
+		final boolean keepTitle;
+		
+		if (options.containsKey("keepTitle")) {
+			keepTitle = options.getBoolean("keepTitle");
+		}else{
+			keepTitle = false;
+		}
 		
 		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
 			@Override
 			public void run() {
-				actionBar.setDisplayShowTitleEnabled(false);
+				actionBar.setDisplayShowTitleEnabled(keepTitle);
 			    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 			}
 		});
