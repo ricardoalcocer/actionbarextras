@@ -45,6 +45,7 @@ To see what else you can do, see:
 
 * [Collapp](https://play.google.com/store/apps/details?id=tv.collapp.app)
 * [Peerby](https://play.google.com/store/apps/details?id=com.peerby.peerby)
+* [Unit+Size Converter](https://play.google.com/store/apps/details?id=com.unitsizeconverter.it)
 
 > Make sure you send me your app links or a PR with an updated README.md
 
