@@ -331,6 +331,8 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setTitle(Object obj) {
 		
+		if (obj == null) return;
+		
 		String title;
 		
 		if (obj instanceof String){
@@ -366,6 +368,8 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	@Kroll.method @Kroll.setProperty
 	public void setSubtitle(Object obj) {
+		
+		if (obj == null) return;
 		
 		String subtitle;
 		
