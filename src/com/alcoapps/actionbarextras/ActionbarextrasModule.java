@@ -335,7 +335,7 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		if (obj instanceof String){
 			title = (String) obj;
-		}else{
+		}else if(obj instanceof HashMap){
 			@SuppressWarnings("unchecked")
 			HashMap<String, String> d = (HashMap<String, String>) obj;
 			title = (String) d.get(TiC.PROPERTY_TEXT);
@@ -347,6 +347,8 @@ public class ActionbarextrasModule extends KrollModule {
 			if (d.containsKey(TiC.PROPERTY_FONT)){
 				setTitleFont((String) d.get(TiC.PROPERTY_FONT));
 			}
+		}else{
+			return;
 		}
 		
 		Message message = getMainHandler().obtainMessage(MSG_TITLE, title);
@@ -371,8 +373,7 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		if (obj instanceof String){
 			subtitle = (String) obj;
-		}else{
-			@SuppressWarnings("unchecked")
+		}else if(obj instanceof HashMap){
 			HashMap<String, String> d = (HashMap<String, String>) obj;
 			subtitle = (String) d.get(TiC.PROPERTY_TEXT);
 			
@@ -383,6 +384,8 @@ public class ActionbarextrasModule extends KrollModule {
 			if (d.containsKey(TiC.PROPERTY_FONT)){
 				setSubtitleFont((String) d.get(TiC.PROPERTY_FONT));
 			}
+		}else{
+			return;
 		}
 		
 		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE, subtitle);
