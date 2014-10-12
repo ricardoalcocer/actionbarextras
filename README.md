@@ -43,9 +43,16 @@ To see what else you can do, see:
 
 ## Some apps using ActionBarExtras
 
-* [Collapp](https://play.google.com/store/apps/details?id=tv.collapp.app)
-* [Peerby](https://play.google.com/store/apps/details?id=com.peerby.peerby)
-* [Unit+Size Converter](https://play.google.com/store/apps/details?id=com.unitsizeconverter.it)
+<table>
+  <tr>
+    <td align="center"><img src="http://drops.ricardoalcocer.com/drops/screen_peerby.png" width="250"/><br/><a href="http://goo.gl/0JwYWj">Peerby</a></td>
+    <td align="center"><img src="http://drops.ricardoalcocer.com/drops/screen_collapp.png" width="250"/><br/><a href="http://goo.gl/zA7KZz">Collapp</a></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="http://drops.ricardoalcocer.com/drops/screen_unitconverter.png" width="250"/><br/><a href="http://goo.gl/QMWNrK">Unit+Size Converter</a></td>
+    <td align="center"/>
+  </tr>
+</table>
 
 > Make sure you send me your app links or a PR with an updated README.md
 
