@@ -24,10 +24,10 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
-import android.widget.TextView;
 @Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule {
 
@@ -48,6 +48,8 @@ public class ActionbarextrasModule extends KrollModule {
 
 	private TypefaceSpan titleFont;
 	private TypefaceSpan subtitleFont;
+	private String titleColor;
+	private String subtitleColor;
 	
 	public ActionbarextrasModule() {
 		super();
@@ -140,6 +142,11 @@ public class ActionbarextrasModule extends KrollModule {
 				ssb.setSpan(titleFont, 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			
+			if (titleColor != null){
+				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
+						0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			
 			actionBar.setTitle(ssb);
 			
 		} catch (Exception e) {
@@ -169,6 +176,11 @@ public class ActionbarextrasModule extends KrollModule {
 			
 			if (subtitleFont != null){
 				ssb.setSpan(subtitleFont, 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			
+			if (subtitleColor != null){
+				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
+						0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			
 			actionBar.setSubtitle(ssb);
@@ -265,15 +277,29 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param obj
 	 */
 	private void handleSetTitleColor(String color){
+		
+		titleColor = color;
+		
 		try {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
+			ActionBar actionBar = activity.getActionBar();
 
-			int titleId = activity.getResources().getIdentifier(
-					"action_bar_title", "id", "android");
-			TextView abTitle = (TextView) activity.findViewById(titleId);
-			abTitle.setTextColor(TiConvert.toColor(color));
-
+			SpannableStringBuilder ssb;
+			
+			if (actionBar.getTitle() instanceof SpannableStringBuilder){
+				ssb = (SpannableStringBuilder) actionBar.getTitle();
+			} else {
+				String abTitle = TiConvert.toString(actionBar.getTitle());
+				ssb = new SpannableStringBuilder(abTitle);
+			}
+			
+			if (titleColor != null){
+				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
+						0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			
+			actionBar.setTitle(ssb);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -284,14 +310,31 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param obj
 	 */
 	private void handleSetSubtitleColor(String color){
+		
+		subtitleColor = color;
+		
 		try {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
+			ActionBar actionBar = activity.getActionBar();
+			
+			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
+			if (abSubtitle != null) {
+				SpannableStringBuilder ssb;
+				
+				if (actionBar.getSubtitle() instanceof SpannableStringBuilder){
+					ssb = (SpannableStringBuilder) actionBar.getSubtitle();
+				} else {
+					ssb = new SpannableStringBuilder(abSubtitle);
+				}
+				
+				if (subtitleColor != null){
+					ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
+							0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
 
-			int subtitleId = activity.getResources().getIdentifier(
-					"action_bar_subtitle", "id", "android");
-			TextView abSubTitle = (TextView) activity.findViewById(subtitleId);
-			abSubTitle.setTextColor(TiConvert.toColor(color));
+				actionBar.setSubtitle(ssb);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
