@@ -24,7 +24,9 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
@@ -92,11 +94,11 @@ public class ActionbarextrasModule extends KrollModule {
 				return true;
 			}
 			case MSG_TITLE_FONT: {
-				handleSetTitleFont((String) msg.obj);
+				handleSetTitleFont(msg.obj);
 				return true;
 			}
 			case MSG_SUBTITLE_FONT: {
-				handleSetSubtitleFont((String) msg.obj);
+				handleSetSubtitleFont(msg.obj);
 				return true;
 			}
 			case MSG_TITLE_COLOR: {
@@ -210,7 +212,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 * Sets Actionbar title font
 	 * @param obj
 	 */
-	private void handleSetTitleFont(String font){
+	private void handleSetTitleFont(Object font){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
@@ -226,9 +228,18 @@ public class ActionbarextrasModule extends KrollModule {
 				ssb = new SpannableStringBuilder(abTitle);
 			}
 			
-			titleFont = new TypefaceSpan(appContext, font);
-			ssb.setSpan(titleFont, 0, ssb.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			if (font instanceof String){
+				titleFont = new TypefaceSpan(appContext, (String) font);
+				ssb.setSpan(titleFont, 0, ssb.length(),
+						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			
+			if (font instanceof HashMap) {
+				@SuppressWarnings("unchecked")
+				HashMap<String, String> d = (HashMap<String, String>) font;
+				
+				ssb = applyFontProperties(appContext, d, ssb, titleFont);
+			}
 
 			actionBar.setTitle(ssb);
 			
@@ -241,7 +252,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 * Sets Actionbar subtitle font
 	 * @param obj
 	 */
-	private void handleSetSubtitleFont(String font){
+	private void handleSetSubtitleFont(Object font){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
@@ -258,14 +269,20 @@ public class ActionbarextrasModule extends KrollModule {
 					ssb = new SpannableStringBuilder(abSubtitle);
 				}
 				
-				subtitleFont = new TypefaceSpan(appContext, font);
-				ssb.setSpan(subtitleFont, 0, ssb.length(),
-						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
+				if (font instanceof String){
+					subtitleFont = new TypefaceSpan(appContext, (String) font);
+					ssb.setSpan(subtitleFont, 0, ssb.length(),
+							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
+				
+				if (font instanceof HashMap) {
+					@SuppressWarnings("unchecked")
+					HashMap<String, String> d = (HashMap<String, String>) font;
+					
+					ssb = applyFontProperties(appContext, d, ssb, subtitleFont);
+				}
+				
 				actionBar.setSubtitle(ssb);
-			} else {
-				// if subtitle is not set yet, keep the font ref. so we can apply it later
-				subtitleFont = new TypefaceSpan(appContext, font);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -363,6 +380,38 @@ public class ActionbarextrasModule extends KrollModule {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Helper function to process font objects used for title and subtitle
+	 * 
+	 * @param Context - TiApplication context
+	 * @param Object - the properties as hashmap
+	 * @param Text - SpannableStringBuilder that should get the properties applied
+	 * @param TypefaceSpan - font reference (for title or subtitle)
+	 */
+	private SpannableStringBuilder applyFontProperties(TiApplication appContext, HashMap<String, String> d, SpannableStringBuilder ssb, TypefaceSpan font){
+		if (d.containsKey(TiC.PROPERTY_FONT_FAMILY)){
+			String fontFamily = (String) d.get(TiC.PROPERTY_FONT_FAMILY);
+			
+			font = new TypefaceSpan(appContext, fontFamily);
+			ssb.setSpan(font, 0, ssb.length(),
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		if (d.containsKey(TiC.PROPERTY_FONT_SIZE)){
+			int fontSize = TiConvert.toInt(d.get(TiC.PROPERTY_FONT_SIZE));
+			ssb.setSpan(new AbsoluteSizeSpan(fontSize), 0, ssb.length(),
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		if (d.containsKey(TiC.PROPERTY_FONT_WEIGHT)){
+			String fontWeight = (String) d.get(TiC.PROPERTY_FONT_WEIGHT);
+			ssb.setSpan(new StyleSpan(TiUIHelper.toTypefaceStyle(fontWeight, null)), 0, ssb.length(),
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		return ssb;
+	}
 
 	/**
 	 * set multiple properties at once
@@ -441,7 +490,7 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			
 			if (d.containsKey(TiC.PROPERTY_FONT)){
-				setTitleFont((String) d.get(TiC.PROPERTY_FONT));
+				setTitleFont(d.get(TiC.PROPERTY_FONT));
 			}
 		}else{
 			return;
@@ -479,7 +528,7 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			
 			if (d.containsKey(TiC.PROPERTY_FONT)){
-				setSubtitleFont((String) d.get(TiC.PROPERTY_FONT));
+				setSubtitleFont(d.get(TiC.PROPERTY_FONT));
 			}
 		}else{
 			return;
@@ -504,7 +553,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param value
 	 */
 	@Kroll.method @Kroll.setProperty
-	public void setFont(String value) {
+	public void setFont(Object value) {
 		setTitleFont(value);
 		setSubtitleFont(value);
 	}
@@ -514,8 +563,8 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param value
 	 */
 	@Kroll.method @Kroll.setProperty
-	public void setTitleFont(String value) {
-		Message message = getMainHandler().obtainMessage(MSG_TITLE_FONT, value);
+	public void setTitleFont(Object obj) {
+		Message message = getMainHandler().obtainMessage(MSG_TITLE_FONT, obj);
 		message.sendToTarget();
 	}
 	
@@ -524,8 +573,8 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param value
 	 */
 	@Kroll.method @Kroll.setProperty
-	public void setSubtitleFont(String value) {
-		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE_FONT, value);
+	public void setSubtitleFont(Object obj) {
+		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE_FONT, obj);
 		message.sendToTarget();
 	}
 	
