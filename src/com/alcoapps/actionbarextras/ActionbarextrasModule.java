@@ -23,7 +23,7 @@ import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Spannable;
-import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
@@ -45,6 +45,9 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_DISABLE_ICON = MSG_FIRST_ID + 107;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
+
+	private TypefaceSpan titleFont;
+	private TypefaceSpan subtitleFont;
 	
 	public ActionbarextrasModule() {
 		super();
@@ -122,8 +125,22 @@ public class ActionbarextrasModule extends KrollModule {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
 			ActionBar actionBar = activity.getActionBar();
-
-			actionBar.setTitle((String) obj);
+			
+			SpannableStringBuilder ssb;
+			
+			if (actionBar.getTitle() instanceof SpannableStringBuilder){
+				ssb = (SpannableStringBuilder) actionBar.getTitle();
+				ssb.clear();
+				ssb.append((String) obj);
+			} else {
+				ssb = new SpannableStringBuilder((String) obj);
+			}
+			
+			if (titleFont != null){
+				ssb.setSpan(titleFont, 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			
+			actionBar.setTitle(ssb);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -140,7 +157,21 @@ public class ActionbarextrasModule extends KrollModule {
 			Activity activity = appContext.getCurrentActivity();
 			ActionBar actionBar = activity.getActionBar();
 			
-			actionBar.setSubtitle((String) obj);
+			SpannableStringBuilder ssb;
+			
+			if (actionBar.getSubtitle() != null && actionBar.getSubtitle() instanceof SpannableStringBuilder){
+				ssb = (SpannableStringBuilder) actionBar.getSubtitle();
+				ssb.clear();
+				ssb.append((String) obj);
+			} else {
+				ssb = new SpannableStringBuilder((String) obj);
+			}
+			
+			if (subtitleFont != null){
+				ssb.setSpan(subtitleFont, 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			
+			actionBar.setSubtitle(ssb);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,13 +203,23 @@ public class ActionbarextrasModule extends KrollModule {
 			TiApplication appContext = TiApplication.getInstance();
 			Activity activity = appContext.getCurrentActivity();
 			ActionBar actionBar = activity.getActionBar();
-
-			String abTitle = TiConvert.toString(actionBar.getTitle());
-			SpannableString s = new SpannableString(abTitle);
-			s.setSpan(new TypefaceSpan(appContext, font), 0, s.length(),
+			
+			SpannableStringBuilder ssb;
+			
+			if (actionBar.getTitle() instanceof SpannableStringBuilder){
+				ssb = (SpannableStringBuilder) actionBar.getTitle();
+				ssb.removeSpan(titleFont);
+			} else {
+				String abTitle = TiConvert.toString(actionBar.getTitle());
+				ssb = new SpannableStringBuilder(abTitle);
+			}
+			
+			titleFont = new TypefaceSpan(appContext, font);
+			ssb.setSpan(titleFont, 0, ssb.length(),
 					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-			actionBar.setTitle(s);
+			actionBar.setTitle(ssb);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -196,11 +237,23 @@ public class ActionbarextrasModule extends KrollModule {
 
 			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
 			if (abSubtitle != null) {
-				SpannableString s = new SpannableString(abSubtitle);
-				s.setSpan(new TypefaceSpan(appContext, font), 0, s.length(),
+				SpannableStringBuilder ssb;
+				
+				if (actionBar.getSubtitle() instanceof SpannableStringBuilder){
+					ssb = (SpannableStringBuilder) actionBar.getSubtitle();
+					ssb.removeSpan(subtitleFont);
+				} else {
+					ssb = new SpannableStringBuilder(abSubtitle);
+				}
+				
+				subtitleFont = new TypefaceSpan(appContext, font);
+				ssb.setSpan(subtitleFont, 0, ssb.length(),
 						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-				actionBar.setSubtitle(s);
+				actionBar.setSubtitle(ssb);
+			} else {
+				// if subtitle is not set yet, keep the font ref. so we can apply it later
+				subtitleFont = new TypefaceSpan(appContext, font);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -374,6 +427,7 @@ public class ActionbarextrasModule extends KrollModule {
 		if (obj instanceof String){
 			subtitle = (String) obj;
 		}else if(obj instanceof HashMap){
+			@SuppressWarnings("unchecked")
 			HashMap<String, String> d = (HashMap<String, String>) obj;
 			subtitle = (String) d.get(TiC.PROPERTY_TEXT);
 			
