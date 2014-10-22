@@ -4,7 +4,8 @@ var abx = require('com.alcoapps.actionbarextras'),
         titleFont: false,
         subtitleFont: false,
         disableIcon: false,
-        dropdown: false
+        dropdown: false,
+        homeup: false
     };
 
 var win = Titanium.UI.createWindow({
@@ -46,6 +47,11 @@ win.addEventListener('open',function(e){
                     showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS, // optional - default: SHOW_AS_ACTION_IF_ROOM
                     title: "Share Hello World" // optional - default: "Share"
                 });
+            }
+            
+            if (opts.homeup) {
+                activity.actionBar.displayHomeAsUp = true;
+                abx.setHomeAsUpIcon("/images/menu.png");
             }
         };
     }
@@ -124,5 +130,13 @@ btn_dropdown.addEventListener('click', function(){
     
 });
 win.add(btn_dropdown);
+
+// CUSTOM UP ICON
+var btn_homeasup = Ti.UI.createButton({ title: 'Custom Up icon' });
+btn_homeasup.addEventListener('click', function(){
+    opts.homeup = !opts.homeup;
+    win.activity.invalidateOptionsMenu();
+});
+win.add(btn_homeasup);
 
 win.open();

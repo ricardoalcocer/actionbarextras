@@ -1,4 +1,4 @@
-# ActionBarExtras [![gittio](http://img.shields.io/badge/gittio-1.3.7-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
+# ActionBarExtras [![gittio](http://img.shields.io/badge/gittio-1.3.8-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
 
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer.
 
@@ -13,6 +13,7 @@ This module provides some extra functionality to configure the ActionBar that Ti
   * custom fonts
   * font color
   * disable icon
+  * custom Up icon
 
 ## Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
 Download the latest distribution ZIP-file and consult the [Titanium Documentation](http://docs.appcelerator.com/titanium/latest/#!/guide/Using_a_Module) on how install it, or simply use the [gitTio CLI](http://gitt.io/cli):

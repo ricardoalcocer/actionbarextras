@@ -2,7 +2,7 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 1.3.7
+version: 1.3.8
 apiversion: 2
 description: Allows to set extra properties on the ActionBar
 author: Ricardo Alcocer

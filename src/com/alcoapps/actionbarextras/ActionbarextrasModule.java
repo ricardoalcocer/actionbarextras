@@ -43,6 +43,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_TITLE_COLOR = MSG_FIRST_ID + 105;
 	private static final int MSG_SUBTITLE_COLOR = MSG_FIRST_ID + 106;
 	private static final int MSG_DISABLE_ICON = MSG_FIRST_ID + 107;
+	private static final int MSG_HOMEASUP_ICON = MSG_FIRST_ID + 108;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -109,6 +110,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_DISABLE_ICON: {
 				handleDisableIcon((Boolean) msg.obj);
+				return true;
+			}
+			case MSG_HOMEASUP_ICON: {
+				handleSetHomeAsUpIcon((String) msg.obj);
 				return true;
 			}
 			default: {
@@ -363,6 +368,28 @@ public class ActionbarextrasModule extends KrollModule {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Sets the homeAsUp icon
+	 * @param icon
+	 */
+	private void handleSetHomeAsUpIcon(String icon){
+		try {
+			TiApplication appContext = TiApplication.getInstance();
+			Activity activity = appContext.getCurrentActivity();
+			ActionBar actionBar = activity.getActionBar();
+			
+			int resId = TiUIHelper.getResourceId(resolveUrl(null, icon));
+			if (resId != 0) {
+				actionBar.setHomeAsUpIndicator(resId);
+			} else {
+				Log.e(TAG, "Couldn't resolve " + icon);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * set multiple properties at once
@@ -573,6 +600,16 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 		
 		Message message = getMainHandler().obtainMessage(MSG_DISABLE_ICON, disabled);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * sets the homeAsUp icon
+	 * @param arg
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setHomeAsUpIcon(String arg) {
+		Message message = getMainHandler().obtainMessage(MSG_HOMEASUP_ICON, arg);
 		message.sendToTarget();
 	}
 	

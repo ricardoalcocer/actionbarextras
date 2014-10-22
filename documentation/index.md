@@ -45,6 +45,8 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * `disableIcon` _(Boolean)_ - disables / enables the Actionbar icon
 
+* `homeAsUpIcon` _(String)_ - sets the homeAsUp icon
+
 
 ## 3. Methods
 
@@ -69,7 +71,10 @@ var abextras = require('com.alcoapps.actionbarextras');
 * `setSubtitleColor( arg )` - sets the `subtitleColor` property
     * arg _(String)_ - color
 
-* `setDisableIcon( arg )` - sets the `disableIcon` property
+* `setDisableIcon( arg )` - sets the `homeAsUpIcon` property
+    * arg _(String)_ - Url to the icon
+
+* `setHomeAsUpIcon( arg )` - sets the `disableIcon` property
     * arg _(Boolean)_ (optional) - enabled / disabled
 
 * `setColor( arg )` - sets the color of title and subtitle
