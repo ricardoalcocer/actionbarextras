@@ -102,6 +102,13 @@ btn_disableIcon.addEventListener('click', function(){
 });
 win.add(btn_disableIcon);
 
+// HIDE LOGO
+var btn_hideLogo = Ti.UI.createButton({ title: 'Hide Logo' });
+btn_hideLogo.addEventListener('click', function(){
+    abx.hideLogo();
+});
+win.add(btn_hideLogo);
+
 // SHARING ACTION
 var btn_sharingAction = Ti.UI.createButton({ title: 'Sharing Action' });
 btn_sharingAction.addEventListener('click', function(){

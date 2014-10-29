@@ -44,6 +44,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_SUBTITLE_COLOR = MSG_FIRST_ID + 106;
 	private static final int MSG_DISABLE_ICON = MSG_FIRST_ID + 107;
 	private static final int MSG_HOMEASUP_ICON = MSG_FIRST_ID + 108;
+	private static final int MSG_HIDE_LOGO = MSG_FIRST_ID + 109;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -114,6 +115,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_HOMEASUP_ICON: {
 				handleSetHomeAsUpIcon((String) msg.obj);
+				return true;
+			}
+			case MSG_HIDE_LOGO: {
+				handleHideLogo();
 				return true;
 			}
 			default: {
@@ -390,6 +395,23 @@ public class ActionbarextrasModule extends KrollModule {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Hides the logo
+	 */
+	private void handleHideLogo(){
+		try {
+			TiApplication appContext = TiApplication.getInstance();
+			Activity activity = appContext.getCurrentActivity();
+			ActionBar actionBar = activity.getActionBar();
+			
+			actionBar.setLogo(new ColorDrawable(TiRHelper
+					.getAndroidResource("color.transparent")));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * set multiple properties at once
@@ -610,6 +632,15 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setHomeAsUpIcon(String arg) {
 		Message message = getMainHandler().obtainMessage(MSG_HOMEASUP_ICON, arg);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * hides the logo
+	 */
+	@Kroll.method
+	public void hideLogo() {
+		Message message = getMainHandler().obtainMessage(MSG_HIDE_LOGO);
 		message.sendToTarget();
 	}
 	
