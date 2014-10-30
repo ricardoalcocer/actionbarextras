@@ -8,9 +8,13 @@ var abx = require('com.alcoapps.actionbarextras'),
         homeup: false
     };
 
-var win = Titanium.UI.createWindow({
-    backgroundColor:'#fff',
-    layout: 'vertical'
+var win = Titanium.UI.createWindow();
+
+var scrollView = Ti.UI.createScrollView({
+  width: Ti.UI.FILL,
+  height: Ti.UI.FILL,
+  backgroundColor:'#fff',
+  layout: 'vertical'
 });
 
 win.addEventListener('open',function(e){
@@ -63,7 +67,7 @@ btn_titleFont.addEventListener('click', function(){
     abx.setTitleFont(opts.titleFont ? "Aller.ttf" : "Chunkfive.otf");
     opts.titleFont = !opts.titleFont;
 });
-win.add(btn_titleFont);
+scrollView.add(btn_titleFont);
 
 // SUBTITLEFONT
 var btn_subtitleFont = Ti.UI.createButton({ title: 'Subtitle Font' });
@@ -71,28 +75,28 @@ btn_subtitleFont.addEventListener('click', function(){
     abx.setSubtitleFont(opts.subtitleFont ? "Aller.ttf" : "Chunkfive.otf");
     opts.subtitleFont = !opts.subtitleFont;
 });
-win.add(btn_subtitleFont);
+scrollView.add(btn_subtitleFont);
 
 // TITLECOLOR
 var btn_titleColor = Ti.UI.createButton({ title: 'Title Color' });
 btn_titleColor.addEventListener('click', function(){
     abx.setTitleColor('#'+Math.floor(Math.random()*16777215).toString(16));
 });
-win.add(btn_titleColor);
+scrollView.add(btn_titleColor);
 
 // SUBTITLECOLOR
 var btn_subtitleColor = Ti.UI.createButton({ title: 'Subtitle Color' });
 btn_subtitleColor.addEventListener('click', function(){
     abx.setSubtitleColor('#'+Math.floor(Math.random()*16777215).toString(16));
 });
-win.add(btn_subtitleColor);
+scrollView.add(btn_subtitleColor);
 
 // BACKGROUND COLOR
 var btn_backgroundColor = Ti.UI.createButton({ title: 'Background Color' });
 btn_backgroundColor.addEventListener('click', function(){
     abx.setBackgroundColor('#'+Math.floor(Math.random()*16777215).toString(16));
 });
-win.add(btn_backgroundColor);
+scrollView.add(btn_backgroundColor);
 
 // DISABLE ICON
 var btn_disableIcon = Ti.UI.createButton({ title: 'Disable Icon' });
@@ -100,14 +104,14 @@ btn_disableIcon.addEventListener('click', function(){
     opts.disableIcon = !opts.disableIcon;
     abx.setDisableIcon( opts.disableIcon );
 });
-win.add(btn_disableIcon);
+scrollView.add(btn_disableIcon);
 
 // HIDE LOGO
 var btn_hideLogo = Ti.UI.createButton({ title: 'Hide Logo' });
 btn_hideLogo.addEventListener('click', function(){
     abx.hideLogo();
 });
-win.add(btn_hideLogo);
+scrollView.add(btn_hideLogo);
 
 // SHARING ACTION
 var btn_sharingAction = Ti.UI.createButton({ title: 'Sharing Action' });
@@ -115,7 +119,7 @@ btn_sharingAction.addEventListener('click', function(){
     opts.shareAction = !opts.shareAction;
     win.activity.invalidateOptionsMenu();
 });
-win.add(btn_sharingAction);
+scrollView.add(btn_sharingAction);
 
 // DROPDOWN
 var dropdown;
@@ -136,7 +140,7 @@ btn_dropdown.addEventListener('click', function(){
     }
     
 });
-win.add(btn_dropdown);
+scrollView.add(btn_dropdown);
 
 // CUSTOM UP ICON
 var btn_homeasup = Ti.UI.createButton({ title: 'Custom Up icon' });
@@ -144,6 +148,7 @@ btn_homeasup.addEventListener('click', function(){
     opts.homeup = !opts.homeup;
     win.activity.invalidateOptionsMenu();
 });
-win.add(btn_homeasup);
+scrollView.add(btn_homeasup);
 
+win.add(scrollView);
 win.open();

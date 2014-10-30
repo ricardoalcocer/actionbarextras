@@ -14,8 +14,8 @@ import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.titanium.util.TiRHelper;
 import org.appcelerator.titanium.util.TiUIHelper;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -72,6 +72,13 @@ public class ActionbarextrasModule extends KrollModule {
 		} catch (Exception ex) {
 			// Ignore
 		}
+	}
+	
+	private ActionBar getActionBar(){
+		TiApplication appContext = TiApplication.getInstance();
+		ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
+		ActionBar actionBar = activity.getSupportActionBar();
+		return actionBar;
 	}
 	
 	/**
@@ -134,9 +141,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	private void handleSetTitle(Object obj){
 		try {
-			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 			
 			SpannableStringBuilder ssb;
 			
@@ -170,9 +175,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	private void handleSetSubtitle(Object obj){
 		try {
-			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 			
 			SpannableStringBuilder ssb;
 			
@@ -206,9 +209,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	private void handleSetBackgroundColor(String color){
 		try {
-			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 			
 			actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(color)));
 		} catch (Exception e) {
@@ -223,8 +224,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private void handleSetTitleFont(String font){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 			
 			SpannableStringBuilder ssb;
 			
@@ -254,8 +254,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private void handleSetSubtitleFont(String font){
 		try {
 			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 
 			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
 			if (abSubtitle != null) {
@@ -291,9 +290,7 @@ public class ActionbarextrasModule extends KrollModule {
 		titleColor = color;
 		
 		try {
-			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 
 			SpannableStringBuilder ssb;
 			
@@ -324,9 +321,7 @@ public class ActionbarextrasModule extends KrollModule {
 		subtitleColor = color;
 		
 		try {
-			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 			
 			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
 			if (abSubtitle != null) {
@@ -357,9 +352,9 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	private void handleDisableIcon(Boolean disabled){
 		try {
+			ActionBar actionBar = getActionBar();
 			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
 			
 			if (disabled){
 				actionBar.setIcon(new ColorDrawable(TiRHelper
@@ -380,9 +375,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	private void handleSetHomeAsUpIcon(String icon){
 		try {
-			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 			
 			int resId = TiUIHelper.getResourceId(resolveUrl(null, icon));
 			if (resId != 0) {
@@ -401,9 +394,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	private void handleHideLogo(){
 		try {
-			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
-			ActionBar actionBar = activity.getActionBar();
+			ActionBar actionBar = getActionBar();
 			
 			actionBar.setLogo(new ColorDrawable(TiRHelper
 					.getAndroidResource("color.transparent")));
@@ -425,7 +416,7 @@ public class ActionbarextrasModule extends KrollModule {
 
 		// declare stuff
 		TiApplication appContext = TiApplication.getInstance();
-		final Activity activity = appContext.getCurrentActivity();
+		final ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
 
 		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
 			@Override
@@ -439,7 +430,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 * this method will be removed soon
 	 */
 	@Deprecated
-	private void processExtrasProperties(KrollDict args, Activity activity) {
+	private void processExtrasProperties(KrollDict args, ActionBarActivity activity) {
 
 		if (args.containsKey(TiC.PROPERTY_TITLE)) {
 			setTitle((String) args.get(TiC.PROPERTY_TITLE));
@@ -668,7 +659,7 @@ public class ActionbarextrasModule extends KrollModule {
 
 		try {
 			TiApplication appContext = TiApplication.getInstance();
-			Activity activity = appContext.getCurrentActivity();
+			ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
 
 			mShareActionProvider = new ShareActionProvider(activity);
 
