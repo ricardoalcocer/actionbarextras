@@ -141,12 +141,12 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			
 			if (titleFont != null){
-				ssb.setSpan(titleFont, 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ssb.setSpan(titleFont, 0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 			
 			if (titleColor != null){
 				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
-						0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+						0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 			
 			actionBar.setTitle(ssb);
@@ -177,12 +177,12 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			
 			if (subtitleFont != null){
-				ssb.setSpan(subtitleFont, 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ssb.setSpan(subtitleFont, 0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 			
 			if (subtitleColor != null){
 				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
-						0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+						0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 			
 			actionBar.setSubtitle(ssb);
@@ -231,7 +231,7 @@ public class ActionbarextrasModule extends KrollModule {
 			if (font instanceof String){
 				titleFont = new TypefaceSpan(appContext, (String) font);
 				ssb.setSpan(titleFont, 0, ssb.length(),
-						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+						Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 			
 			if (font instanceof HashMap) {
@@ -272,7 +272,7 @@ public class ActionbarextrasModule extends KrollModule {
 				if (font instanceof String){
 					subtitleFont = new TypefaceSpan(appContext, (String) font);
 					ssb.setSpan(subtitleFont, 0, ssb.length(),
-							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+							Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 				}
 				
 				if (font instanceof HashMap) {
@@ -313,7 +313,7 @@ public class ActionbarextrasModule extends KrollModule {
 			
 			if (titleColor != null){
 				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
-						0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+						0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 			
 			actionBar.setTitle(ssb);
@@ -347,7 +347,7 @@ public class ActionbarextrasModule extends KrollModule {
 				
 				if (subtitleColor != null){
 					ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
-							0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+							0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 				}
 
 				actionBar.setSubtitle(ssb);
@@ -390,24 +390,39 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param TypefaceSpan - font reference (for title or subtitle)
 	 */
 	private SpannableStringBuilder applyFontProperties(TiApplication appContext, HashMap<String, String> d, SpannableStringBuilder ssb, TypefaceSpan font){
-		if (d.containsKey(TiC.PROPERTY_FONT_FAMILY)){
-			String fontFamily = (String) d.get(TiC.PROPERTY_FONT_FAMILY);
-			
+		
+		if (d.containsKey(TiC.PROPERTY_FONTFAMILY)){
+			String fontFamily = d.get(TiC.PROPERTY_FONTFAMILY);
 			font = new TypefaceSpan(appContext, fontFamily);
 			ssb.setSpan(font, 0, ssb.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 		}
 		
-		if (d.containsKey(TiC.PROPERTY_FONT_SIZE)){
-			int fontSize = TiConvert.toInt(d.get(TiC.PROPERTY_FONT_SIZE));
-			ssb.setSpan(new AbsoluteSizeSpan(fontSize), 0, ssb.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		if (d.containsKey(TiC.PROPERTY_FONTSIZE)){
+			Object value = d.get(TiC.PROPERTY_FONTSIZE);
+			boolean dip = false;
+			int fontSize;
+			
+			if (value instanceof String){
+				// is there a better way to convert Strings ("16px", "22sp" etc.) to dip?
+				fontSize = (int) TiUIHelper.getRawSize(
+						TiUIHelper.getSizeUnits((String) value), 
+						TiUIHelper.getSize((String) value), 
+						appContext
+				);
+			}else {
+				fontSize = (Integer) value;
+				dip = true;
+			}
+			
+			ssb.setSpan(new AbsoluteSizeSpan(fontSize, dip), 0, ssb.length(),
+					Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 		}
 		
-		if (d.containsKey(TiC.PROPERTY_FONT_WEIGHT)){
-			String fontWeight = (String) d.get(TiC.PROPERTY_FONT_WEIGHT);
+		if (d.containsKey(TiC.PROPERTY_FONTWEIGHT)){
+			String fontWeight = d.get(TiC.PROPERTY_FONTWEIGHT);
 			ssb.setSpan(new StyleSpan(TiUIHelper.toTypefaceStyle(fontWeight, null)), 0, ssb.length(),
-					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 		}
 		
 		return ssb;
