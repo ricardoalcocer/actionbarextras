@@ -10,8 +10,7 @@ This module provides some extra functionality to configure the ActionBar that Ti
   * Dropdown menu
   * force overflow
   * backgroundColor
-  * custom fonts
-  * font color
+  * font: type, color, size, weight
   * disable icon
   * custom Up icon
 

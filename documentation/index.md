@@ -24,20 +24,20 @@ var abextras = require('com.alcoapps.actionbarextras');
 * `title` _(String)_ - sets the Actionbar title
     * instead of a String, you can also pass an Object with these properties:
         * text _(String)_
-        * font _(String)_
+        * font _(String | Object)_
         * color _(String)_
 
 * `subtitle` _(String)_ - sets the Actionbar subtitle
     * instead of a String, you can also pass an Object with these properties:
         * text _(String)_
-        * font _(String)_
+        * font _(String | Object)_
         * color _(String)_
 
 * `backgroundColor` _(String)_ - sets the Actionbar backgroundColor
 
-* `titleFont` _(String)_ - sets the Actionbar title font
+* `titleFont` _(String | Object)_ - sets the Actionbar title font
 
-* `subtitleFont` _(String)_ - sets the Actionbar subtitle font
+* `subtitleFont` _(String | Object)_ - sets the Actionbar subtitle font
 
 * `titleColor` _(String)_ - sets the Actionbar title color
 
@@ -60,10 +60,10 @@ var abextras = require('com.alcoapps.actionbarextras');
     * arg _(String)_ - color
 
 * `setTitleFont( arg )` - sets the `titleFont` property
-    * arg _(String)_ - font
+    * arg _(String | Object)_ - font
 
 * `setSubtitleFont( arg )` - sets the `subtitleFont` property
-    * arg _(String)_ - font
+    * arg _(String | Object)_ - font
 
 * `setTitleColor( arg )` - sets the `titleColor` property
     * arg _(String)_ - color
