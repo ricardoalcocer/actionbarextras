@@ -1,0 +1,20 @@
+{
+  "name": "actionbarextras",
+  "id": "com.alcoapps.actionbarextras",
+  "version": "1.4.1",
+  "description": "Allows to set extra properties on the ActionBar",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Ricardo Alcocer",
+      "email": "alco@ricardoalcocer.com"
+    },
+    {
+      "name": "Manuel Lehner",
+      "email": "manumaticx@gmail.com"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.2"
+  }
+}
