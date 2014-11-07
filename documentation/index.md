@@ -87,9 +87,6 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * `setFont( arg )` - sets the font of title and subtitle
     * arg _(String)_ - color
-
-* ~~`setExtras( arg )` - _DEPRECATED_~~
-    * arg _(Object)_ - extras
     
 * `setWindow( arg )` - sets the window property
     * arg _(Ti.UI.Window)_ - window

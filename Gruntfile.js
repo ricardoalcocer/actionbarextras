@@ -39,6 +39,6 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('default', ['build', 'version']);
+  grunt.registerTask('default', ['version', 'build']);
 
 };

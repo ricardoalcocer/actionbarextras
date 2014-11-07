@@ -487,55 +487,6 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		return ssb;
 	}
-
-	/**
-	 * set multiple properties at once
-	 * this method will be removed soon
-	 * @param args
-	 */
-	@Kroll.method
-	@Deprecated
-	public void setExtras(final KrollDict args) {
-		Log.d(TAG, "called the setextras method");
-
-		// declare stuff
-		TiApplication appContext = TiApplication.getInstance();
-		final ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
-
-		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
-			@Override
-			public void run() {
-				processExtrasProperties(args, activity);
-			}
-		});
-	}
-	
-	/**
-	 * this method will be removed soon
-	 */
-	@Deprecated
-	private void processExtrasProperties(KrollDict args, ActionBarActivity activity) {
-
-		if (args.containsKey(TiC.PROPERTY_TITLE)) {
-			setTitle((String) args.get(TiC.PROPERTY_TITLE));
-		}
-
-		if (args.containsKey(TiC.PROPERTY_SUBTITLE)) {
-			setSubtitle((String) args.get(TiC.PROPERTY_SUBTITLE));
-		}
-
-		if (args.containsKey(TiC.PROPERTY_BACKGROUND_COLOR)) {
-			setBackgroundColor((String) args.get(TiC.PROPERTY_BACKGROUND_COLOR));
-		}
-
-		if (args.containsKey(TiC.PROPERTY_FONT)) {
-			setFont(TiConvert.toString(args.get(TiC.PROPERTY_FONT)));
-		}
-
-		if (args.containsKey(TiC.PROPERTY_COLOR)) {
-			setColor(TiConvert.toString(args.get(TiC.PROPERTY_COLOR)));
-		}
-	}
 	
 	/**
 	 * You can set just the title with setTitle("title")
