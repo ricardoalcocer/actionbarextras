@@ -47,6 +47,9 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * `homeAsUpIcon` _(String)_ - sets the homeAsUp icon
 
+* `window` _(Ti.UI.Window)_ - Sets a reference to a window. By default, ActionbarExtras will use
+                              the current window, but you may want to define a specific reference.
+
 
 ## 3. Methods
 
@@ -87,6 +90,9 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * ~~`setExtras( arg )` - _DEPRECATED_~~
     * arg _(Object)_ - extras
+    
+* `setWindow( arg )` - sets the window property
+    * arg _(Ti.UI.Window)_ - window
 
 * `addShareAction( arg )` - adds a Share action to the Actionbar
 

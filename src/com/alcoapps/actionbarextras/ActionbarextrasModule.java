@@ -10,6 +10,7 @@ import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiC;
 import org.appcelerator.titanium.proxy.IntentProxy;
 import org.appcelerator.titanium.proxy.MenuProxy;
+import org.appcelerator.titanium.proxy.TiWindowProxy;
 import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.titanium.util.TiRHelper;
 import org.appcelerator.titanium.util.TiUIHelper;
@@ -47,6 +48,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_DISABLE_ICON = MSG_FIRST_ID + 107;
 	private static final int MSG_HOMEASUP_ICON = MSG_FIRST_ID + 108;
 	private static final int MSG_HIDE_LOGO = MSG_FIRST_ID + 109;
+	private static final int MSG_WINDOW = MSG_FIRST_ID + 110;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -54,6 +56,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private TypefaceSpan subtitleFont;
 	private String titleColor;
 	private String subtitleColor;
+	private TiWindowProxy window;
 	
 	public ActionbarextrasModule() {
 		super();
@@ -77,8 +80,15 @@ public class ActionbarextrasModule extends KrollModule {
 	}
 	
 	private ActionBar getActionBar(){
-		TiApplication appContext = TiApplication.getInstance();
-		ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
+		ActionBarActivity activity;
+		
+		if (window != null){
+			activity = (ActionBarActivity) window.getActivity();
+		} else {
+			TiApplication appContext = TiApplication.getInstance();
+			activity = (ActionBarActivity) appContext.getCurrentActivity();
+		}
+		
 		ActionBar actionBar = activity.getSupportActionBar();
 		return actionBar;
 	}
@@ -128,6 +138,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_HIDE_LOGO: {
 				handleHideLogo();
+				return true;
+			}
+			case MSG_WINDOW: {
+				handleSetWindow(msg.obj);
 				return true;
 			}
 			default: {
@@ -421,6 +435,12 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	private void handleSetWindow(Object obj){
+		if (obj instanceof TiWindowProxy){
+			window = (TiWindowProxy) obj;
+		}
+	}
+	
 	/**
 	 * Helper function to process font objects used for title and subtitle
 	 * 
@@ -696,6 +716,16 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method
 	public void hideLogo() {
 		Message message = getMainHandler().obtainMessage(MSG_HIDE_LOGO);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * sets a reference to a window
+	 * @param arg
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setWindow(Object arg) {
+		Message message = getMainHandler().obtainMessage(MSG_WINDOW, arg);
 		message.sendToTarget();
 	}
 	

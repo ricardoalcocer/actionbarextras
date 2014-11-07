@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', 'build the module', function() {
 
-    var done = this.async()
+    var done = this.async();
 
     // runt ant to build the module
     var ant = grunt.util.spawn({
@@ -27,12 +27,9 @@ module.exports = function(grunt) {
   grunt.registerTask('version', 'update version from package.json', function() {
 
     // read files
-    var package = grunt.file.readJSON('package.json');
+    var version = grunt.file.readJSON('package.json').version;
     var manifest = grunt.file.read('manifest');
     var readme = grunt.file.read('README.md');
-
-    // new version
-    var version = package.version;
 
     // update manifest
     grunt.file.write('manifest', manifest.replace(/^version.*$/m, "version: " + version));
