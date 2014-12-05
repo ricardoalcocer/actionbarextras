@@ -1,5 +1,16 @@
-# ActionBarExtras [![gittio](http://img.shields.io/badge/gittio-1.4.2-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
+# ActionBarExtras 
+[![gittio](http://img.shields.io/badge/gittio-1.4.2-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
+[![License](http://img.shields.io/badge/license-MIT-orange.svg)](http://mit-license.org)
+[![issues](http://img.shields.io/github/issues/ricardoalcocer/actionbarextras.svg)](https://github.com/ricardoalcocer/actionbarextras/issues)
 
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Apps](#some-apps-using-actionbarextras)
+- [Contributors](#contributors)
+- [License](#license)
+
+## Overview
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer.
 
 ![example](documentation/example.png)
@@ -14,12 +25,13 @@ This module provides some extra functionality to configure the ActionBar that Ti
   * disable icon
   * custom Up icon
 
-## Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
+## Installation
+### Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
 Download the latest distribution ZIP-file and consult the [Titanium Documentation](http://docs.appcelerator.com/titanium/latest/#!/guide/Using_a_Module) on how install it, or simply use the [gitTio CLI](http://gitt.io/cli):
 
 `$ gittio install com.alcoapps.actionbarextras`
 
-## Using it
+### Using it
 
 First require it:
 
@@ -56,11 +68,19 @@ To see what else you can do, see:
 
 > Make sure you send me your app links or a PR with an updated README.md
 
-## Contribuitors
+## Contributors
 
-* [Ricardo Alcocer](https://github.com/ricardoalcocer)
-* [Timan Rebel](https://github.com/timanrebel)
-* [Manuel Lehner](https://github.com/manumaticx)
+```
+project  : actionbarextras
+repo age : 340 days
+active   : 33 days
+commits  : 78
+files    : 45
+authors  :
+  47  Manuel Lehner         60.3%
+  28  Ricardo Alcocer       35.9%
+   3  Timan Rebel            3.8%
+```
 
 ## License
 MIT License - [http://alco.mit-license.org](http://alco.mit-license.org)
