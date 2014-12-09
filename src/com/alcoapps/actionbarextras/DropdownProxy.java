@@ -10,7 +10,8 @@ import org.appcelerator.kroll.KrollProxyListener;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.util.TiUIHelper;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.ArrayAdapter;
 
 
@@ -41,7 +42,7 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 	@Override
 	public void handleCreationDict(KrollDict options) {
 		
-		final ActionBar actionBar = getActivity().getActionBar();
+		final ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
 		final boolean keepTitle;
 		
 		if (options.containsKey("keepTitle")) {
@@ -76,7 +77,7 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 	@Kroll.method
 	public void remove(){
 		
-		final ActionBar actionBar = getActivity().getActionBar();
+		final ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
 		
 		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
 			@Override
@@ -95,7 +96,7 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
         }
         
         if (key.equals("activeItem")){
-        	final ActionBar actionBar = getActivity().getActionBar();
+        	final ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
         	final int activeItem = (Integer) newValue;
     		
     		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
