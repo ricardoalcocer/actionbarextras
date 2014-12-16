@@ -33,7 +33,7 @@ var abextras = require('com.alcoapps.actionbarextras');
         * font _(String | Object)_
         * color _(String)_
 
-* `backgroundColor` _(String)_ - sets the Actionbar backgroundColor
+* `backgroundColor` _(String)_ - sets the Actionbar backgroundColor (Only used for the primary action bar. If you use a split action bar, you should go for a theme to set the color)
 
 * `titleFont` _(String | Object)_ - sets the Actionbar title font
 
