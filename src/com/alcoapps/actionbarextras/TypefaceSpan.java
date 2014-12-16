@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.v4.util.LruCache;
 import android.text.Spannable;
 import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
-import android.util.LruCache;
 
 /*
  * Copyright 2013 Simple Finance Corporation. All rights reserved.

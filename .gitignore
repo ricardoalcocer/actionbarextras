@@ -1,5 +1,6 @@
 tmp
 bin
 build
-*.zip
 .apt_generated
+dist/actionbarextras.jar
+node_modules
