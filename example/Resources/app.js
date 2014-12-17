@@ -29,8 +29,19 @@ win.addEventListener('open',function(e){
     var activity = win.getActivity();
     
     if(activity){
+      
+        var searchView = Ti.UI.Android.createSearchView({
+            hintText: "Search ABX..."
+        });
 
         activity.onCreateOptionsMenu = function(e){
+          
+            e.menu.add({
+                title: 'Search',
+                actionView : searchView,
+                icon: (Ti.Android.R.drawable.ic_menu_search ? Ti.Android.R.drawable.ic_menu_search : "my_search.png"),
+                showAsAction: Ti.Android.SHOW_AS_ACTION_IF_ROOM | Ti.Android.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW
+            });
             
             if (opts.shareAction){
                 // This is how you add a basic Share Action to your ActionBar
@@ -58,6 +69,15 @@ win.addEventListener('open',function(e){
                 abx.setHomeAsUpIcon("/images/menu.png");
             }
         };
+        
+        // changing a searchview
+        abx.setSearchView({ 
+          searchView: searchView, 
+          backgroundColor: '#777',
+          textColor: "yellow",
+          hintColor: "orange",
+          color: "red"
+        });
     }
 });
 

@@ -15,6 +15,8 @@ import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.titanium.util.TiRHelper;
 import org.appcelerator.titanium.util.TiUIHelper;
 
+import ti.modules.titanium.ui.android.SearchViewProxy;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.graphics.Color;
@@ -22,6 +24,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -30,7 +33,9 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.EditText;
 @Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule {
 
@@ -49,6 +54,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_HOMEASUP_ICON = MSG_FIRST_ID + 108;
 	private static final int MSG_HIDE_LOGO = MSG_FIRST_ID + 109;
 	private static final int MSG_WINDOW = MSG_FIRST_ID + 110;
+	private static final int MSG_SEARCHVIEW = MSG_FIRST_ID + 111;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -142,6 +148,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_WINDOW: {
 				handleSetWindow(msg.obj);
+				return true;
+			}
+			case MSG_SEARCHVIEW: {
+				handleSetSearchView(msg.obj);
 				return true;
 			}
 			default: {
@@ -441,6 +451,52 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	private void handleSetSearchView(Object obj){
+		
+		SearchView searchView;
+		HashMap args;
+		
+		if (obj instanceof HashMap){
+			args = (HashMap) obj;
+		} else {
+			Log.e(TAG, "Please pass an Object to setSearchViewBackground");
+			return;
+		}
+		
+		if (args.containsKey("searchView")){
+			SearchViewProxy svp = (SearchViewProxy) args.get("searchView");
+			searchView = (SearchView) svp.getOrCreateView().getOuterView();
+		} else {
+			Log.e(TAG, "Please pass a searchView reference to setSearchViewBackground");
+			return;
+		}
+		
+		if (args.containsKey(TiC.PROPERTY_BACKGROUND_COLOR)){
+			searchView.setBackgroundColor(TiConvert.toColor((String) args.get(TiC.PROPERTY_BACKGROUND_COLOR)));
+		}
+		
+		if (args.containsKey(TiC.PROPERTY_COLOR)){
+			int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
+			View searchPlate = searchView.findViewById(searchPlateId);
+			
+			if (searchPlate != null){
+				searchPlate.setBackgroundColor(TiConvert.toColor((String) args.get(TiC.PROPERTY_COLOR)));
+			}
+		}
+		
+		if (args.containsKey("textColor")){
+			((EditText)searchView
+				.findViewById(android.support.v7.appcompat.R.id.search_src_text))
+				.setTextColor((TiConvert.toColor((String) args.get("textColor"))));
+		}
+		
+		if (args.containsKey("hintColor")){
+			((EditText)searchView
+				.findViewById(android.support.v7.appcompat.R.id.search_src_text))
+				.setHintTextColor((TiConvert.toColor((String) args.get("textColor"))));
+		}
+	}
+	
 	/**
 	 * Helper function to process font objects used for title and subtitle
 	 * 
@@ -677,6 +733,16 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setWindow(Object arg) {
 		Message message = getMainHandler().obtainMessage(MSG_WINDOW, arg);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * sets options for the searchview that was passed
+	 * @param arg
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setSearchView(Object arg) {
+		Message message = getMainHandler().obtainMessage(MSG_SEARCHVIEW, arg);
 		message.sendToTarget();
 	}
 	
