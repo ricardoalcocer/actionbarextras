@@ -13,6 +13,7 @@ import org.appcelerator.titanium.proxy.MenuProxy;
 import org.appcelerator.titanium.proxy.TiWindowProxy;
 import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.titanium.util.TiRHelper;
+import org.appcelerator.titanium.util.TiRHelper.ResourceNotFoundException;
 import org.appcelerator.titanium.util.TiUIHelper;
 
 import ti.modules.titanium.ui.android.SearchViewProxy;
@@ -36,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.EditText;
+import android.widget.ImageView;
 @Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule {
 
@@ -475,25 +477,63 @@ public class ActionbarextrasModule extends KrollModule {
 			searchView.setBackgroundColor(TiConvert.toColor((String) args.get(TiC.PROPERTY_BACKGROUND_COLOR)));
 		}
 		
-		if (args.containsKey(TiC.PROPERTY_COLOR)){
-			int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
-			View searchPlate = searchView.findViewById(searchPlateId);
+		if (args.containsKey("line")){
+			View searchPlate = null;
+			try {
+				searchPlate = searchView.findViewById(TiRHelper.getResource("id.search_plate", true));
+			} catch (ResourceNotFoundException e) {
+				e.printStackTrace();
+			}
+			
 			
 			if (searchPlate != null){
-				searchPlate.setBackgroundColor(TiConvert.toColor((String) args.get(TiC.PROPERTY_COLOR)));
+				int resId = TiUIHelper.getResourceId(resolveUrl(null, (String) args.get("line")));
+				if (resId != 0) {
+					searchPlate.setBackgroundResource(resId);
+				} else {
+					Log.e(TAG, "Couldn't resolve " + args.get("line"));
+				}
 			}
 		}
 		
 		if (args.containsKey("textColor")){
-			((EditText)searchView
-				.findViewById(android.support.v7.appcompat.R.id.search_src_text))
-				.setTextColor((TiConvert.toColor((String) args.get("textColor"))));
+			try {
+				((EditText)searchView
+					.findViewById(TiRHelper.getResource("id.search_src_text", true)))
+					.setTextColor((TiConvert.toColor((String) args.get("textColor"))));
+			} catch (ResourceNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if (args.containsKey("hintColor")){
-			((EditText)searchView
-				.findViewById(android.support.v7.appcompat.R.id.search_src_text))
-				.setHintTextColor((TiConvert.toColor((String) args.get("textColor"))));
+			try {
+				((EditText)searchView
+					.findViewById(TiRHelper.getResource("id.search_src_text", true)))
+					.setHintTextColor((TiConvert.toColor((String) args.get("hintColor"))));
+			} catch (ResourceNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (args.containsKey("cancelIcon")){
+			ImageView searchCloseIcon = null;
+			try {
+				searchCloseIcon = (ImageView) searchView.findViewById(TiRHelper.getResource("id.search_close_btn", true));
+			    
+			} catch (ResourceNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			
+			if (searchCloseIcon != null){
+				int resId = TiUIHelper.getResourceId(resolveUrl(null, (String) args.get("cancelIcon")));
+				if (resId != 0) {
+					searchCloseIcon.setBackgroundResource(resId);
+				} else {
+					Log.e(TAG, "Couldn't resolve " + args.get("cancelIcon"));
+				}
+			}
 		}
 	}
 	
