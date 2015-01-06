@@ -9,6 +9,7 @@ var abx = require('com.alcoapps.actionbarextras'),
     };
 
 var win = Titanium.UI.createWindow();
+abx.window = win;
 
 var scrollView = Ti.UI.createScrollView({
   width: Ti.UI.FILL,
@@ -76,7 +77,7 @@ win.addEventListener('open',function(e){
           backgroundColor: '#777',
           textColor: "yellow",
           hintColor: "orange",
-          color: "red"
+          line: "/images/my_textfield_activated_holo_light.9.png"
         });
     }
 });
