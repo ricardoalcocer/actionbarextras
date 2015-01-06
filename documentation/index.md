@@ -6,6 +6,7 @@
 * [2. Properties](#2-properties)
 * [3. Methods](#3-methods)
 * [4. Dropdown](#4-dropdown)
+* [5. SearchView](#5-searchview)
 
 ## 1. Installation
 
@@ -128,3 +129,20 @@ var dropdown = abextras.createDropdown({
 
 * `change` - fired when dropdown item is changed
     * `index` _(Number)_ - index of the selected dropdown item
+
+
+## 5. SearchView
+
+You can style an [SearchView](http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.UI.Android.SearchView) with Actionbar Extras. This is done with the method:
+
+* `setSearchView( args )` - enhances an existing search view
+
+    * args _(Object)_:
+        * `searchView` _(Ti.UI.Android.SearchView)_ - a reference to the search view
+        * `backgroundColor` _(String)_  -  changes the background color of the search view
+        * `textColor` _(String)_  - changes the text color of the search view
+        * `hintColor` _(String)_  - changes the hint color of the search view
+        * `line` _(String)_  -  image path to replace the line drawable used by the search view
+        * `cancelIcon` _(String)_ - image path to use a custom close icon
+        
+An example of how to use this is included in the [example app](https://github.com/ricardoalcocer/actionbarextras/blob/master/example/Resources/app.js).
