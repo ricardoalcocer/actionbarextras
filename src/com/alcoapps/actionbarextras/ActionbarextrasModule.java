@@ -207,6 +207,11 @@ public class ActionbarextrasModule extends KrollModule {
 			
 			SpannableStringBuilder ssb;
 			
+			if (obj == null){
+				actionBar.setSubtitle(null);
+				return;
+			}
+			
 			if (actionBar.getSubtitle() != null && actionBar.getSubtitle() instanceof SpannableStringBuilder){
 				ssb = (SpannableStringBuilder) actionBar.getSubtitle();
 				ssb.clear();
@@ -652,6 +657,8 @@ public class ActionbarextrasModule extends KrollModule {
 			if (d.containsKey(TiC.PROPERTY_FONT)){
 				setSubtitleFont(d.get(TiC.PROPERTY_FONT));
 			}
+		}else if(obj == null){
+			subtitle = null;
 		}else{
 			return;
 		}
