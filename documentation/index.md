@@ -106,7 +106,7 @@ var abextras = require('com.alcoapps.actionbarextras');
         * `titles` _(String[])_ - an Array of Strings, representing the dropdown items
         * `keepTitle` _(Boolean)_ - if set to true, it shows both, title and dropdown, otherwise the title get replaced by the dropdown (Optional, default: false)
         
-* `getActionbarHeight( )`  - returns the height of the Actionbar as an _integer_
+* `getActionbarHeight( )`  - returns the height of the Actionbar as absolute pixels
 
 ## 4. Dropdown
 
