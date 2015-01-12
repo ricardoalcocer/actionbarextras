@@ -91,6 +91,21 @@ var abextras = require('com.alcoapps.actionbarextras');
     
 * `setWindow( arg )` - sets the window property
     * arg _(Ti.UI.Window)_ - window
+    
+* `setLogo( arg )` - sets a custom logo based on a font
+	* args _(Object)_:
+		* `icon` _(String)_ - The icon to use from the iconfont
+		* `fontFamily` _(String)_ - the font to use
+		* `color` _(String)_ - the icon color
+    
+* `setMenuItemIcon( arg )` - sets a custom menu item icon based on a font
+	* args _(Object)_:
+		* `menu` _(Ti.Android.Menu)_ - a reference to the menu
+		* `menuItem` _(Ti.Android.MenuItem)_ - a reference to the menu item
+		* `icon` _(String)_ - The icon to use from the iconfont
+		* `fontFamily` _(String)_ - the font to use
+		* `color` _(String)_ - the icon color
+		* `size` _(Number)_ - the icon size __optional__ default: Actionbar icon size ( 24 dp )
 
 * `addShareAction( arg )` - adds a Share action to the Actionbar
 

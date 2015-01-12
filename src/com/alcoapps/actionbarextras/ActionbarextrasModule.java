@@ -9,6 +9,7 @@ import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiC;
 import org.appcelerator.titanium.proxy.IntentProxy;
+import org.appcelerator.titanium.proxy.MenuItemProxy;
 import org.appcelerator.titanium.proxy.MenuProxy;
 import org.appcelerator.titanium.proxy.TiWindowProxy;
 import org.appcelerator.titanium.util.TiConvert;
@@ -21,6 +22,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
@@ -57,6 +59,8 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_HIDE_LOGO = MSG_FIRST_ID + 109;
 	private static final int MSG_WINDOW = MSG_FIRST_ID + 110;
 	private static final int MSG_SEARCHVIEW = MSG_FIRST_ID + 111;
+	private static final int MSG_LOGO = MSG_FIRST_ID + 112;
+	private static final int MSG_MENU_ICON = MSG_FIRST_ID + 113;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -142,6 +146,14 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_HOMEASUP_ICON: {
 				handleSetHomeAsUpIcon((String) msg.obj);
+				return true;
+			}
+			case MSG_LOGO: {
+				handleSetLogo(msg.obj);
+				return true;
+			}
+			case MSG_MENU_ICON: {
+				handleSetMenuItemIcon( msg.obj );
 				return true;
 			}
 			case MSG_HIDE_LOGO: {
@@ -442,6 +454,86 @@ public class ActionbarextrasModule extends KrollModule {
 			} else {
 				Log.e(TAG, "Couldn't resolve " + icon);
 			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sets the logo with a custom icon font
+	 * @param logo
+	 */
+	private void handleSetLogo(Object obj){
+		try {
+			HashMap args;
+			
+			if (obj instanceof HashMap){
+				args = (HashMap) obj;
+			} else {
+				Log.e(TAG, "Please pass an Object to setLogo");
+				return;
+			}
+			
+			ActionBar actionBar = getActionBar();
+			Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get("fontFamily") );
+			IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get("icon"), iconFontTypeface ).actionBarSize().color( TiConvert.toColor( (String)args.get("color") ) );
+			
+			actionBar.setLogo(icon);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sets a custom icon font for a given menu
+	 * @param logo
+	 */
+	private void handleSetMenuItemIcon(Object obj){
+		try {
+			HashMap args;
+			
+			if (obj instanceof HashMap){
+				args = (HashMap) obj;
+			} else {
+				Log.e(TAG, "Please pass an Object to setMenuItem");
+				return;
+			}
+			
+			MenuItemProxy menuItem;
+			MenuProxy menuProxy;
+			
+			if( args.get("menuItem") instanceof MenuItemProxy )
+			{
+				menuItem = (MenuItemProxy)args.get("menuItem");
+			} else {
+				Log.e(TAG, "Please provide a valid menuItem");
+				return;
+			}		
+			
+			if( args.get( TiC.PROPERTY_MENU ) instanceof MenuProxy )
+			{
+				menuProxy = (MenuProxy)args.get( TiC.PROPERTY_MENU );
+			} else {
+				Log.e(TAG, "Please provide a valid menu");
+				return;
+			}		
+			
+			Menu mMenu = menuProxy.getMenu();
+			
+			Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get("fontFamily") );
+			
+			IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get("icon"), iconFontTypeface ).color( TiConvert.toColor( (String)args.get("color") ) );
+			
+			if( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) )  > 0 )
+			{
+				icon.sizeDp( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) ) );
+			} else {
+				icon.actionBarSize();
+			}
+			
+			mMenu.findItem( menuItem.getItemId() ).setIcon( icon );
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -781,6 +873,25 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method
 	public void hideLogo() {
 		Message message = getMainHandler().obtainMessage(MSG_HIDE_LOGO);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * sets the logo
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setLogo(Object arg) {
+		Message message = getMainHandler().obtainMessage(MSG_LOGO, arg);
+		message.sendToTarget();
+	}
+
+	
+	/**
+	 * sets the logo
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setMenuItemIcon(Object arg) {
+		Message message = getMainHandler().obtainMessage(MSG_MENU_ICON, arg);
 		message.sendToTarget();
 	}
 	
