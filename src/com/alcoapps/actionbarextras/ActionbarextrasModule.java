@@ -17,9 +17,9 @@ import org.appcelerator.titanium.util.TiRHelper.ResourceNotFoundException;
 import org.appcelerator.titanium.util.TiUIHelper;
 
 import ti.modules.titanium.ui.android.SearchViewProxy;
-
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -415,6 +415,17 @@ public class ActionbarextrasModule extends KrollModule {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Kroll.getProperty @Kroll.method
+	public int getActionbarHeight() {
+		TiApplication appContext = TiApplication.getInstance();
+		final TypedArray styledAttributes = appContext.getTheme().obtainStyledAttributes(
+                new int[] { android.R.attr.actionBarSize }
+        );
+		int mActionBarSize = (int) styledAttributes.getDimension(0, 0);
+		styledAttributes.recycle();
+		return mActionBarSize;
 	}
 	
 	/**

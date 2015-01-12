@@ -53,7 +53,7 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 
 ## 3. Methods
-
+    
 * `setTitle( arg )`  - sets the `title` property
     * arg _(Object | String)_ - title
 
@@ -105,6 +105,8 @@ var abextras = require('com.alcoapps.actionbarextras');
     * arg _(Object)_:
         * `titles` _(String[])_ - an Array of Strings, representing the dropdown items
         * `keepTitle` _(Boolean)_ - if set to true, it shows both, title and dropdown, otherwise the title get replaced by the dropdown (Optional, default: false)
+        
+* `getActionbarHeight( )`  - returns the height of the Actionbar as absolute pixels
 
 ## 4. Dropdown
 
