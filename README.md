@@ -13,17 +13,18 @@
 ## Overview
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer.
 
-![example](documentation/example.png)
+![example01](documentation/abx_01.png)
+![example02](documentation/abx_02.png)
+![example03](documentation/abx_03.png)
+![example04](documentation/abx_04.png)
 
 ## Features
   * Title and Subtitle
   * Sharing Action Provider
   * Dropdown menu
-  * force overflow
-  * backgroundColor
   * font: type, color, size, weight
-  * disable icon
-  * custom Up icon
+  * FontAwesome support for title, logo and menu
+  * and many more...
 
 ## Installation
 ### Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
@@ -70,17 +71,10 @@ To see what else you can do, see:
 
 ## Contributors
 
-```
-project  : actionbarextras
-repo age : 340 days
-active   : 33 days
-commits  : 78
-files    : 45
-authors  :
-  47  Manuel Lehner         60.3%
-  28  Ricardo Alcocer       35.9%
-   3  Timan Rebel            3.8%
-```
+*  Manuel Lehner ([@manumaticx](https://github.com/manumaticx))
+*  Ricardo Alcocer ([@ricardoalcocer](https://github.com/ricardoalcocer))
+*  Marcel Pociot ([@mpociot](https://github.com/mpociot))
+*  Timan Rebel ([@timanrebel](https://github.com/timanrebel))
 
 ## License
 MIT License - [http://alco.mit-license.org](http://alco.mit-license.org)

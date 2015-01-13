@@ -5,17 +5,169 @@ var abx = require('com.alcoapps.actionbarextras'),
         subtitleFont: false,
         disableIcon: false,
         dropdown: false,
-        homeup: false
-    };
+        homeup: false,
+        menuIcon: false
+    },
+    dropdown,
+    IconicFont = require('/lib/IconicFont'),
+    fa = new IconicFont({
+        font: '/lib/FontAwesome'
+    });;
 
 var win = Titanium.UI.createWindow();
 abx.window = win;
 
-var scrollView = Ti.UI.createScrollView({
+var searchView = Ti.UI.Android.createSearchView({
+    hintText: "Search ABX..."
+});
+
+var table = Ti.UI.createTableView({
   width: Ti.UI.FILL,
   height: Ti.UI.FILL,
-  backgroundColor:'#fff',
-  layout: 'vertical'
+  search: searchView,
+  searchAsChild: false
+});
+
+var data = [
+  { title: 'Title Font', action: "titleFont" },
+  { title: 'Subtitle Font', action: "subtitleFont" },
+  { title: 'Title Color', action: "titleColor" },
+  { title: 'Subtitle Color', action: "subtitleColor" },
+  { title: 'Background Color', action: "backgroundColor" },
+  { title: 'Disable Icon', action: "disableIcon" },
+  { title: 'Hide Logo', action: "hideLogo" },
+  { title: 'Sharing Action', action: "sharing" },
+  { title: 'Dropdown', action: "dropdown" },
+  { title: 'Custom Up icon', action: "customUp" },
+  { title: 'Set font object', action: "fontObject" },
+  { title: '2nd window', action: "secondWindow" },
+  { title: 'Hide Subtitle', action: "hideSubtitle" },
+  { title: 'Get Actionbar height', action: "actionbarHeight" },
+  { title: 'Set Logo (FontAwesome)', action: "logoFont" },
+  { title: 'Set MenuItem icon (FontAwesome)', action: "menuIcon" }
+  
+];
+
+var actions = {
+  titleFont: function(){
+      abx.setTitleFont(opts.titleFont ? "Aller.ttf" : "Chunkfive.otf");
+      opts.titleFont = !opts.titleFont;
+  },
+  subtitleFont: function(){
+      abx.setSubtitleFont(opts.subtitleFont ? "Aller.ttf" : "Chunkfive.otf");
+      opts.subtitleFont = !opts.subtitleFont;
+  },
+  titleColor: function(){
+      abx.setTitleColor('#'+Math.floor(Math.random()*16777215).toString(16));
+  },
+  subtitleColor: function(){
+      abx.setSubtitleColor('#'+Math.floor(Math.random()*16777215).toString(16));
+  },
+  backgroundColor: function(){
+      abx.setBackgroundColor('#'+Math.floor(Math.random()*16777215).toString(16));
+  },
+  disableIcon: function(){
+      opts.disableIcon = !opts.disableIcon;
+      abx.setDisableIcon( opts.disableIcon );
+  },
+  hideLogo: function(){
+      abx.hideLogo();
+  },
+  sharing: function(){
+      opts.shareAction = !opts.shareAction;
+      win.activity.invalidateOptionsMenu();
+  },
+  dropdown: function(){
+      opts.dropdown = !opts.dropdown;
+      
+      if (opts.dropdown){
+          dropdown = abx.createDropdown({
+              titles: ["First", "Second", "Third"]
+          });
+          
+          dropdown.addEventListener('change', function(e){
+              Ti.API.info("dropdown changed to: " + e.index);
+          });
+      }else{
+          dropdown.remove();
+      }
+      
+  },
+  customUp: function(){
+      opts.homeup = !opts.homeup;
+      win.activity.invalidateOptionsMenu();
+  },
+  fontObject: function(){
+      abx.setTitle({
+        text: "Font Object",
+        font: {
+          fontSize: 26,
+          fontFamily: 'Chunkfive.otf'
+        }
+      });
+      
+      abx.setSubtitle({
+        text: "Subtitle",
+        font: {
+          fontSize: '14dp',
+          fontWeight: 'bold',
+          fontFamily: 'Chunkfive.otf'
+        }
+      });
+  },
+  secondWindow: function(){
+      var win2 = Ti.UI.createWindow({ backgroundColor: 'yellow' });
+      win2.addEventListener('open', function(){
+        
+        // here we want to test if abx updates the first window
+        // as we set abx.window earlier
+        abx.title = "Changed title";
+        abx.subtitle = "while other win was in foreground";
+        
+        // now we can close this
+        setTimeout(function(){
+          win2.close();
+        }, 2000);
+      });
+      
+      win2.open();
+  },
+  hideSubtitle: function(){
+    abx.setSubtitle(null);
+  },
+  actionbarHeight: function(){
+    alert( abx.getActionbarHeight() );
+  },
+  logoFont: function(){
+    abx.setLogo({
+      icon: fa.icon("fa-smile-o"),
+      fontFamily: fa.fontfamily,
+      color: "yellow"
+    });
+  },
+  menuIcon: function(){
+    opts.menuIcon = !opts.menuIcon;
+    win.activity.invalidateOptionsMenu();
+  }
+};
+
+table.setData((function(_rows){
+  var rows = [];
+  _rows.forEach(function(row){
+    rows.push(Ti.UI.createTableViewRow({
+      title: row.title,
+      action: row.action,
+      height: '48dp',
+      color: '#000',
+      backgroundColor: '#fff',
+      left: 20
+    }));
+  });
+  return rows;
+})(data));
+
+table.addEventListener('click', function(e){
+  actions[e.row.action]();
 });
 
 win.addEventListener('open',function(e){
@@ -25,18 +177,15 @@ win.addEventListener('open',function(e){
     abx.titleFont = "Aller.ttf";
     abx.subtitle = "for some extra action";
     abx.subtitleFont = "Aller.ttf";
-    
         
     var activity = win.getActivity();
     
     if(activity){
-      
-        var searchView = Ti.UI.Android.createSearchView({
-            hintText: "Search ABX..."
-        });
 
         activity.onCreateOptionsMenu = function(e){
           
+            e.menu.clear();
+            
             e.menu.add({
                 title: 'Search',
                 actionView : searchView,
@@ -44,6 +193,15 @@ win.addEventListener('open',function(e){
                 showAsAction: Ti.Android.SHOW_AS_ACTION_IF_ROOM | Ti.Android.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW
             });
             
+            // changing a searchview
+            abx.setSearchView({ 
+              searchView: searchView, 
+              backgroundColor: '#777',
+              textColor: "yellow",
+              hintColor: "orange",
+              line: "/images/my_textfield_activated_holo_light.9.png"
+            });
+           
             if (opts.shareAction){
                 // This is how you add a basic Share Action to your ActionBar
                 // this should be done within the onCreateOptionsMenu
@@ -69,107 +227,35 @@ win.addEventListener('open',function(e){
                 activity.actionBar.displayHomeAsUp = true;
                 abx.setHomeAsUpIcon("/images/menu.png");
             }
+            
+            if (opts.menuIcon){
+              
+              // Using FontAwesome for MenuItems
+              
+              // first, create the item...
+              var settingsItem = e.menu.add({
+                itemId: 101, // don't forget to set an id here
+                title: "Settings",
+                showAsAction : Ti.Android.SHOW_AS_ACTION_ALWAYS
+              });
+              settingsItem.addEventListener('click', function(){
+                alert('Settings clicked');
+              });
+              
+              // ...then, let abx apply the custom font
+              abx.setMenuItemIcon({
+                menu: e.menu,
+                menuItem: settingsItem,
+                fontFamily: fa.fontfamily,
+                icon: fa.icon("fa-gear"), 
+                color: "#333333",
+                size: 30
+              });
+
+            }
         };
-        
-        // changing a searchview
-        abx.setSearchView({ 
-          searchView: searchView, 
-          backgroundColor: '#777',
-          textColor: "yellow",
-          hintColor: "orange",
-          line: "/images/my_textfield_activated_holo_light.9.png"
-        });
     }
 });
 
-// TITLEFONT
-var btn_titleFont = Ti.UI.createButton({ title: 'Title Font' });
-btn_titleFont.addEventListener('click', function(){
-    abx.setTitleFont(opts.titleFont ? "Aller.ttf" : "Chunkfive.otf");
-    opts.titleFont = !opts.titleFont;
-});
-scrollView.add(btn_titleFont);
-
-// SUBTITLEFONT
-var btn_subtitleFont = Ti.UI.createButton({ title: 'Subtitle Font' });
-btn_subtitleFont.addEventListener('click', function(){
-    abx.setSubtitleFont(opts.subtitleFont ? "Aller.ttf" : "Chunkfive.otf");
-    opts.subtitleFont = !opts.subtitleFont;
-});
-scrollView.add(btn_subtitleFont);
-
-// TITLECOLOR
-var btn_titleColor = Ti.UI.createButton({ title: 'Title Color' });
-btn_titleColor.addEventListener('click', function(){
-    abx.setTitleColor('#'+Math.floor(Math.random()*16777215).toString(16));
-});
-scrollView.add(btn_titleColor);
-
-// SUBTITLECOLOR
-var btn_subtitleColor = Ti.UI.createButton({ title: 'Subtitle Color' });
-btn_subtitleColor.addEventListener('click', function(){
-    abx.setSubtitleColor('#'+Math.floor(Math.random()*16777215).toString(16));
-});
-scrollView.add(btn_subtitleColor);
-
-// BACKGROUND COLOR
-var btn_backgroundColor = Ti.UI.createButton({ title: 'Background Color' });
-btn_backgroundColor.addEventListener('click', function(){
-    abx.setBackgroundColor('#'+Math.floor(Math.random()*16777215).toString(16));
-});
-scrollView.add(btn_backgroundColor);
-
-// DISABLE ICON
-var btn_disableIcon = Ti.UI.createButton({ title: 'Disable Icon' });
-btn_disableIcon.addEventListener('click', function(){
-    opts.disableIcon = !opts.disableIcon;
-    abx.setDisableIcon( opts.disableIcon );
-});
-scrollView.add(btn_disableIcon);
-
-// HIDE LOGO
-var btn_hideLogo = Ti.UI.createButton({ title: 'Hide Logo' });
-btn_hideLogo.addEventListener('click', function(){
-    abx.hideLogo();
-});
-scrollView.add(btn_hideLogo);
-
-// SHARING ACTION
-var btn_sharingAction = Ti.UI.createButton({ title: 'Sharing Action' });
-btn_sharingAction.addEventListener('click', function(){
-    opts.shareAction = !opts.shareAction;
-    win.activity.invalidateOptionsMenu();
-});
-scrollView.add(btn_sharingAction);
-
-// DROPDOWN
-var dropdown;
-var btn_dropdown = Ti.UI.createButton({ title: 'Dropdown' });
-btn_dropdown.addEventListener('click', function(){
-    opts.dropdown = !opts.dropdown;
-    
-    if (opts.dropdown){
-        dropdown = abx.createDropdown({
-            titles: ["First", "Second", "Third"]
-        });
-        
-        dropdown.addEventListener('change', function(e){
-            Ti.API.info("dropdown changed to: " + e.index);
-        });
-    }else{
-        dropdown.remove();
-    }
-    
-});
-scrollView.add(btn_dropdown);
-
-// CUSTOM UP ICON
-var btn_homeasup = Ti.UI.createButton({ title: 'Custom Up icon' });
-btn_homeasup.addEventListener('click', function(){
-    opts.homeup = !opts.homeup;
-    win.activity.invalidateOptionsMenu();
-});
-scrollView.add(btn_homeasup);
-
-win.add(scrollView);
+win.add(table);
 win.open();

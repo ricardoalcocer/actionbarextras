@@ -101,7 +101,7 @@ var abextras = require('com.alcoapps.actionbarextras');
 * `setMenuItemIcon( arg )` - sets a custom menu item icon based on a font
 	* args _(Object)_:
 		* `menu` _(Ti.Android.Menu)_ - a reference to the menu
-		* `menuItem` _(Ti.Android.MenuItem)_ - a reference to the menu item
+		* `menuItem` _(Ti.Android.MenuItem)_ - a reference to the menu item (NOTE: You must set an `itemId` on the menu item)
 		* `icon` _(String)_ - The icon to use from the iconfont
 		* `fontFamily` _(String)_ - the font to use
 		* `color` _(String)_ - the icon color
