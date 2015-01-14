@@ -50,7 +50,8 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * `window` _(Ti.UI.Window)_ - Sets a reference to a window. By default, ActionbarExtras will use
                               the current window, but you may want to define a specific reference.
-
+                              
+* `actionbarHeight` _(Number)_ - returns the height of the Actionbar as absolute pixels
 
 ## 3. Methods
     

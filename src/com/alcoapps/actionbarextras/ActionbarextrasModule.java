@@ -429,17 +429,6 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
-	@Kroll.getProperty @Kroll.method
-	public int getActionbarHeight() {
-		TiApplication appContext = TiApplication.getInstance();
-		final TypedArray styledAttributes = appContext.getTheme().obtainStyledAttributes(
-                new int[] { android.R.attr.actionBarSize }
-        );
-		int mActionBarSize = (int) styledAttributes.getDimension(0, 0);
-		styledAttributes.recycle();
-		return mActionBarSize;
-	}
-	
 	/**
 	 * Sets the homeAsUp icon
 	 * @param icon
@@ -915,6 +904,21 @@ public class ActionbarextrasModule extends KrollModule {
 	public void setSearchView(Object arg) {
 		Message message = getMainHandler().obtainMessage(MSG_SEARCHVIEW, arg);
 		message.sendToTarget();
+	}
+	
+	/**
+	 * returns the height of the Actionbar as absolute pixels
+	 * @return int	actionbar height
+	 */
+	@Kroll.getProperty @Kroll.method
+	public int getActionbarHeight() {
+		TiApplication appContext = TiApplication.getInstance();
+		final TypedArray styledAttributes = appContext.getTheme().obtainStyledAttributes(
+                new int[] { android.R.attr.actionBarSize }
+        );
+		int mActionBarSize = (int) styledAttributes.getDimension(0, 0);
+		styledAttributes.recycle();
+		return mActionBarSize;
 	}
 	
 	/**
