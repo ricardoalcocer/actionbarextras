@@ -1,5 +1,5 @@
 # ActionBarExtras 
-[![gittio](http://img.shields.io/badge/gittio-1.5.0-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
+[![gittio](http://img.shields.io/badge/gittio-1.6.0-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
 [![License](http://img.shields.io/badge/license-MIT-orange.svg)](http://mit-license.org)
 [![issues](http://img.shields.io/github/issues/ricardoalcocer/actionbarextras.svg)](https://github.com/ricardoalcocer/actionbarextras/issues)
 
@@ -14,9 +14,6 @@
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer.
 
 ![example01](documentation/abx_01.png)
-![example02](documentation/abx_02.png)
-![example03](documentation/abx_03.png)
-![example04](documentation/abx_04.png)
 
 ## Features
   * Title and Subtitle
