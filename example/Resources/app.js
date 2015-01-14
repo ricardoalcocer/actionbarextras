@@ -44,17 +44,17 @@ var data = [
   { title: 'Hide Subtitle', action: "hideSubtitle" },
   { title: 'Get Actionbar height', action: "actionbarHeight" },
   { title: 'Set Logo (FontAwesome)', action: "logoFont" },
-  { title: 'Set MenuItem icon (FontAwesome)', action: "menuIcon" }
-  
+  { title: 'Set MenuItem icon (FontAwesome)', action: "menuIcon" },
+  { title: 'Set Title (FontAwesome)', action: "iconTitle" }
 ];
 
 var actions = {
   titleFont: function(){
-      abx.setTitleFont(opts.titleFont ? "Aller.ttf" : "Chunkfive.otf");
+      abx.setTitleFont(opts.titleFont ? "Aller" : "Chunkfive");
       opts.titleFont = !opts.titleFont;
   },
   subtitleFont: function(){
-      abx.setSubtitleFont(opts.subtitleFont ? "Aller.ttf" : "Chunkfive.otf");
+      abx.setSubtitleFont(opts.subtitleFont ? "Aller" : "Chunkfive");
       opts.subtitleFont = !opts.subtitleFont;
   },
   titleColor: function(){
@@ -102,7 +102,7 @@ var actions = {
         text: "Font Object",
         font: {
           fontSize: 26,
-          fontFamily: 'Chunkfive.otf'
+          fontFamily: 'Chunkfive'
         }
       });
       
@@ -111,7 +111,7 @@ var actions = {
         font: {
           fontSize: '14dp',
           fontWeight: 'bold',
-          fontFamily: 'Chunkfive.otf'
+          fontFamily: 'Chunkfive'
         }
       });
   },
@@ -148,6 +148,13 @@ var actions = {
   menuIcon: function(){
     opts.menuIcon = !opts.menuIcon;
     win.activity.invalidateOptionsMenu();
+  },
+  iconTitle: function(){
+    abx.setTitle({
+      text: fa.icon("fa-camera-retro")+"  "+fa.icon("fa-paw")+"  "+fa.icon("fa-android"),
+      font: fa.fontfamily,
+      color: "green"
+    });
   }
 };
 
@@ -174,9 +181,9 @@ win.addEventListener('open',function(e){
     
     // set initial values
     abx.title = "ActionbarExtras";
-    abx.titleFont = "Aller.ttf";
+    abx.titleFont = "Aller";
     abx.subtitle = "for some extra action";
-    abx.subtitleFont = "Aller.ttf";
+    abx.subtitleFont = "Aller";
         
     var activity = win.getActivity();
     
