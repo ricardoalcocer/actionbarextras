@@ -162,5 +162,6 @@ You can style an [SearchView](http://docs.appcelerator.com/titanium/latest/#!/ap
         * `hintColor` _(String)_  - changes the hint color of the search view
         * `line` _(String)_  -  image path to replace the line drawable used by the search view
         * `cancelIcon` _(String)_ - image path to use a custom close icon
+        * `searchIcon` _(String)_ - image path to use a custom magnifier icon
         
 An example of how to use this is included in the [example app](https://github.com/ricardoalcocer/actionbarextras/blob/master/example/Resources/app.js).

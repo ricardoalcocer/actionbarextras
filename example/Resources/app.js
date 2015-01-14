@@ -206,7 +206,9 @@ win.addEventListener('open',function(e){
               backgroundColor: '#777',
               textColor: "yellow",
               hintColor: "orange",
-              line: "/images/my_textfield_activated_holo_light.9.png"
+              line: "/images/my_textfield_activated_holo_light.9.png",
+              cancelIcon: "/images/cancel.png",
+              searchIcon: "/images/search.png"
             });
            
             if (opts.shareAction){
