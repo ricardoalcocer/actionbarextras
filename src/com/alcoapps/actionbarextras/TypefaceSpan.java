@@ -1,7 +1,8 @@
 package com.alcoapps.actionbarextras;
 
+import org.appcelerator.titanium.util.TiUIHelper;
+
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.support.v4.util.LruCache;
@@ -34,7 +35,6 @@ public class TypefaceSpan extends MetricAffectingSpan {
       /** An <code>LruCache</code> for previously loaded typefaces. */
     private static LruCache<String, Typeface> sTypefaceCache =
             new LruCache<String, Typeface>(12);
-    private static final String customFontPath = "Resources/fonts";
  
     private Typeface mTypeface;
  
@@ -43,9 +43,8 @@ public class TypefaceSpan extends MetricAffectingSpan {
      */
     public TypefaceSpan(Context context, String typefaceName) {
         mTypeface = sTypefaceCache.get(typefaceName);
-        AssetManager mgr = context.getAssets();
         if (mTypeface == null) {
-            mTypeface = Typeface.createFromAsset(mgr, customFontPath + "/" + typefaceName);
+        	mTypeface = TiUIHelper.toTypeface( context, typefaceName );
  
             // Cache the loaded Typeface
             sTypefaceCache.put(typefaceName, mTypeface);

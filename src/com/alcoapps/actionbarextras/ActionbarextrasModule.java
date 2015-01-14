@@ -476,8 +476,8 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			
 			ActionBar actionBar = getActionBar();
-			Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get("fontFamily") );
-			IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get("icon"), iconFontTypeface ).actionBarSize().color( TiConvert.toColor( (String)args.get("color") ) );
+			Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY) );
+			IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).actionBarSize().color( TiConvert.toColor( (String)args.get("color") ) );
 			
 			actionBar.setLogo(icon);
 			
@@ -522,9 +522,9 @@ public class ActionbarextrasModule extends KrollModule {
 			
 			Menu mMenu = menuProxy.getMenu();
 			
-			Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get("fontFamily") );
+			Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY) );
 			
-			IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get("icon"), iconFontTypeface ).color( TiConvert.toColor( (String)args.get("color") ) );
+			IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).color( TiConvert.toColor( (String)args.get("color") ) );
 			
 			if( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) )  > 0 )
 			{
@@ -796,7 +796,8 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	@Kroll.method @Kroll.setProperty
 	public void setTitleFont(Object obj) {
-		Message message = getMainHandler().obtainMessage(MSG_TITLE_FONT, obj);
+		String fontFamily = ((String) obj).replaceAll("\\.(ttf|otf|fnt)$", "");
+		Message message = getMainHandler().obtainMessage(MSG_TITLE_FONT, fontFamily);
 		message.sendToTarget();
 	}
 	
@@ -806,7 +807,8 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	@Kroll.method @Kroll.setProperty
 	public void setSubtitleFont(Object obj) {
-		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE_FONT, obj);
+		String fontFamily = ((String) obj).replaceAll("\\.(ttf|otf|fnt)$", "");
+		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE_FONT, fontFamily);
 		message.sendToTarget();
 	}
 	
