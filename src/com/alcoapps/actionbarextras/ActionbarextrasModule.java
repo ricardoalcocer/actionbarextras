@@ -284,7 +284,7 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			
 			if (font instanceof String){
-				titleFont = new TypefaceSpan(appContext, (String) font);
+				titleFont = new TypefaceSpan(appContext, ((String) font).replaceAll("\\.(ttf|otf|fnt)$", ""));
 				ssb.setSpan(titleFont, 0, ssb.length(),
 						Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
@@ -324,7 +324,7 @@ public class ActionbarextrasModule extends KrollModule {
 				}
 				
 				if (font instanceof String){
-					subtitleFont = new TypefaceSpan(appContext, (String) font);
+					subtitleFont = new TypefaceSpan(appContext, ((String) font).replaceAll("\\.(ttf|otf|fnt)$", ""));
 					ssb.setSpan(subtitleFont, 0, ssb.length(),
 							Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 				}
@@ -680,7 +680,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private SpannableStringBuilder applyFontProperties(TiApplication appContext, HashMap<String, String> d, SpannableStringBuilder ssb, TypefaceSpan font){
 		
 		if (d.containsKey(TiC.PROPERTY_FONTFAMILY)){
-			String fontFamily = d.get(TiC.PROPERTY_FONTFAMILY);
+			String fontFamily = d.get(TiC.PROPERTY_FONTFAMILY).replaceAll("\\.(ttf|otf|fnt)$", "");
 			font = new TypefaceSpan(appContext, fontFamily);
 			ssb.setSpan(font, 0, ssb.length(),
 					Spannable.SPAN_INCLUSIVE_INCLUSIVE);
@@ -820,8 +820,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	@Kroll.method @Kroll.setProperty
 	public void setTitleFont(Object obj) {
-		String fontFamily = ((String) obj).replaceAll("\\.(ttf|otf|fnt)$", "");
-		Message message = getMainHandler().obtainMessage(MSG_TITLE_FONT, fontFamily);
+		Message message = getMainHandler().obtainMessage(MSG_TITLE_FONT, obj);
 		message.sendToTarget();
 	}
 	
@@ -831,8 +830,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	@Kroll.method @Kroll.setProperty
 	public void setSubtitleFont(Object obj) {
-		String fontFamily = ((String) obj).replaceAll("\\.(ttf|otf|fnt)$", "");
-		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE_FONT, fontFamily);
+		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE_FONT, obj);
 		message.sendToTarget();
 	}
 	
