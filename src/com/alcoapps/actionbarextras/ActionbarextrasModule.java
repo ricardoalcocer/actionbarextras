@@ -524,7 +524,10 @@ public class ActionbarextrasModule extends KrollModule {
 				icon.actionBarSize();
 			}
 			
-			mMenu.findItem( menuItem.getItemId() ).setIcon( icon );
+			MenuItem item = mMenu.findItem( menuItem.getItemId() );
+			if (item != null){
+				item.setIcon( icon );
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
