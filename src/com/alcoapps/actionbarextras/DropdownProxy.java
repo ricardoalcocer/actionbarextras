@@ -97,8 +97,18 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 
 	        actionBar.setListNavigationCallbacks(adapter, navigationListener);
 		}
+	    
+	    if (options.containsKey("index")) {
+	    	int activeItem = options.getInt("index");
+	    	setActiveItem(activeItem);
+	    }
 
 		super.handleCreationDict(options);
+	}
+	
+	@Kroll.method @Kroll.setProperty
+	public void setActiveItem(int activeItem){
+		getMainHandler().obtainMessage(MSG_ACTIVE_ITEM, activeItem).sendToTarget();
 	}
 	
 	@Kroll.method

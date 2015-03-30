@@ -131,7 +131,8 @@ An ActionBar [Dropdown](http://developer.android.com/guide/topics/ui/actionbar.h
 
 ```javascript
 var dropdown = abextras.createDropdown({
-    titles: [ "Home", "Search", "Likes", "Settings" ]
+    titles: [ "Home", "Search", "Likes", "Settings" ],
+    index: 1 // optional (default: 0)
 });
 ```
 
