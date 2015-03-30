@@ -10,13 +10,20 @@ import org.appcelerator.kroll.KrollProxyListener;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.util.TiUIHelper;
 
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 
 @Kroll.proxy(creatableInModule=ActionbarextrasModule.class, propertyAccessors="activeItem")
 public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
+	
+	private static final int MSG_FIRST_ID = KrollProxy.MSG_LAST_ID + 1;
+	private static final int MSG_ACTIVE_ITEM = MSG_FIRST_ID + 100;
+	private static final int MSG_REMOVE = MSG_FIRST_ID + 101;
+	private static final int MSG_ADD = MSG_FIRST_ID + 102;
 	
 	ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 
@@ -39,6 +46,32 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 		super();
 	}
 	
+	/**
+	 * message handler
+	 * @param message
+	 */
+	@Override
+	public boolean handleMessage(Message msg) {
+		switch (msg.what) {
+			case MSG_ACTIVE_ITEM: {
+				handleSetActiveItem((Integer) msg.obj);
+				return true;
+			}
+			case MSG_REMOVE: {
+				handleRemove();
+				return true;
+			}
+			case MSG_ADD: {
+				handleAdd((Boolean) msg.obj);
+				return true;
+			}
+			default: {
+				return super.handleMessage(msg);
+			}
+		}
+
+	}
+	
 	@Override
 	public void handleCreationDict(KrollDict options) {
 		
@@ -51,13 +84,7 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 			keepTitle = false;
 		}
 		
-		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
-			@Override
-			public void run() {
-				actionBar.setDisplayShowTitleEnabled(keepTitle);
-			    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			}
-		});
+		add(keepTitle);
 	    
 	    if (options.containsKey("titles")) {
 	    	final String[] dropdownValues = options.getStringArray("titles");
@@ -76,16 +103,28 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 	
 	@Kroll.method
 	public void remove(){
-		
-		final ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-		
-		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
-			@Override
-			public void run() {
-				actionBar.setDisplayShowTitleEnabled(true);
-			    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-			}
-		});
+		getMainHandler().obtainMessage(MSG_REMOVE).sendToTarget();
+	}
+	
+	public void add(boolean keepTitle){
+		getMainHandler().obtainMessage(MSG_ADD, keepTitle).sendToTarget();
+	}
+	
+	private void handleSetActiveItem(int activeItem){
+		ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+		actionBar.setSelectedNavigationItem(activeItem);
+	}
+	
+	private void handleRemove(){
+		ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+		actionBar.setDisplayShowTitleEnabled(true);
+	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+	}
+	
+	private void handleAdd(boolean keepTitle){
+		ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+		actionBar.setDisplayShowTitleEnabled(keepTitle);
+	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 	}
     
 	@Override
@@ -95,16 +134,12 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
             return;
         }
         
+        Log.d("ABX", "propertyChanged ---> " + key + ": " + newValue);
+        
         if (key.equals("activeItem")){
-        	final ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        	final int activeItem = (Integer) newValue;
-    		
-    		TiUIHelper.runUiDelayedIfBlock(new Runnable() {
-    			@Override
-    			public void run() {
-    				actionBar.setSelectedNavigationItem(activeItem);
-    			}
-    		});
+        	int activeItem = (Integer) newValue;
+        	getMainHandler().obtainMessage(MSG_ACTIVE_ITEM, activeItem).sendToTarget();
+
         }
 	}
 
