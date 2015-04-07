@@ -258,7 +258,7 @@ public class ActionbarextrasModule extends KrollModule {
 		try {
 			ActionBar actionBar = getActionBar();
 			
-			actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(color)));
+			actionBar.setBackgroundDrawable(new ColorDrawable(TiConvert.toColor(color)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
