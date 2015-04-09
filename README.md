@@ -41,10 +41,14 @@ At this point the feature for forcing the "menu overflow" has been attached to y
 
 Now, you can set custom properties like this:
 ```javascript
-// setting extras
-abx.title = "The Title";
-abx.titleFont = "Chunkfive.otf";
-abx.titleColor = "blue";
+// NOTE: make sure that your window is open 
+// before you access the actionbar with abx
+win.addEventListener('open',function(e){
+  // setting extras
+  abx.title = "The Title";
+  abx.titleFont = "Chunkfive.otf";
+  abx.titleColor = "blue";
+});
 ```
 
 To see what else you can do, see:

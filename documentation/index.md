@@ -16,6 +16,9 @@ Download the latest distribution ZIP-file and consult the [Titanium Documentatio
 ##### `$ gittio install com.alcoapps.actionbarextras`
 
 #### Using it
+
+Please make sure that your window is open before you access the actionbar.
+
 ```javascript
 var abextras = require('com.alcoapps.actionbarextras');
 ```
