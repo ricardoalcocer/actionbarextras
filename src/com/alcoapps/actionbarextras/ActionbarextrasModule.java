@@ -21,6 +21,7 @@ import org.appcelerator.titanium.util.TiUIHelper;
 import ti.modules.titanium.ui.android.SearchViewProxy;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -182,33 +183,32 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param obj
 	 */
 	private void handleSetTitle(Object obj){
-		try {
-			ActionBar actionBar = getActionBar();
-			
-			SpannableStringBuilder ssb;
-			
-			if (actionBar.getTitle() instanceof SpannableStringBuilder){
-				ssb = (SpannableStringBuilder) actionBar.getTitle();
-				ssb.clear();
-				ssb.append((String) obj);
-			} else {
-				ssb = new SpannableStringBuilder((String) obj);
-			}
-			
-			if (titleFont != null){
-				ssb.setSpan(titleFont, 0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			}
-			
-			if (titleColor != null){
-				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
-						0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			}
-			
-			actionBar.setTitle(ssb);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
 		}
+		
+		SpannableStringBuilder ssb;
+		
+		if (actionBar.getTitle() instanceof SpannableStringBuilder){
+			ssb = (SpannableStringBuilder) actionBar.getTitle();
+			ssb.clear();
+			ssb.append((String) obj);
+		} else {
+			ssb = new SpannableStringBuilder((String) obj);
+		}
+		
+		if (titleFont != null){
+			ssb.setSpan(titleFont, 0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		}
+		
+		if (titleColor != null){
+			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
+					0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		}
+		
+		actionBar.setTitle(ssb);
 	}
 	
 	/**
@@ -216,38 +216,37 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param obj
 	 */
 	private void handleSetSubtitle(Object obj){
-		try {
-			ActionBar actionBar = getActionBar();
-			
-			SpannableStringBuilder ssb;
-			
-			if (obj == null){
-				actionBar.setSubtitle(null);
-				return;
-			}
-			
-			if (actionBar.getSubtitle() != null && actionBar.getSubtitle() instanceof SpannableStringBuilder){
-				ssb = (SpannableStringBuilder) actionBar.getSubtitle();
-				ssb.clear();
-				ssb.append((String) obj);
-			} else {
-				ssb = new SpannableStringBuilder((String) obj);
-			}
-			
-			if (subtitleFont != null){
-				ssb.setSpan(subtitleFont, 0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			}
-			
-			if (subtitleColor != null){
-				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
-						0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			}
-			
-			actionBar.setSubtitle(ssb);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
 		}
+		
+		SpannableStringBuilder ssb;
+		
+		if (obj == null){
+			actionBar.setSubtitle(null);
+			return;
+		}
+		
+		if (actionBar.getSubtitle() != null && actionBar.getSubtitle() instanceof SpannableStringBuilder){
+			ssb = (SpannableStringBuilder) actionBar.getSubtitle();
+			ssb.clear();
+			ssb.append((String) obj);
+		} else {
+			ssb = new SpannableStringBuilder((String) obj);
+		}
+		
+		if (subtitleFont != null){
+			ssb.setSpan(subtitleFont, 0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		}
+		
+		if (subtitleColor != null){
+			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
+					0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		}
+		
+		actionBar.setSubtitle(ssb);
 	}
 	
 	/**
@@ -255,13 +254,13 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param obj
 	 */
 	private void handleSetBackgroundColor(String color){
-		try {
-			ActionBar actionBar = getActionBar();
-			
-			actionBar.setBackgroundDrawable(new ColorDrawable(TiConvert.toColor(color)));
-		} catch (Exception e) {
-			e.printStackTrace();
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
 		}
+		
+		actionBar.setBackgroundDrawable(new ColorDrawable(TiConvert.toColor(color)));
 	}
 	
 	/**
@@ -269,38 +268,37 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param obj
 	 */
 	private void handleSetTitleFont(Object font){
-		try {
-			TiApplication appContext = TiApplication.getInstance();
-			ActionBar actionBar = getActionBar();
-			
-			SpannableStringBuilder ssb;
-			
-			if (actionBar.getTitle() instanceof SpannableStringBuilder){
-				ssb = (SpannableStringBuilder) actionBar.getTitle();
-				ssb.removeSpan(titleFont);
-			} else {
-				String abTitle = TiConvert.toString(actionBar.getTitle());
-				ssb = new SpannableStringBuilder(abTitle);
-			}
-			
-			if (font instanceof String){
-				titleFont = new TypefaceSpan(appContext, ((String) font).replaceAll("\\.(ttf|otf|fnt)$", ""));
-				ssb.setSpan(titleFont, 0, ssb.length(),
-						Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			}
-			
-			if (font instanceof HashMap) {
-				@SuppressWarnings("unchecked")
-				HashMap<String, String> d = (HashMap<String, String>) font;
-				
-				ssb = applyFontProperties(appContext, d, ssb, titleFont);
-			}
-
-			actionBar.setTitle(ssb);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		TiApplication appContext = TiApplication.getInstance();
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
 		}
+		
+		SpannableStringBuilder ssb;
+		
+		if (actionBar.getTitle() instanceof SpannableStringBuilder){
+			ssb = (SpannableStringBuilder) actionBar.getTitle();
+			ssb.removeSpan(titleFont);
+		} else {
+			String abTitle = TiConvert.toString(actionBar.getTitle());
+			ssb = new SpannableStringBuilder(abTitle);
+		}
+		
+		if (font instanceof String){
+			titleFont = new TypefaceSpan(appContext, ((String) font).replaceAll("\\.(ttf|otf|fnt)$", ""));
+			ssb.setSpan(titleFont, 0, ssb.length(),
+					Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		}
+		
+		if (font instanceof HashMap) {
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> d = (HashMap<String, String>) font;
+			
+			ssb = applyFontProperties(appContext, d, ssb, titleFont);
+		}
+
+		actionBar.setTitle(ssb);
 	}
 	
 	/**
@@ -308,38 +306,38 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param obj
 	 */
 	private void handleSetSubtitleFont(Object font){
-		try {
-			TiApplication appContext = TiApplication.getInstance();
-			ActionBar actionBar = getActionBar();
+		TiApplication appContext = TiApplication.getInstance();
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
 
-			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
-			if (abSubtitle != null) {
-				SpannableStringBuilder ssb;
-				
-				if (actionBar.getSubtitle() instanceof SpannableStringBuilder){
-					ssb = (SpannableStringBuilder) actionBar.getSubtitle();
-					ssb.removeSpan(subtitleFont);
-				} else {
-					ssb = new SpannableStringBuilder(abSubtitle);
-				}
-				
-				if (font instanceof String){
-					subtitleFont = new TypefaceSpan(appContext, ((String) font).replaceAll("\\.(ttf|otf|fnt)$", ""));
-					ssb.setSpan(subtitleFont, 0, ssb.length(),
-							Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-				}
-				
-				if (font instanceof HashMap) {
-					@SuppressWarnings("unchecked")
-					HashMap<String, String> d = (HashMap<String, String>) font;
-					
-					ssb = applyFontProperties(appContext, d, ssb, subtitleFont);
-				}
-				
-				actionBar.setSubtitle(ssb);
+		String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
+		if (abSubtitle != null) {
+			SpannableStringBuilder ssb;
+			
+			if (actionBar.getSubtitle() instanceof SpannableStringBuilder){
+				ssb = (SpannableStringBuilder) actionBar.getSubtitle();
+				ssb.removeSpan(subtitleFont);
+			} else {
+				ssb = new SpannableStringBuilder(abSubtitle);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			
+			if (font instanceof String){
+				subtitleFont = new TypefaceSpan(appContext, ((String) font).replaceAll("\\.(ttf|otf|fnt)$", ""));
+				ssb.setSpan(subtitleFont, 0, ssb.length(),
+						Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+			}
+			
+			if (font instanceof HashMap) {
+				@SuppressWarnings("unchecked")
+				HashMap<String, String> d = (HashMap<String, String>) font;
+				
+				ssb = applyFontProperties(appContext, d, ssb, subtitleFont);
+			}
+			
+			actionBar.setSubtitle(ssb);
 		}
 	}
 	
@@ -351,27 +349,27 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		titleColor = color;
 		
-		try {
-			ActionBar actionBar = getActionBar();
-
-			SpannableStringBuilder ssb;
-			
-			if (actionBar.getTitle() instanceof SpannableStringBuilder){
-				ssb = (SpannableStringBuilder) actionBar.getTitle();
-			} else {
-				String abTitle = TiConvert.toString(actionBar.getTitle());
-				ssb = new SpannableStringBuilder(abTitle);
-			}
-			
-			if (titleColor != null){
-				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
-						0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			}
-			
-			actionBar.setTitle(ssb);
-		} catch (Exception e) {
-			e.printStackTrace();
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
 		}
+
+		SpannableStringBuilder ssb;
+		
+		if (actionBar.getTitle() instanceof SpannableStringBuilder){
+			ssb = (SpannableStringBuilder) actionBar.getTitle();
+		} else {
+			String abTitle = TiConvert.toString(actionBar.getTitle());
+			ssb = new SpannableStringBuilder(abTitle);
+		}
+		
+		if (titleColor != null){
+			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
+					0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		}
+		
+		actionBar.setTitle(ssb);
 	}
 	
 	/**
@@ -382,29 +380,28 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		subtitleColor = color;
 		
-		try {
-			ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
+		if (abSubtitle != null) {
+			SpannableStringBuilder ssb;
 			
-			String abSubtitle = TiConvert.toString(actionBar.getSubtitle());
-			if (abSubtitle != null) {
-				SpannableStringBuilder ssb;
-				
-				if (actionBar.getSubtitle() instanceof SpannableStringBuilder){
-					ssb = (SpannableStringBuilder) actionBar.getSubtitle();
-				} else {
-					ssb = new SpannableStringBuilder(abSubtitle);
-				}
-				
-				if (subtitleColor != null){
-					ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
-							0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-				}
-
-				actionBar.setSubtitle(ssb);
+			if (actionBar.getSubtitle() instanceof SpannableStringBuilder){
+				ssb = (SpannableStringBuilder) actionBar.getSubtitle();
+			} else {
+				ssb = new SpannableStringBuilder(abSubtitle);
+			}
+			
+			if (subtitleColor != null){
+				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
+						0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+			actionBar.setSubtitle(ssb);
 		}
 	}
 	
@@ -413,21 +410,30 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param obj
 	 */
 	private void handleDisableIcon(Boolean disabled){
-		try {
-			ActionBar actionBar = getActionBar();
-			TiApplication appContext = TiApplication.getInstance();
-			ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
-			
-			if (disabled){
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		TiApplication appContext = TiApplication.getInstance();
+		ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
+		
+		if (disabled){
+			try {
 				actionBar.setIcon(new ColorDrawable(TiRHelper
 						.getAndroidResource("color.transparent")));
-			}else{
-				Drawable icon = activity.getPackageManager().getApplicationIcon(appContext.getApplicationContext().getPackageName());
-				actionBar.setIcon(icon);
+			} catch (ResourceNotFoundException e) {
+				e.printStackTrace();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		}else{
+			try {
+				Drawable icon;
+				icon = activity.getPackageManager().getApplicationIcon(appContext.getApplicationContext().getPackageName());
+				actionBar.setIcon(icon);
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -436,18 +442,17 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param icon
 	 */
 	private void handleSetHomeAsUpIcon(String icon){
-		try {
-			ActionBar actionBar = getActionBar();
-			
-			int resId = TiUIHelper.getResourceId(resolveUrl(null, icon));
-			if (resId != 0) {
-				actionBar.setHomeAsUpIndicator(resId);
-			} else {
-				Log.e(TAG, "Couldn't resolve " + icon);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		int resId = TiUIHelper.getResourceId(resolveUrl(null, icon));
+		if (resId != 0) {
+			actionBar.setHomeAsUpIndicator(resId);
+		} else {
+			Log.e(TAG, "Couldn't resolve " + icon);
 		}
 	}
 	
@@ -456,25 +461,25 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param logo
 	 */
 	private void handleSetLogo(Object obj){
-		try {
-			HashMap args;
-			
-			if (obj instanceof HashMap){
-				args = (HashMap) obj;
-			} else {
-				Log.e(TAG, "Please pass an Object to setLogo");
-				return;
-			}
-			
-			ActionBar actionBar = getActionBar();
-			Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY) );
-			IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).actionBarSize().color( TiConvert.toColor( (String)args.get("color") ) );
-			
-			actionBar.setLogo(icon);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		HashMap args;
+		
+		if (obj instanceof HashMap){
+			args = (HashMap) obj;
+		} else {
+			Log.e(TAG, "Please pass an Object to setLogo");
+			return;
 		}
+		
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY) );
+		IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).actionBarSize().color( TiConvert.toColor( (String)args.get("color") ) );
+		
+		actionBar.setLogo(icon);
 	}
 	
 	/**
@@ -482,55 +487,50 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param logo
 	 */
 	private void handleSetMenuItemIcon(Object obj){
-		try {
-			HashMap args;
-			
-			if (obj instanceof HashMap){
-				args = (HashMap) obj;
-			} else {
-				Log.e(TAG, "Please pass an Object to setMenuItem");
-				return;
-			}
-			
-			MenuItemProxy menuItem;
-			MenuProxy menuProxy;
-			
-			if( args.get("menuItem") instanceof MenuItemProxy )
-			{
-				menuItem = (MenuItemProxy)args.get("menuItem");
-			} else {
-				Log.e(TAG, "Please provide a valid menuItem");
-				return;
-			}		
-			
-			if( args.get( TiC.PROPERTY_MENU ) instanceof MenuProxy )
-			{
-				menuProxy = (MenuProxy)args.get( TiC.PROPERTY_MENU );
-			} else {
-				Log.e(TAG, "Please provide a valid menu");
-				return;
-			}		
-			
-			Menu mMenu = menuProxy.getMenu();
-			
-			Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY) );
-			
-			IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).color( TiConvert.toColor( (String)args.get("color") ) );
-			
-			if( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) )  > 0 )
-			{
-				icon.sizeDp( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) ) );
-			} else {
-				icon.actionBarSize();
-			}
-			
-			MenuItem item = mMenu.findItem( menuItem.getItemId() );
-			if (item != null){
-				item.setIcon( icon );
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		HashMap args;
+		
+		if (obj instanceof HashMap){
+			args = (HashMap) obj;
+		} else {
+			Log.e(TAG, "Please pass an Object to setMenuItem");
+			return;
+		}
+		
+		MenuItemProxy menuItem;
+		MenuProxy menuProxy;
+		
+		if( args.get("menuItem") instanceof MenuItemProxy )
+		{
+			menuItem = (MenuItemProxy)args.get("menuItem");
+		} else {
+			Log.e(TAG, "Please provide a valid menuItem");
+			return;
+		}		
+		
+		if( args.get( TiC.PROPERTY_MENU ) instanceof MenuProxy )
+		{
+			menuProxy = (MenuProxy)args.get( TiC.PROPERTY_MENU );
+		} else {
+			Log.e(TAG, "Please provide a valid menu");
+			return;
+		}		
+		
+		Menu mMenu = menuProxy.getMenu();
+		
+		Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY) );
+		
+		IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).color( TiConvert.toColor( (String)args.get("color") ) );
+		
+		if( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) )  > 0 )
+		{
+			icon.sizeDp( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) ) );
+		} else {
+			icon.actionBarSize();
+		}
+		
+		MenuItem item = mMenu.findItem( menuItem.getItemId() );
+		if (item != null){
+			item.setIcon( icon );
 		}
 	}
 	
@@ -538,13 +538,17 @@ public class ActionbarextrasModule extends KrollModule {
 	 * Hides the logo
 	 */
 	private void handleHideLogo(){
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
 		try {
-			ActionBar actionBar = getActionBar();
-			
 			actionBar.setLogo(new ColorDrawable(TiRHelper
 					.getAndroidResource("color.transparent")));
-			
-		} catch (Exception e) {
+		} catch (ResourceNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
