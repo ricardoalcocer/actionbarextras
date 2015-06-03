@@ -41,6 +41,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.os.Build;
 import android.view.ViewConfiguration;
 import android.widget.EditText;
@@ -276,7 +277,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	private void handleSetStatusbarColor(String color){
 
-		if (Build.VERSION.SDK_INT >= 0x00000015) { //Build.VERSION_CODES.LOLLIPOP
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			ActionBarActivity activity;
 			if (window != null){
 				activity = (ActionBarActivity) window.getActivity();
@@ -285,8 +286,8 @@ public class ActionbarextrasModule extends KrollModule {
 				activity = (ActionBarActivity) appContext.getCurrentActivity();
 			}
 			Window win = activity.getWindow();
-			win.addFlags(0x80000000); // WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
-			win.clearFlags(0x04000000); // WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 			win.setStatusBarColor(TiConvert.toColor(color));
 		}
 	}
