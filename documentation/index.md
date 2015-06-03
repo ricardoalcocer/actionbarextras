@@ -56,6 +56,8 @@ var abextras = require('com.alcoapps.actionbarextras');
                               
 * `actionbarHeight` _(Number)_ - returns the height of the Actionbar as absolute pixels
 
+* `statusbarColor` _(String)_ - sets the Color of the status bar
+
 ## 3. Methods
     
 * `setTitle( arg )`  - sets the `title` property
@@ -126,6 +128,9 @@ var abextras = require('com.alcoapps.actionbarextras');
         * `keepTitle` _(Boolean)_ - if set to true, it shows both, title and dropdown, otherwise the title get replaced by the dropdown (Optional, default: false)
         
 * `getActionbarHeight( )`  - returns the height of the Actionbar as absolute pixels
+
+* `setStatusbarColor( arg )` - sets the color of the status bar
+    * arg _(String)_ - color
 
 ## 4. Dropdown
 

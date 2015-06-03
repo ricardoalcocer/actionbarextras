@@ -45,7 +45,8 @@ var data = [
   { title: 'Get Actionbar height', action: "actionbarHeight" },
   { title: 'Set Logo (FontAwesome)', action: "logoFont" },
   { title: 'Set MenuItem icon (FontAwesome)', action: "menuIcon" },
-  { title: 'Set Title (FontAwesome)', action: "iconTitle" }
+  { title: 'Set Title (FontAwesome)', action: "iconTitle" },
+  { title: 'Set statusbarColor', action: "statusbarColor" }
 ];
 
 var actions = {
@@ -155,6 +156,9 @@ var actions = {
       font: fa.fontfamily,
       color: "green"
     });
+  },
+  statusbarColor: function(){
+    abx.setStatusbarColor('#'+Math.floor(Math.random()*16777215).toString(16));
   }
 };
 

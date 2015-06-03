@@ -40,6 +40,9 @@ import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.os.Build;
 import android.view.ViewConfiguration;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,6 +67,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_SEARCHVIEW = MSG_FIRST_ID + 111;
 	private static final int MSG_LOGO = MSG_FIRST_ID + 112;
 	private static final int MSG_MENU_ICON = MSG_FIRST_ID + 113;
+	private static final int MSG_STATUSBAR_COLOR = MSG_FIRST_ID + 114;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -125,6 +129,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_BACKGROUND_COLOR: {
 				handleSetBackgroundColor((String) msg.obj);
+				return true;
+			}
+			case MSG_STATUSBAR_COLOR: {
+				handleSetStatusbarColor((String) msg.obj);
 				return true;
 			}
 			case MSG_TITLE_FONT: {
@@ -261,6 +269,27 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 		
 		actionBar.setBackgroundDrawable(new ColorDrawable(TiConvert.toColor(color)));
+	}
+
+	/**
+	 * Sets StatusbarColor for andoid 5.x / materialDesign
+	 * @param obj
+	 */
+	private void handleSetStatusbarColor(String color){
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			ActionBarActivity activity;
+			if (window != null){
+				activity = (ActionBarActivity) window.getActivity();
+			} else {
+				TiApplication appContext = TiApplication.getInstance();
+				activity = (ActionBarActivity) appContext.getCurrentActivity();
+			}
+			Window win = activity.getWindow();
+			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			win.setStatusBarColor(TiConvert.toColor(color));
+		}
 	}
 	
 	/**
@@ -808,6 +837,16 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setBackgroundColor(String color) {
 		Message message = getMainHandler().obtainMessage(MSG_BACKGROUND_COLOR, color);
+		message.sendToTarget();
+	}
+
+	/**
+	 * Set the Statusbar background color
+	 * @param color
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setStatusbarColor(String color) {
+		Message message = getMainHandler().obtainMessage(MSG_STATUSBAR_COLOR, color);
 		message.sendToTarget();
 	}
 	
