@@ -285,7 +285,6 @@ public class ActionbarextrasModule extends KrollModule {
 				activity = (ActionBarActivity) appContext.getCurrentActivity();
 			}
 			Window win = activity.getWindow();
-			Window win = window.getActivity().getWindow();
 			win.addFlags(0x80000000); // WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
 			win.clearFlags(0x04000000); // WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
 			win.setStatusBarColor(TiConvert.toColor(color));
