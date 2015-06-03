@@ -521,7 +521,7 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).color( TiConvert.toColor( (String)args.get("color") ) );
 		
-		if( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) )  > 0 )
+		if( args.containsKey(TiC.PROPERTY_SIZE) && TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) )  > 0 )
 		{
 			icon.sizeDp( TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) ) );
 		} else {
