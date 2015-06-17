@@ -174,3 +174,31 @@ You can style an [SearchView](http://docs.appcelerator.com/titanium/latest/#!/ap
         * `searchIcon` _(String)_ - image path to use a custom magnifier icon
         
 An example of how to use this is included in the [example app](https://github.com/ricardoalcocer/actionbarextras/blob/master/example/Resources/app.js).
+
+## 5. Appendix
+
+#### Using [IconFont](https://github.com/FokkeZB/IconFont) with ABX (thanks @casevictor)
+ 
+```js
+var icons = require('font-awesome');
+
+activity.onCreateOptionsMenu = function(e) {
+  e.menu.clear();
+
+  var createItem = e.menu.add({
+    itemId: 101, //unique random number
+    showAsAction: Ti.Android.SHOW_AS_ACTION_ALWAYS
+  });
+
+  abx.setMenuItemIcon({
+    menu: e.menu,
+    menuItem: createItem,
+    fontFamily: 'FontAwesome',
+    icon: icons.check, 
+    color: 'white',
+    size: 30
+  })
+};
+
+activity.invalidateOptionsMenu();
+```
