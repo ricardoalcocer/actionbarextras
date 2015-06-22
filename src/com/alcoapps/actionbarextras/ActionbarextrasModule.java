@@ -97,6 +97,12 @@ public class ActionbarextrasModule extends KrollModule {
 			// Ignore
 		}
 	}
+
+	@Kroll.getProperty @Kroll.method
+    	public String getTitle()
+    	{
+        	return getActionBar().getTitle().toString();
+    	}
 	
 	private ActionBar getActionBar(){
 		ActionBarActivity activity;
