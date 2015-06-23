@@ -68,6 +68,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_LOGO = MSG_FIRST_ID + 112;
 	private static final int MSG_MENU_ICON = MSG_FIRST_ID + 113;
 	private static final int MSG_STATUSBAR_COLOR = MSG_FIRST_ID + 114;
+	private static final int MSG_ELEVATION = MSG_FIRST_ID + 115;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -183,6 +184,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_SEARCHVIEW: {
 				handleSetSearchView(msg.obj);
+				return true;
+			}
+			case MSG_ELEVATION: {
+				handleSetElevation(msg.obj);
 				return true;
 			}
 			default: {
@@ -712,6 +717,16 @@ public class ActionbarextrasModule extends KrollModule {
 	}
 	
 	/**
+	 * Sets the Actionbar elevation
+	 * See http://developer.android.com/reference/android/support/v7/app/ActionBar.html#setElevation(float)
+	 * 
+	 * @param Integer -	value
+	 */
+	private void handleSetElevation(Object value){
+		getActionBar().setElevation(TiConvert.toFloat(value));
+	}
+	
+	/**
 	 * Helper function to process font objects used for title and subtitle
 	 * 
 	 * @param Context - TiApplication context
@@ -1004,6 +1019,16 @@ public class ActionbarextrasModule extends KrollModule {
 		int mActionBarSize = (int) styledAttributes.getDimension(0, 0);
 		styledAttributes.recycle();
 		return mActionBarSize;
+	}
+	
+	/**
+	 * sets the Actionbar elevation
+	 * @param arg
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setElevation(Object arg) {
+		Message message = getMainHandler().obtainMessage(MSG_ELEVATION, arg);
+		message.sendToTarget();
 	}
 	
 	/**
