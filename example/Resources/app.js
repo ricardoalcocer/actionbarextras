@@ -6,7 +6,8 @@ var abx = require('com.alcoapps.actionbarextras'),
         disableIcon: false,
         dropdown: false,
         homeup: false,
-        menuIcon: false
+        menuIcon: false,
+        elevation: true
     },
     dropdown,
     IconicFont = require('/lib/IconicFont'),
@@ -46,7 +47,9 @@ var data = [
   { title: 'Set Logo (FontAwesome)', action: "logoFont" },
   { title: 'Set MenuItem icon (FontAwesome)', action: "menuIcon" },
   { title: 'Set Title (FontAwesome)', action: "iconTitle" },
-  { title: 'Set statusbarColor', action: "statusbarColor" }
+  { title: 'Set statusbarColor', action: "statusbarColor" },
+  { title: 'Set navigationColor', action: "navigationbarColor" },
+  { title: 'Set elevation', action: "elevation" }
 ];
 
 var actions = {
@@ -159,6 +162,14 @@ var actions = {
   },
   statusbarColor: function(){
     abx.setStatusbarColor('#'+Math.floor(Math.random()*16777215).toString(16));
+  },
+  navigationbarColor: function(){
+    abx.setNavigationbarColor('#'+Math.floor(Math.random()*16777215).toString(16));
+  },
+  elevation: function(){
+    // default Actionbar elevation is 4 dp according to the material design guide
+    abx.setElevation(opts.elevation ? 0 : (4 * Ti.Platform.displayCaps.dpi / 160));
+    opts.elevation = !opts.elevation;
   }
 };
 
