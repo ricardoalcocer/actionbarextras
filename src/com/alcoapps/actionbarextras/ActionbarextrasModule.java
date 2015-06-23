@@ -70,6 +70,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_STATUSBAR_COLOR = MSG_FIRST_ID + 114;
 	private static final int MSG_ELEVATION = MSG_FIRST_ID + 115;
 	private static final int MSG_HIDE_OFFSET = MSG_FIRST_ID + 116;
+	private static final int MSG_NAVIGATIONBAR_COLOR = MSG_FIRST_ID + 117;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -141,6 +142,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_STATUSBAR_COLOR: {
 				handleSetStatusbarColor((String) msg.obj);
+				return true;
+			}
+			case MSG_NAVIGATIONBAR_COLOR: {
+				handleSetNavigationBarColor((String) msg.obj);
 				return true;
 			}
 			case MSG_TITLE_FONT: {
@@ -305,6 +310,27 @@ public class ActionbarextrasModule extends KrollModule {
 			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 			win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 			win.setStatusBarColor(TiConvert.toColor(color));
+		}
+	}
+	
+	/**
+	 * Sets NavigationBarColor for Android 5.x / materialDesign
+	 * @param obj
+	 */
+	private void handleSetNavigationBarColor(String color){
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			ActionBarActivity activity;
+			if (window != null){
+				activity = (ActionBarActivity) window.getActivity();
+			} else {
+				TiApplication appContext = TiApplication.getInstance();
+				activity = (ActionBarActivity) appContext.getCurrentActivity();
+			}
+			Window win = activity.getWindow();
+			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			win.setNavigationBarColor(TiConvert.toColor(color));
 		}
 	}
 	
@@ -889,6 +915,16 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setStatusbarColor(String color) {
 		Message message = getMainHandler().obtainMessage(MSG_STATUSBAR_COLOR, color);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * Set the Navigationbar background color
+	 * @param color
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setNavigationbarColor(String color) {
+		Message message = getMainHandler().obtainMessage(MSG_NAVIGATIONBAR_COLOR, color);
 		message.sendToTarget();
 	}
 	

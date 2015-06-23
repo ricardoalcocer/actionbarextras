@@ -58,6 +58,8 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * `statusbarColor` _(String)_ - sets the Color of the status bar
 
+* `navigationbarColor` _(String)_ - sets the Color of the navigation bar
+
 * `elevation` _(Number)_ - sets the Elevation of the Actionbar (in dp)
 
 ## 3. Methods
@@ -134,6 +136,9 @@ var abextras = require('com.alcoapps.actionbarextras');
 * `setStatusbarColor( arg )` - sets the color of the status bar
     * arg _(String)_ - color
     
+* `setNavigationbarColor( arg )` - sets the color of the navigation bar
+    * arg _(String)_ - color
+        
 * `setElevation( arg )` - sets the elevation property
     * arg _(Number)_ - elevation
 
