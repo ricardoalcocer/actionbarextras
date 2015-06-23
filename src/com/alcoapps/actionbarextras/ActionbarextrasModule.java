@@ -69,6 +69,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_MENU_ICON = MSG_FIRST_ID + 113;
 	private static final int MSG_STATUSBAR_COLOR = MSG_FIRST_ID + 114;
 	private static final int MSG_ELEVATION = MSG_FIRST_ID + 115;
+	private static final int MSG_HIDE_OFFSET = MSG_FIRST_ID + 116;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -188,6 +189,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_ELEVATION: {
 				handleSetElevation(msg.obj);
+				return true;
+			}
+			case MSG_HIDE_OFFSET: {
+				handleSetHideOffset(msg.obj);
 				return true;
 			}
 			default: {
@@ -727,6 +732,22 @@ public class ActionbarextrasModule extends KrollModule {
 	}
 	
 	/**
+	 * Set the current hide offset of the action bar
+	 * See http://developer.android.com/reference/android/support/v7/app/ActionBar.html#setHideOffset(int)
+	 * 
+	 * @param Integer -	value
+	 */
+	private void handleSetHideOffset(Object value){
+		
+		try{
+			getActionBar().setHideOffset(TiConvert.toInt(value));
+		}catch(Exception e){
+			Log.e(TAG, e.toString());
+		}
+		
+	}
+	
+	/**
 	 * Helper function to process font objects used for title and subtitle
 	 * 
 	 * @param Context - TiApplication context
@@ -1028,6 +1049,16 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setElevation(Object arg) {
 		Message message = getMainHandler().obtainMessage(MSG_ELEVATION, arg);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * sets the Actionbar hideOffset
+	 * @param arg
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setHideOffset(Object arg) {
+		Message message = getMainHandler().obtainMessage(MSG_HIDE_OFFSET, arg);
 		message.sendToTarget();
 	}
 	
