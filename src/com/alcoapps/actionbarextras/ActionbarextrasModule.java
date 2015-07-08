@@ -1107,10 +1107,12 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		ShareActionProvider mShareActionProvider;
 		
+		MenuItem item = null;
 		MenuProxy menu_proxy = (MenuProxy) args.get(TiC.PROPERTY_MENU);
 		IntentProxy intent_proxy = (IntentProxy) args.get(TiC.PROPERTY_INTENT);
 		String title = "Share";
 		int show_as_action = MenuItem.SHOW_AS_ACTION_IF_ROOM;
+		Menu menu = menu_proxy.getMenu();
 
 		if (args.containsKey(TiC.PROPERTY_TITLE)) {
 			title = TiConvert.toString(args, TiC.PROPERTY_TITLE);
@@ -1119,6 +1121,11 @@ public class ActionbarextrasModule extends KrollModule {
 		if (args.containsKey(TiC.PROPERTY_SHOW_AS_ACTION)) {
 			show_as_action = TiConvert.toInt(args, TiC.PROPERTY_SHOW_AS_ACTION);
 		}
+		
+		if (args.containsKey("menuItem")) {
+			MenuItemProxy mip = (MenuItemProxy) args.get("menuItem");
+			item = menu.findItem( mip.getItemId() );
+		}
 
 		try {
 			TiApplication appContext = TiApplication.getInstance();
@@ -1126,8 +1133,9 @@ public class ActionbarextrasModule extends KrollModule {
 
 			mShareActionProvider = new ShareActionProvider(activity);
 
-			Menu menu = menu_proxy.getMenu();
-			MenuItem item = menu.add(title);
+			if (item == null){
+				item = menu.add(title);
+			}
 
 			item.setShowAsAction(show_as_action);
 			MenuItemCompat.setActionProvider(item, mShareActionProvider);
