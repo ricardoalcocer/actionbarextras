@@ -519,9 +519,9 @@ public class ActionbarextrasModule extends KrollModule {
 			return;
 		}
 		
-		int resId = TiUIHelper.getResourceId(resolveUrl(null, icon));
-		if (resId != 0) {
-			actionBar.setHomeAsUpIndicator(resId);
+		Drawable drawableIcon = TiUIHelper.getResourceDrawable(icon);
+		if (drawableIcon != null) {
+			actionBar.setHomeAsUpIndicator(drawableIcon);
 		} else {
 			Log.e(TAG, "Couldn't resolve " + icon);
 		}
