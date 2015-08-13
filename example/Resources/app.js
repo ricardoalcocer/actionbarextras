@@ -7,7 +7,8 @@ var abx = require('com.alcoapps.actionbarextras'),
         dropdown: false,
         homeup: false,
         menuIcon: false,
-        elevation: true
+        elevation: true,
+        material: false
     },
     dropdown,
     IconicFont = require('/lib/IconicFont'),
@@ -46,6 +47,7 @@ var data = [
   { title: 'Get Actionbar height', action: "actionbarHeight" },
   { title: 'Set Logo (FontAwesome)', action: "logoFont" },
   { title: 'Set MenuItem icon (FontAwesome)', action: "menuIcon" },
+  { title: 'Set MenuItem icon (MaterialIcons)', action: "materialIcon"},
   { title: 'Set Title (FontAwesome)', action: "iconTitle" },
   { title: 'Set statusbarColor', action: "statusbarColor" },
   { title: 'Set navigationColor', action: "navigationbarColor" },
@@ -170,6 +172,10 @@ var actions = {
     // default Actionbar elevation is 4 dp according to the material design guide
     abx.setElevation(opts.elevation ? 0 : (4 * Ti.Platform.displayCaps.dpi / 160));
     opts.elevation = !opts.elevation;
+  },
+  materialIcon: function(){
+    opts.material = !opts.material;
+    win.activity.invalidateOptionsMenu();
   }
 };
 
@@ -265,14 +271,40 @@ win.addEventListener('open',function(e){
               settingsItem.addEventListener('click', function(){
                 alert('Settings clicked');
               });
-              
+
               // ...then, let abx apply the custom font
               abx.setMenuItemIcon({
                 menu: e.menu,
                 menuItem: settingsItem,
                 fontFamily: fa.fontfamily,
-                icon: fa.icon("fa-gear"), 
+                icon: fa.icon("fa-gear"),
                 color: "#333333",
+                size: 30
+              });
+
+            }
+
+            if (opts.material){
+
+              // Using MaterialIcons for MenuItems
+
+              // first, create the item...
+              var settingsItem = e.menu.add({
+                itemId: 101, // don't forget to set an id here
+                title: "Settings",
+                showAsAction : Ti.Android.SHOW_AS_ACTION_ALWAYS
+              });
+              settingsItem.addEventListener('click', function(){
+                alert('Settings clicked');
+              });
+
+              // ...then, let abx apply the custom font
+              abx.setMenuItemIcon({
+                menu: e.menu,
+                menuItem: settingsItem,
+                fontFamily: 'MaterialIcons-Regular',
+                icon: String.fromCharCode(0xe86a),
+                color: "#fff",
                 size: 30
               });
 
