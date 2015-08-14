@@ -62,6 +62,8 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * `elevation` _(Number)_ - sets the Elevation of the Actionbar (in dp)
 
+* `upColor` _(String)_ - sets the color of the up icon
+
 ## 3. Methods
     
 * `setTitle( arg )`  - sets the `title` property
@@ -141,6 +143,9 @@ var abextras = require('com.alcoapps.actionbarextras');
         
 * `setElevation( arg )` - sets the elevation property
     * arg _(Number)_ - elevation
+    
+* `setUpColor( arg )` - sets the upColor property
+    * arg _(String)_ - color
 
 ## 4. Dropdown
 

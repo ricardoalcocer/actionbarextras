@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -46,6 +47,7 @@ import android.os.Build;
 import android.view.ViewConfiguration;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 @Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule {
 
@@ -71,6 +73,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_ELEVATION = MSG_FIRST_ID + 115;
 	private static final int MSG_HIDE_OFFSET = MSG_FIRST_ID + 116;
 	private static final int MSG_NAVIGATIONBAR_COLOR = MSG_FIRST_ID + 117;
+	private static final int MSG_UPICON_COLOR = MSG_FIRST_ID + 118;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -198,6 +201,10 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_HIDE_OFFSET: {
 				handleSetHideOffset(msg.obj);
+				return true;
+			}
+			case MSG_UPICON_COLOR: {
+				handleSetUpColor((String) msg.obj);
 				return true;
 			}
 			default: {
@@ -774,6 +781,23 @@ public class ActionbarextrasModule extends KrollModule {
 	}
 	
 	/**
+	 * Sets Up icon color
+	 * @param obj
+	 */
+	private void handleSetUpColor(String color){
+		
+		ActionBar actionBar = getActionBar();
+		
+		try{
+			final Drawable upArrow = TiUIHelper.getResourceDrawable(TiRHelper.getResource("drawable.abc_ic_ab_back_mtrl_am_alpha", true));
+			upArrow.setColorFilter(TiConvert.toColor(color), PorterDuff.Mode.SRC_ATOP);
+			actionBar.setHomeAsUpIndicator(upArrow);
+		}catch(Exception e){
+			Log.e(TAG, e.toString());
+		}
+	}
+	
+	/**
 	 * Helper function to process font objects used for title and subtitle
 	 * 
 	 * @param Context - TiApplication context
@@ -1095,6 +1119,16 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setHideOffset(Object arg) {
 		Message message = getMainHandler().obtainMessage(MSG_HIDE_OFFSET, arg);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * set up icon color
+	 * @param color
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setUpColor(String color){
+		Message message = getMainHandler().obtainMessage(MSG_UPICON_COLOR, color);
 		message.sendToTarget();
 	}
 	

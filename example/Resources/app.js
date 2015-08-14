@@ -8,7 +8,8 @@ var abx = require('com.alcoapps.actionbarextras'),
         homeup: false,
         menuIcon: false,
         elevation: true,
-        material: false
+        material: false,
+        upColor: false
     },
     dropdown,
     IconicFont = require('/lib/IconicFont'),
@@ -51,7 +52,8 @@ var data = [
   { title: 'Set Title (FontAwesome)', action: "iconTitle" },
   { title: 'Set statusbarColor', action: "statusbarColor" },
   { title: 'Set navigationColor', action: "navigationbarColor" },
-  { title: 'Set elevation', action: "elevation" }
+  { title: 'Set elevation', action: "elevation" },
+  { title: 'Set Up Icon Color', action: "upColor" }
 ];
 
 var actions = {
@@ -175,6 +177,10 @@ var actions = {
   },
   materialIcon: function(){
     opts.material = !opts.material;
+    win.activity.invalidateOptionsMenu();
+  },
+  upColor: function(){
+    opts.upColor = true;
     win.activity.invalidateOptionsMenu();
   }
 };
@@ -308,6 +314,11 @@ win.addEventListener('open',function(e){
                 size: 30
               });
 
+            }
+            
+            if (opts.upColor){
+              activity.actionBar.displayHomeAsUp = true;
+              abx.setUpColor('#'+Math.floor(Math.random()*16777215).toString(16));
             }
         };
     }
