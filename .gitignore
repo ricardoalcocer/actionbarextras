@@ -4,3 +4,5 @@ build
 .apt_generated
 dist/actionbarextras.jar
 node_modules
+*.iml
+/.idea

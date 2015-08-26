@@ -119,9 +119,14 @@ public class ActionbarextrasModule extends KrollModule {
 			TiApplication appContext = TiApplication.getInstance();
 			activity = (ActionBarActivity) appContext.getCurrentActivity();
 		}
-		
-		ActionBar actionBar = activity.getSupportActionBar();
-		return actionBar;
+
+		try {
+			ActionBar actionBar = activity.getSupportActionBar();
+			return actionBar;
+		} catch (NullPointerException e) {
+			return null;
+		}
+
 	}
 	
 	/**
