@@ -6,3 +6,4 @@ dist/actionbarextras.jar
 node_modules
 *.iml
 /.idea
+/dist/com.alcoapps.actionbarextras-android-1.6.6.zip
