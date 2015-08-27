@@ -119,9 +119,20 @@ public class ActionbarextrasModule extends KrollModule {
 			TiApplication appContext = TiApplication.getInstance();
 			activity = (ActionBarActivity) appContext.getCurrentActivity();
 		}
-		
-		ActionBar actionBar = activity.getSupportActionBar();
-		return actionBar;
+
+		try {
+			ActionBar actionBar = activity.getSupportActionBar();
+			return actionBar;
+		} catch (NullPointerException e) {
+			Log.e(TAG, "ActionBar is null (not found)");
+			return null;
+		}
+
+	}
+
+	private IconDrawable getDrawableFromFont(HashMap args) {
+		Typeface iconFontTypeface = TiUIHelper.toTypeface(TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY));
+		return new IconDrawable(TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_ICON), iconFontTypeface).actionBarSize().color(TiConvert.toColor((String) args.get(TiC.PROPERTY_COLOR)));
 	}
 	
 	/**
@@ -172,7 +183,7 @@ public class ActionbarextrasModule extends KrollModule {
 				return true;
 			}
 			case MSG_HOMEASUP_ICON: {
-				handleSetHomeAsUpIcon((String) msg.obj);
+				handleSetHomeAsUpIcon(msg.obj);
 				return true;
 			}
 			case MSG_LOGO: {
@@ -514,24 +525,32 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 		}
 	}
-	
+
 	/**
 	 * Sets the homeAsUp icon
 	 * @param icon
 	 */
-	private void handleSetHomeAsUpIcon(String icon){
+	private void handleSetHomeAsUpIcon(Object obj) {
 		ActionBar actionBar = getActionBar();
-		
-		if (actionBar == null){
+
+		if (actionBar == null) {
 			return;
 		}
-		
-		int resId = TiUIHelper.getResourceId(resolveUrl(null, icon));
-		if (resId != 0) {
-			actionBar.setHomeAsUpIndicator(resId);
+
+		if (obj instanceof HashMap) {
+			HashMap args = (HashMap) obj;
+			actionBar.setHomeAsUpIndicator(getDrawableFromFont(args));
+		} else if (obj instanceof String) {
+			int resId = TiUIHelper.getResourceId(resolveUrl(null, (String)obj));
+			if (resId != 0) {
+				actionBar.setHomeAsUpIndicator(resId);
+			} else {
+				Log.e(TAG, "Couldn't resolve " + (String)obj);
+			}
 		} else {
-			Log.e(TAG, "Couldn't resolve " + icon);
+			Log.e(TAG, "Please pass an Object or String to handleSetHomeAsUpIcon");
 		}
+
 	}
 	
 	/**
@@ -553,11 +572,8 @@ public class ActionbarextrasModule extends KrollModule {
 		if (actionBar == null){
 			return;
 		}
-		
-		Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY) );
-		IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).actionBarSize().color( TiConvert.toColor( (String)args.get("color") ) );
-		
-		actionBar.setLogo(icon);
+
+		actionBar.setLogo(getDrawableFromFont(args));
 	}
 	
 	/**
@@ -595,9 +611,7 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		Menu mMenu = menuProxy.getMenu();
 		
-		Typeface iconFontTypeface = TiUIHelper.toTypeface( TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY) );
-		
-		IconDrawable icon = new IconDrawable(TiApplication.getInstance(), (String)args.get(TiC.PROPERTY_ICON), iconFontTypeface ).color( TiConvert.toColor( (String)args.get("color") ) );
+		IconDrawable icon = getDrawableFromFont(args);
 		
 		if( args.containsKey(TiC.PROPERTY_SIZE) && TiConvert.toInt( args.get( TiC.PROPERTY_SIZE ) )  > 0 )
 		{
@@ -1034,7 +1048,7 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param arg
 	 */
 	@Kroll.method @Kroll.setProperty
-	public void setHomeAsUpIcon(String arg) {
+	public void setHomeAsUpIcon(Object arg) {
 		Message message = getMainHandler().obtainMessage(MSG_HOMEASUP_ICON, arg);
 		message.sendToTarget();
 	}
@@ -1057,7 +1071,7 @@ public class ActionbarextrasModule extends KrollModule {
 		message.sendToTarget();
 	}
 
-	
+
 	/**
 	 * sets the logo
 	 */
