@@ -6,14 +6,14 @@
 - [Overview](#overview)
 - [Features](#features)
 - [Installation](#installation)
+- [Example](example/)
+- [API docs](documentation/index.md)
 - [Apps](#some-apps-using-actionbarextras)
 - [Contributors](#contributors)
 - [License](#license)
 
 ## Overview
 This module provides some extra functionality to configure the ActionBar that Titanium doesn't offer.
-
-![example01](documentation/abx_01.png)
 
 ## Features
   * Title and Subtitle
@@ -57,25 +57,15 @@ To see what else you can do, see:
 
 ## Some apps using ActionBarExtras
 
-<table>
-  <tr>
-    <td align="center"><img src="http://drops.ricardoalcocer.com/drops/screen_peerby.png" width="250"/><br/><a href="http://goo.gl/0JwYWj">Peerby</a></td>
-    <td align="center"><img src="http://drops.ricardoalcocer.com/drops/screen_collapp.png" width="250"/><br/><a href="http://goo.gl/zA7KZz">Collapp</a></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="http://drops.ricardoalcocer.com/drops/screen_unitconverter.png" width="250"/><br/><a href="http://goo.gl/QMWNrK">Unit+Size Converter</a></td>
-    <td align="center"/>
-  </tr>
-</table>
+* [Peerby](http://goo.gl/0JwYWj)
+* [Collapp](http://goo.gl/zA7KZz)
+* [Unit+Size Converter](http://goo.gl/QMWNrK)
 
 > Make sure you send me your app links or a PR with an updated README.md
 
 ## Contributors
 
-*  Manuel Lehner ([@manumaticx](https://github.com/manumaticx))
-*  Ricardo Alcocer ([@ricardoalcocer](https://github.com/ricardoalcocer))
-*  Marcel Pociot ([@mpociot](https://github.com/mpociot))
-*  Timan Rebel ([@timanrebel](https://github.com/timanrebel))
+See [contributors](https://github.com/ricardoalcocer/actionbarextras/graphs/contributors)
 
 ## License
 MIT License - [http://alco.mit-license.org](http://alco.mit-license.org)
