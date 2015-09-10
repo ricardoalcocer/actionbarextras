@@ -74,6 +74,9 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_HIDE_OFFSET = MSG_FIRST_ID + 116;
 	private static final int MSG_NAVIGATIONBAR_COLOR = MSG_FIRST_ID + 117;
 	private static final int MSG_UPICON_COLOR = MSG_FIRST_ID + 118;
+	private static final int MSG_DISPLAY_HOME = MSG_FIRST_ID + 119;
+	private static final int MSG_DISPLAY_TITLE = MSG_FIRST_ID + 120;
+	private static final int MSG_DISPLAY_USELOGO = MSG_FIRST_ID + 121;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -216,6 +219,18 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			case MSG_UPICON_COLOR: {
 				handleSetUpColor((String) msg.obj);
+				return true;
+			}
+			case MSG_DISPLAY_HOME: {
+				handleDisplayShowHomeEnabled((Boolean) msg.obj);
+				return true;
+			}
+			case MSG_DISPLAY_TITLE: {
+				handleDisplayShowTitleEnabled((Boolean) msg.obj);
+				return true;
+			}
+			case MSG_DISPLAY_USELOGO: {
+				handleDisplayUseLogoEnabled((Boolean) msg.obj);
 				return true;
 			}
 			default: {
@@ -551,6 +566,48 @@ public class ActionbarextrasModule extends KrollModule {
 			Log.e(TAG, "Please pass an Object or String to handleSetHomeAsUpIcon");
 		}
 
+	}
+	
+	/**
+	 * Set whether to include the application home affordance in the action bar.
+	 * @param icon
+	 */
+	private void handleDisplayShowHomeEnabled(Boolean showHome){
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		actionBar.setDisplayShowHomeEnabled(showHome);
+	}
+	
+	/**
+	 * Set whether an activity title/subtitle should be displayed.
+	 * @param icon
+	 */
+	private void handleDisplayShowTitleEnabled(Boolean showTitle){
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		actionBar.setDisplayShowTitleEnabled(showTitle);
+	}
+	
+	/**
+	 * Set whether to display the activity logo rather than the activity icon.
+	 * @param icon
+	 */
+	private void handleDisplayUseLogoEnabled(Boolean useLogo){
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		actionBar.setDisplayUseLogoEnabled(useLogo);
 	}
 	
 	/**
@@ -1143,6 +1200,36 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setUpColor(String color){
 		Message message = getMainHandler().obtainMessage(MSG_UPICON_COLOR, color);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * exposes setDisplayShowHomeEnabled
+	 * @param boolean
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setDisplayShowHomeEnabled(boolean showHome){
+		Message message = getMainHandler().obtainMessage(MSG_DISPLAY_HOME, showHome);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * exposes setDisplayShowTitleEnabled
+	 * @param boolean
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setDisplayShowTitleEnabled(boolean showTitle){
+		Message message = getMainHandler().obtainMessage(MSG_DISPLAY_TITLE, showTitle);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * exposes setDisplayUseLogoEnabled
+	 * @param boolean
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setDisplayUseLogoEnabled(boolean useLogo){
+		Message message = getMainHandler().obtainMessage(MSG_DISPLAY_USELOGO, useLogo);
 		message.sendToTarget();
 	}
 	

@@ -64,6 +64,12 @@ var abextras = require('com.alcoapps.actionbarextras');
 
 * `upColor` _(String)_ - sets the color of the up icon
 
+* `displayShowHomeEnabled` _(Boolean)_ - Set whether to include the application home affordance in the action bar.
+
+* `displayShowTitleEnabled` _(Boolean)_ - Set whether an activity title/subtitle should be displayed.
+
+* `displayUseLogoEnabled` _(Boolean)_ - Set whether to display the activity logo rather than the activity icon.
+
 ## 3. Methods
     
 * `setTitle( arg )`  - sets the `title` property
@@ -146,6 +152,15 @@ var abextras = require('com.alcoapps.actionbarextras');
     
 * `setUpColor( arg )` - sets the upColor property
     * arg _(String)_ - color
+
+* `setDisplayShowHomeEnabled( arg )` - sets the displayShowHomeEnabled property
+    * arg _(Boolean)_ - showHome
+
+* `setDisplayShowTitleEnabled( arg )` - sets the displayShowTitleEnabled property
+    * arg _(Boolean)_ - showTitle
+
+* `setDisplayUseLogoEnabled( arg )` - sets the displayUseLogoEnabled property
+    * arg _(Boolean)_ - useLogo
 
 ## 4. Dropdown
 
