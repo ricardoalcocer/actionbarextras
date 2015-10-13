@@ -20,7 +20,7 @@ import org.appcelerator.titanium.util.TiUIHelper;
 
 import ti.modules.titanium.ui.android.SearchViewProxy;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -114,13 +114,13 @@ public class ActionbarextrasModule extends KrollModule {
     	}
 	
 	private ActionBar getActionBar(){
-		ActionBarActivity activity;
+		AppCompatActivity activity;
 		
 		if (window != null){
-			activity = (ActionBarActivity) window.getActivity();
+			activity = (AppCompatActivity) window.getActivity();
 		} else {
 			TiApplication appContext = TiApplication.getInstance();
-			activity = (ActionBarActivity) appContext.getCurrentActivity();
+			activity = (AppCompatActivity) appContext.getCurrentActivity();
 		}
 
 		try {
@@ -332,12 +332,12 @@ public class ActionbarextrasModule extends KrollModule {
 	private void handleSetStatusbarColor(String color){
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			ActionBarActivity activity;
+			AppCompatActivity activity;
 			if (window != null){
-				activity = (ActionBarActivity) window.getActivity();
+				activity = (AppCompatActivity) window.getActivity();
 			} else {
 				TiApplication appContext = TiApplication.getInstance();
-				activity = (ActionBarActivity) appContext.getCurrentActivity();
+				activity = (AppCompatActivity) appContext.getCurrentActivity();
 			}
 			Window win = activity.getWindow();
 			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -353,12 +353,12 @@ public class ActionbarextrasModule extends KrollModule {
 	private void handleSetNavigationBarColor(String color){
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			ActionBarActivity activity;
+			AppCompatActivity activity;
 			if (window != null){
-				activity = (ActionBarActivity) window.getActivity();
+				activity = (AppCompatActivity) window.getActivity();
 			} else {
 				TiApplication appContext = TiApplication.getInstance();
-				activity = (ActionBarActivity) appContext.getCurrentActivity();
+				activity = (AppCompatActivity) appContext.getCurrentActivity();
 			}
 			Window win = activity.getWindow();
 			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -521,7 +521,7 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 		
 		TiApplication appContext = TiApplication.getInstance();
-		ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
+		AppCompatActivity activity = (AppCompatActivity) appContext.getCurrentActivity();
 		
 		if (disabled){
 			try {
@@ -1264,7 +1264,7 @@ public class ActionbarextrasModule extends KrollModule {
 
 		try {
 			TiApplication appContext = TiApplication.getInstance();
-			ActionBarActivity activity = (ActionBarActivity) appContext.getCurrentActivity();
+			AppCompatActivity activity = (AppCompatActivity) appContext.getCurrentActivity();
 
 			mShareActionProvider = new ShareActionProvider(activity);
 
