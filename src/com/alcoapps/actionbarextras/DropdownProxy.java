@@ -12,7 +12,7 @@ import org.appcelerator.titanium.util.TiUIHelper;
 
 import android.os.Message;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -25,9 +25,9 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 	private static final int MSG_REMOVE = MSG_FIRST_ID + 101;
 	private static final int MSG_ADD = MSG_FIRST_ID + 102;
 	
+	@SuppressWarnings("deprecation")
 	ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 
-        @Override
         public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         	
         	setProperty("activeItem", itemPosition);
@@ -75,7 +75,7 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 	@Override
 	public void handleCreationDict(KrollDict options) {
 		
-		final ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+		final ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 		final boolean keepTitle;
 		
 		if (options.containsKey("keepTitle")) {
@@ -121,18 +121,18 @@ public class DropdownProxy extends KrollProxy implements KrollProxyListener  {
 	}
 	
 	private void handleSetActiveItem(int activeItem){
-		ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+		ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 		actionBar.setSelectedNavigationItem(activeItem);
 	}
 	
 	private void handleRemove(){
-		ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+		ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 		actionBar.setDisplayShowTitleEnabled(true);
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 	}
 	
 	private void handleAdd(boolean keepTitle){
-		ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+		ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 		actionBar.setDisplayShowTitleEnabled(keepTitle);
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 	}
