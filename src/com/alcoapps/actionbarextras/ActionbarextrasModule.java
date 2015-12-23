@@ -46,6 +46,7 @@ import android.os.Build;
 import android.view.ViewConfiguration;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.support.v7.widget.Toolbar;
 
 @Kroll.module(name = "Actionbarextras", id = "com.alcoapps.actionbarextras")
 public class ActionbarextrasModule extends KrollModule {
@@ -76,6 +77,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_DISPLAY_HOME = MSG_FIRST_ID + 119;
 	private static final int MSG_DISPLAY_TITLE = MSG_FIRST_ID + 120;
 	private static final int MSG_DISPLAY_USELOGO = MSG_FIRST_ID + 121;
+	private static final int MSG_TOOLBAR_TOP_PADDING = MSG_FIRST_ID + 122;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -231,6 +233,9 @@ public class ActionbarextrasModule extends KrollModule {
 			case MSG_DISPLAY_USELOGO: {
 				handleDisplayUseLogoEnabled((Boolean) msg.obj);
 				return true;
+			}
+			case MSG_TOOLBAR_TOP_PADDING: {
+				handleSetToolbarTopPadding(msg.obj);
 			}
 			default: {
 				return super.handleMessage(msg);
@@ -868,6 +873,36 @@ public class ActionbarextrasModule extends KrollModule {
 	}
 	
 	/**
+	 * Set the padding of toolbar
+	 * See http://developer.android.com/reference/android/support/v7/app/ActionBar.html#setHideOffset(int)
+	 * 
+	 * @param Integer -	value
+	 */
+	private void handleSetToolbarTopPadding(Object value){
+		
+		try{
+			AppCompatActivity activity;
+			
+			if (window != null){
+				activity = (AppCompatActivity) window.getActivity();
+			} else {
+				TiApplication appContext = TiApplication.getInstance();
+				activity = (AppCompatActivity) appContext.getCurrentActivity();
+			}
+			
+			// Retrieve the AppCompact Toolbar
+	    Toolbar toolbar = (Toolbar) activity.findViewById(TiRHelper.getResource("id.toolbar", true));
+	    activity.setSupportActionBar(toolbar);
+
+	  	// Set the padding 
+	    toolbar.setPadding(0, TiConvert.toInt(value), 0, 0);
+		}catch(Exception e){
+			Log.e(TAG, e.toString());
+		}
+		
+	}
+	
+	/**
 	 * Helper function to process font objects used for title and subtitle
 	 * 
 	 * @param Context - TiApplication context
@@ -1158,6 +1193,29 @@ public class ActionbarextrasModule extends KrollModule {
 	}
 	
 	/**
+	 * returns the height of the Statusbar as absolute pixels
+	 * @return int	statusbar height
+	 */
+	@Kroll.getProperty @Kroll.method
+	public int getStatusbarHeight() {
+		AppCompatActivity activity;
+		
+		if (window != null){
+			activity = (AppCompatActivity) window.getActivity();
+		} else {
+			TiApplication appContext = TiApplication.getInstance();
+			activity = (AppCompatActivity) appContext.getCurrentActivity();
+		}
+		
+		int result = 0;
+    int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
+    if (resourceId > 0) {
+        result = activity.getResources().getDimensionPixelSize(resourceId);
+    }
+    return result;
+	}
+	
+	/**
 	 * returns the height of the Actionbar as absolute pixels
 	 * @return int	actionbar height
 	 */
@@ -1229,6 +1287,16 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setDisplayUseLogoEnabled(boolean useLogo){
 		Message message = getMainHandler().obtainMessage(MSG_DISPLAY_USELOGO, useLogo);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * exposes sets the Toolbar top padding
+	 * @param arg
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setToolbarTopPadding(Object arg) {
+		Message message = getMainHandler().obtainMessage(MSG_TOOLBAR_TOP_PADDING, arg);
 		message.sendToTarget();
 	}
 	
