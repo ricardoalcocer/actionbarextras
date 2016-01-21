@@ -1,7 +1,7 @@
 {
   "name": "actionbarextras",
   "id": "com.alcoapps.actionbarextras",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "description": "Allows to set extra properties on the ActionBar",
   "license": "MIT",
   "contributors": [

@@ -1,7 +1,7 @@
 ![](https://raw.githubusercontent.com/ricardoalcocer/actionbarextras/master/documentation/header.png)
 
 # ActionBarExtras 
-[![gittio](http://img.shields.io/badge/gittio-1.6.8-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
+[![gittio](http://img.shields.io/badge/gittio-1.6.9-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
 [![License](http://img.shields.io/badge/license-MIT-orange.svg)](http://mit-license.org)
 [![issues](http://img.shields.io/github/issues/ricardoalcocer/actionbarextras.svg)](https://github.com/ricardoalcocer/actionbarextras/issues)
 
