@@ -62,6 +62,8 @@ To see what else you can do, see:
 * [Peerby](http://goo.gl/0JwYWj)
 * [Collapp](http://goo.gl/zA7KZz)
 * [Unit+Size Converter](http://goo.gl/QMWNrK)
+* [PiniOn](https://play.google.com/store/apps/details?id=br.com.pinion)
+* [SpotHere](https://play.google.com/store/apps/details?id=mobi.spotapp.spothere)
 
 > Make sure you send me your app links or a PR with an updated README.md
 
