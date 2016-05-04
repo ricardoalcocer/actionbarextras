@@ -95,7 +95,6 @@ public class ActionbarextrasModule extends KrollModule {
 	private String titleColor;
 	private String subtitleColor;
 	private TiWindowProxy window;
-	private Boolean actionbarCustomLayoutInflated = false;
 	
 	public ActionbarextrasModule() {
 		super();
@@ -790,12 +789,14 @@ public class ActionbarextrasModule extends KrollModule {
 			// Fetching app package name and resources 
 			String packageName = activity.getPackageName();
 			Resources resources = activity.getResources();
-			View view;
 			
 			// Finally, set the custom view into actionbar
 			actionBar.setDisplayShowCustomEnabled(true);
 			
-			if (!actionbarCustomLayoutInflated) {
+			View view = actionBar.getCustomView();
+			
+			// If view is null, them it means that we didn't inflate it yet.
+			if (view == null) {
 				// Inflate our actionbar's custom layout in a view
 				LayoutInflater inflator = (LayoutInflater) activity.getLayoutInflater();
 				view = inflator.inflate(resources.getIdentifier("actionbar_centered_logo_layout", "layout", packageName), null);
@@ -808,9 +809,6 @@ public class ActionbarextrasModule extends KrollModule {
 				);
 				
 				actionBar.setCustomView(view, params);
-				actionbarCustomLayoutInflated = true;
-			} else {
-				view = actionBar.getCustomView();
 			}
 			
 			// If we made it here, then the bitmap object was set to something.
@@ -844,13 +842,14 @@ public class ActionbarextrasModule extends KrollModule {
 	 */
 	private void handleDisableActionbarImage(){
 		
-		if (actionbarCustomLayoutInflated == false) {
-			return;
-		}
-		
 		ActionBar actionBar = getActionBar();
 		
 		if (actionBar == null){
+			return;
+		}
+		
+		View view = actionBar.getCustomView();
+		if (view == null) {
 			return;
 		}
 		
@@ -880,8 +879,7 @@ public class ActionbarextrasModule extends KrollModule {
 			// Get the resource id for the ImageView
 			int resid_actionbar_centered_logo = resources.getIdentifier("actionbar_centered_logo", "id", packageName);
 			if (resid_actionbar_centered_logo != 0) {
-				// Fin the ImageView
-				View view = actionBar.getCustomView();
+				// Find the ImageView
 				ImageView actionbar_centered_logo = (ImageView) view.findViewById(resid_actionbar_centered_logo);
 				if (actionbar_centered_logo != null) {
 					// Mark the image for garbage collection
