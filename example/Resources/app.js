@@ -53,7 +53,12 @@ var data = [
   { title: 'Set statusbarColor', action: "statusbarColor" },
   { title: 'Set navigationColor', action: "navigationbarColor" },
   { title: 'Set elevation', action: "elevation" },
-  { title: 'Set Up Icon Color', action: "upColor" }
+  { title: 'Set Up Icon Color', action: "upColor" },
+  { title: 'Set Actionbar image: Titan Logo', action: "actionbarImage", params: { image: "images/ic_titan_logo.png" } },
+  { title: 'Set Actionbar image: Appc Emblem', action: "actionbarImage", params: { image: "images/ic_appc_emblem.png" } },
+  { title: 'Set Actionbar image: Appc Logo', action: "actionbarImage", params: { image: "images/ic_appc_logo.png" } },
+  { title: 'Set Actionbar image: Alloy Logo', action: "actionbarImage", params: { image: "images/ic_alloy_logo.png" } },
+  { title: 'Disable Actionbar image', action: "actionbarImage" }
 ];
 
 var actions = {
@@ -182,6 +187,15 @@ var actions = {
   upColor: function(){
     opts.upColor = true;
     win.activity.invalidateOptionsMenu();
+  },
+  actionbarImage: function(params){
+    if ((params == null) || (params == {})) {
+      abx.disableActionbarImage();
+    } else {
+      abx.setActionbarImage({
+        image: params.image
+      });
+    }
   }
 };
 
@@ -191,6 +205,7 @@ table.setData((function(_rows){
     rows.push(Ti.UI.createTableViewRow({
       title: row.title,
       action: row.action,
+      params: row.params || null,
       height: '48dp',
       color: '#000',
       backgroundColor: '#fff',
@@ -201,7 +216,7 @@ table.setData((function(_rows){
 })(data));
 
 table.addEventListener('click', function(e){
-  actions[e.row.action]();
+  actions[e.row.action](e.row.params || null);
 });
 
 win.addEventListener('open',function(e){
