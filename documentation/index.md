@@ -162,6 +162,12 @@ var abextras = require('com.alcoapps.actionbarextras');
 * `setDisplayUseLogoEnabled( arg )` - sets the displayUseLogoEnabled property
     * arg _(Boolean)_ - useLogo
 
+* `setActionbarImage( arg )` - sets the custom ActionBar layout, load the provided image and hides the title/subtitle.
+    * arg _(Object)_
+        * `image` _(String|Blob)_ - A Blob, or a valid String representing the path to the image.  **Note**: Using the format "images/my_image.png" will load the density dependent image in the corresponding folders: /(Resources|app/assets)/android/images/res-(l|m|h|x|xx|xxx)dpi/my_image.png. If you don't care for the density, then use any other valid way to pass the image's path or Blob.
+
+* `disableActionbarImage()` - Restore the title/subtitle to their previous states and hides the custom ActionBar layout.
+
 ## 4. Dropdown
 
 An ActionBar [Dropdown](http://developer.android.com/guide/topics/ui/actionbar.html#Dropdown) can be created with `createDropdown`. Make sure you pass a String-Array as `titles`

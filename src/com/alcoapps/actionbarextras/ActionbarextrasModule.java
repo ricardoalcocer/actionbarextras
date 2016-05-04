@@ -8,6 +8,7 @@ import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
+import org.appcelerator.titanium.TiBlob;
 import org.appcelerator.titanium.TiC;
 import org.appcelerator.titanium.proxy.IntentProxy;
 import org.appcelerator.titanium.proxy.MenuItemProxy;
@@ -17,16 +18,20 @@ import org.appcelerator.titanium.util.TiConvert;
 import org.appcelerator.titanium.util.TiRHelper;
 import org.appcelerator.titanium.util.TiRHelper.ResourceNotFoundException;
 import org.appcelerator.titanium.util.TiUIHelper;
+import org.appcelerator.titanium.view.TiDrawableReference;
 
 import ti.modules.titanium.ui.android.SearchViewProxy;
+import android.content.res.Resources;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.PorterDuff;
+import android.graphics.Bitmap;
 import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -37,6 +42,8 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +85,8 @@ public class ActionbarextrasModule extends KrollModule {
 	private static final int MSG_DISPLAY_TITLE = MSG_FIRST_ID + 120;
 	private static final int MSG_DISPLAY_USELOGO = MSG_FIRST_ID + 121;
 	private static final int MSG_TOOLBAR_TOP_PADDING = MSG_FIRST_ID + 122;
+	private static final int MSG_SET_ACTIONBAR_IMAGE = MSG_FIRST_ID + 123;
+	private static final int MSG_DISABLE_ACTIONBAR_IMAGE = MSG_FIRST_ID + 124;
 
 	protected static final int MSG_LAST_ID = MSG_FIRST_ID + 999;
 
@@ -86,6 +95,7 @@ public class ActionbarextrasModule extends KrollModule {
 	private String titleColor;
 	private String subtitleColor;
 	private TiWindowProxy window;
+	private Boolean actionbarCustomLayoutInflated = false;
 	
 	public ActionbarextrasModule() {
 		super();
@@ -195,7 +205,15 @@ public class ActionbarextrasModule extends KrollModule {
 				return true;
 			}
 			case MSG_MENU_ICON: {
-				handleSetMenuItemIcon( msg.obj );
+				handleSetMenuItemIcon(msg.obj);
+				return true;
+			}
+			case MSG_SET_ACTIONBAR_IMAGE: {
+				handleSetActionbarImage(msg.obj);
+				return true;
+			}
+			case MSG_DISABLE_ACTIONBAR_IMAGE: {
+				handleDisableActionbarImage();
 				return true;
 			}
 			case MSG_HIDE_LOGO: {
@@ -706,6 +724,182 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 	}
 	
+	/**
+	 * Sets the actionbar's main custom image.
+	 * @param obj
+	 */
+	private void handleSetActionbarImage(Object obj){
+		HashMap args;
+		Object image;
+		
+		// Perform some validation ...
+		
+		if (obj instanceof HashMap){
+			args = (HashMap) obj;
+		} else {
+			Log.e(TAG, "Please pass an Object to setActionbarImage");
+			return;
+		}
+		
+		if (args.containsKey("image")){
+			image = args.get("image");
+		} else {
+			Log.e(TAG, "Please pass a image reference to setActionbarImage");
+			return;
+		}
+		
+		// ... Done performing the validation.
+		
+		// Process the image reference passed in the argument...
+		Bitmap bitmap = null;
+		if (image instanceof String) {
+			// Image path
+			Log.i(TAG, "The image reference is a String object.");
+			TiDrawableReference imageref = TiDrawableReference.fromUrl(this, (String) image);
+			bitmap = imageref.getBitmap();
+		} else if (image instanceof TiBlob) {
+			// Image blob
+			Log.i(TAG, "The image reference is a TiBlob object.");
+			bitmap = ((TiBlob) image).getImage();
+		} else {
+			// Image what?????
+			Log.w(TAG, "Unable to process the value of the image. The image must be either a String path or a Blob.");
+			return;
+		}
+		// ... Done processing the image. It is now stored in the bitmap object.
+		
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		try {
+			// Disable the title/subtitle text
+			actionBar.setDisplayShowTitleEnabled(false);
+			
+			// Get a reference to the activity
+			AppCompatActivity activity;
+			if (window != null){
+				activity = (AppCompatActivity) window.getActivity();
+			} else {
+				TiApplication appContext = TiApplication.getInstance();
+				activity = (AppCompatActivity) appContext.getCurrentActivity();
+			}
+			
+			// Fetching app package name and resources 
+			String packageName = activity.getPackageName();
+			Resources resources = activity.getResources();
+			View view;
+			
+			// Finally, set the custom view into actionbar
+			actionBar.setDisplayShowCustomEnabled(true);
+			
+			if (!actionbarCustomLayoutInflated) {
+				// Inflate our actionbar's custom layout in a view
+				LayoutInflater inflator = (LayoutInflater) activity.getLayoutInflater();
+				view = inflator.inflate(resources.getIdentifier("actionbar_centered_logo_layout", "layout", packageName), null);
+			
+				// Set the custom view at the center of actionbar
+				ActionBar.LayoutParams params = new ActionBar.LayoutParams(
+					ActionBar.LayoutParams.WRAP_CONTENT, 
+					ActionBar.LayoutParams.WRAP_CONTENT,
+					Gravity.CENTER
+				);
+				
+				actionBar.setCustomView(view, params);
+				actionbarCustomLayoutInflated = true;
+			} else {
+				view = actionBar.getCustomView();
+			}
+			
+			// If we made it here, then the bitmap object was set to something.
+			if (bitmap != null) {
+				// Get the resource id for the ImageView
+				int resid_actionbar_centered_logo = resources.getIdentifier("actionbar_centered_logo", "id", packageName);
+				if (resid_actionbar_centered_logo != 0) {
+					// Fin the ImageView
+					ImageView actionbar_centered_logo = (ImageView) view.findViewById(resid_actionbar_centered_logo);
+					if (actionbar_centered_logo != null) {
+						Drawable drawable = actionbar_centered_logo.getDrawable();
+						if (drawable instanceof BitmapDrawable) {
+						    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+						    bitmapDrawable.getBitmap().recycle();
+						}
+						
+						// Set the image.
+						actionbar_centered_logo.setImageBitmap(bitmap);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Disables the actionbar's main custom image.
+	 * @param obj
+	 */
+	private void handleDisableActionbarImage(){
+		
+		if (actionbarCustomLayoutInflated == false) {
+			return;
+		}
+		
+		ActionBar actionBar = getActionBar();
+		
+		if (actionBar == null){
+			return;
+		}
+		
+		try {
+			// Enable the title/subtitle text
+			actionBar.setDisplayShowTitleEnabled(true);
+			
+			// Disable the custom layout
+			actionBar.setDisplayShowCustomEnabled(false);
+			
+			// Find the image and release the bitmap
+			
+			// Get a reference to the activity
+			AppCompatActivity activity;
+			if (window != null){
+				activity = (AppCompatActivity) window.getActivity();
+			} else {
+				TiApplication appContext = TiApplication.getInstance();
+				activity = (AppCompatActivity) appContext.getCurrentActivity();
+			}
+			
+			// Fetching app package name and resources 
+			String packageName = activity.getPackageName();
+			Resources resources = activity.getResources();
+			
+			// If we made it here, then the bitmap object was set to something.
+			// Get the resource id for the ImageView
+			int resid_actionbar_centered_logo = resources.getIdentifier("actionbar_centered_logo", "id", packageName);
+			if (resid_actionbar_centered_logo != 0) {
+				// Fin the ImageView
+				View view = actionBar.getCustomView();
+				ImageView actionbar_centered_logo = (ImageView) view.findViewById(resid_actionbar_centered_logo);
+				if (actionbar_centered_logo != null) {
+					// Mark the image for garbage collection
+					Drawable drawable = actionbar_centered_logo.getDrawable();
+					if (drawable instanceof BitmapDrawable) {
+					    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+					    bitmapDrawable.getBitmap().recycle();
+					}
+					// Set the ImageView to a transparent background
+					actionbar_centered_logo.setImageResource(android.R.color.transparent);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void handleSetWindow(Object obj){
 		if (obj instanceof TiWindowProxy){
 			window = (TiWindowProxy) obj;
@@ -1169,6 +1363,24 @@ public class ActionbarextrasModule extends KrollModule {
 	@Kroll.method @Kroll.setProperty
 	public void setMenuItemIcon(Object arg) {
 		Message message = getMainHandler().obtainMessage(MSG_MENU_ICON, arg);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * sets the main image for the action bar using a custom view.
+	 */
+	@Kroll.method @Kroll.setProperty
+	public void setActionbarImage(Object arg) {
+		Message message = getMainHandler().obtainMessage(MSG_SET_ACTIONBAR_IMAGE, arg);
+		message.sendToTarget();
+	}
+	
+	/**
+	 * disables the main image for the action bar using a custom view.
+	 */
+	@Kroll.method
+	public void disableActionbarImage() {
+		Message message = getMainHandler().obtainMessage(MSG_DISABLE_ACTIONBAR_IMAGE);
 		message.sendToTarget();
 	}
 	
