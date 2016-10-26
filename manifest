@@ -2,8 +2,8 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 1.6.11
-apiversion: 2
+version: 1.7.0
+apiversion: 3
 description: Allows to set extra properties on the ActionBar
 author: Ricardo Alcocer
 license: MIT License - http://alco.mit-license.org
@@ -15,7 +15,7 @@ name: actionbarextras
 moduleid: com.alcoapps.actionbarextras
 guid: 84008311-4ed7-45ba-b2ea-a4cb5b5bb692
 platform: android
-minsdk: 3.4.0.GA
-architectures: armeabi;armeabi-v7a;x86;x86_64
+minsdk: 6.0.0.GA
+architectures: armeabi-v7a x86 x86_64
 
 respackage: com.alcoapps.actionbarextras
