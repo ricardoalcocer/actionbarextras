@@ -208,13 +208,14 @@ You can style an [SearchView](http://docs.appcelerator.com/titanium/latest/#!/ap
         * `line` _(String)_  -  image path to replace the line drawable used by the search view
         * `cancelIcon` _(String)_ - image path to use a custom close icon
         * `searchIcon` _(String)_ - image path to use a custom magnifier icon
-        
+        * `maxWidth` _(int)_ - set width of search view. Use `Number.MAX_VALUE` to fill the whole action bar
+
 An example of how to use this is included in the [example app](https://github.com/ricardoalcocer/actionbarextras/blob/master/example/Resources/app.js).
 
 ## 5. Appendix
 
 #### Using [IconFont](https://github.com/FokkeZB/IconFont) with ABX (thanks @casevictor)
- 
+
 ```js
 var icons = require('font-awesome');
 
