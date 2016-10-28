@@ -220,51 +220,52 @@ table.addEventListener('click', function(e){
 });
 
 win.addEventListener('open',function(e){
-    
+
     // set initial values
     abx.title = "ActionbarExtras";
     abx.titleFont = "Aller";
     abx.subtitle = "for some extra action";
     abx.subtitleFont = "Aller";
-        
+
     var activity = win.getActivity();
-    
+
     if(activity){
 
         activity.onCreateOptionsMenu = function(e){
-          
+
             e.menu.clear();
-            
+
             e.menu.add({
                 title: 'Search',
                 actionView : searchView,
                 icon: (Ti.Android.R.drawable.ic_menu_search ? Ti.Android.R.drawable.ic_menu_search : "my_search.png"),
                 showAsAction: Ti.Android.SHOW_AS_ACTION_IF_ROOM | Ti.Android.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW
             });
-            
+
             // changing a searchview
-            abx.setSearchView({ 
-              searchView: searchView, 
+            abx.setSearchView({
+              searchView: searchView,
               backgroundColor: '#777',
               textColor: "yellow",
               hintColor: "orange",
               line: "/images/my_textfield_activated_holo_light.9.png",
               cancelIcon: "/images/cancel.png",
-              searchIcon: "/images/search.png"
+              searchIcon: "/images/search.png",
+              maxWidth: Number.MAX_VALUE
             });
-           
+
             if (opts.shareAction){
                 // This is how you add a basic Share Action to your ActionBar
                 // this should be done within the onCreateOptionsMenu
                 // because we need to pass a reference to the menu
-                
+
                 // at first, create a basic share intent
                 var intent = Ti.Android.createIntent({
                    action: Ti.Android.ACTION_SEND,
                    type: 'text/plain'
                 });
                 intent.putExtra(Ti.Android.EXTRA_TEXT, 'Hello world!');
-    
+
                 // now pass over the menu and the intent like this
                 abx.addShareAction({
                     menu: e.menu,

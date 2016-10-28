@@ -956,7 +956,15 @@ public class ActionbarextrasModule extends KrollModule {
 				e.printStackTrace();
 			}
 		}
-		
+
+		if (args.containsKey("maxWidth")){
+			try {
+				searchView.setMaxWidth(TiConvert.toInt(args.get("maxWidth")));
+			} catch (Exception ex) {
+				// Ignore
+			}
+		}
+
 		if (args.containsKey("hintColor")){
 			try {
 				((EditText)searchView
