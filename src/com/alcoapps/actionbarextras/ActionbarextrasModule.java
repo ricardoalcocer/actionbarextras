@@ -1064,7 +1064,7 @@ public class ActionbarextrasModule extends KrollModule {
 		ActionBar actionBar = getActionBar();
 		
 		try{
-			final Drawable upArrow = TiUIHelper.getResourceDrawable(TiRHelper.getResource("drawable.abc_ic_ab_back_mtrl_am_alpha", true));
+			final Drawable upArrow = TiUIHelper.getResourceDrawable(TiRHelper.getResource("drawable.abc_ic_ab_back_material", true));
 			upArrow.setColorFilter(TiConvert.toColor(color), PorterDuff.Mode.SRC_ATOP);
 			actionBar.setHomeAsUpIndicator(upArrow);
 		}catch(Exception e){
