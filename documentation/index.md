@@ -207,7 +207,7 @@ You can style an [SearchView](http://docs.appcelerator.com/titanium/latest/#!/ap
         * `hintColor` _(String)_  - changes the hint color of the search view
         * `line` _(String)_  -  image path to replace the line drawable used by the search view
         * `cancelIcon` _(String)_ - image path to use a custom close icon
-        * `searchIcon` _(String)_ - image path to use a custom magnifier icon
+        * `searchIcon` _(String)_ - image path to use a custom magnifier icon (or `null` to remove it)
         * `maxWidth` _(int)_ - set width of search view. Use `Number.MAX_VALUE` to fill the whole action bar
 
 An example of how to use this is included in the [example app](https://github.com/ricardoalcocer/actionbarextras/blob/master/example/Resources/app.js).
