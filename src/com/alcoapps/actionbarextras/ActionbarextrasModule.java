@@ -999,28 +999,31 @@ public class ActionbarextrasModule extends KrollModule {
 			
 			// Hack taken from: http://nlopez.io/how-to-style-the-actionbar-searchview-programmatically/
 			// but modified ;)
-			
+			String icon = (String) args.get("searchIcon");
+			Boolean removeIcon = icon == null || icon.contentEquals("none");
 			try{
 				// Accessing the SearchAutoComplete
 				View autoComplete = searchView.findViewById(TiRHelper.getResource("id.search_src_text", true));
 
 				Class<?> clazz = Class.forName("android.widget.SearchView$SearchAutoComplete");
 
-				SpannableStringBuilder stopHint = new SpannableStringBuilder("   ");  
+				SpannableStringBuilder stopHint = new SpannableStringBuilder(removeIcon ? "" : "	 ");	
 				stopHint.append(searchView.getQueryHint());
 
 				// Add the icon as an spannable
-				Drawable searchIcon = TiUIHelper.getResourceDrawable(resolveUrl(null, (String) args.get("searchIcon")));
-				if (searchIcon != null){
-					Method textSizeMethod = clazz.getMethod("getTextSize");  
-					Float rawTextSize = (Float)textSizeMethod.invoke(autoComplete);  
-					int textSize = (int) (rawTextSize * 1.25);  
-					searchIcon.setBounds(0, 0, textSize, textSize);
-					stopHint.setSpan(new ImageSpan(searchIcon), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				if (!removeIcon) {
+					Drawable searchIcon = TiUIHelper.getResourceDrawable(resolveUrl(null, (String) args.get("searchIcon")));
+					if (searchIcon != null){
+						Method textSizeMethod = clazz.getMethod("getTextSize");  
+						Float rawTextSize = (Float)textSizeMethod.invoke(autoComplete);  
+						int textSize = (int) (rawTextSize * 1.25);	
+						searchIcon.setBounds(0, 0, textSize, textSize);
+						stopHint.setSpan(new ImageSpan(searchIcon), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					}
 				}
 
 				// Set the new hint text
-				Method setHintMethod = clazz.getMethod("setHint", CharSequence.class);  
+				Method setHintMethod = clazz.getMethod("setHint", CharSequence.class);	
 				setHintMethod.invoke(autoComplete, stopHint);	
 			}catch(Exception e){
 				e.printStackTrace();
