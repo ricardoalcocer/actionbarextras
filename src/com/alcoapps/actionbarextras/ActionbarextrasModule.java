@@ -902,6 +902,9 @@ public class ActionbarextrasModule extends KrollModule {
 		if (obj instanceof TiWindowProxy){
 			window = (TiWindowProxy) obj;
 		}
+		if (obj == null) {
+			window = null;
+		}
 	}
 	
 	private void handleSetSearchView(Object obj){
