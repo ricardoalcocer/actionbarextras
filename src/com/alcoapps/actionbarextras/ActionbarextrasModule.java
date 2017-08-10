@@ -133,6 +133,10 @@ public class ActionbarextrasModule extends KrollModule {
 			activity = (AppCompatActivity) appContext.getCurrentActivity();
 		}
 
+		if (activity == null) {
+			return null;
+		}
+
 		try {
 			ActionBar actionBar = activity.getSupportActionBar();
 			return actionBar;
@@ -360,6 +364,9 @@ public class ActionbarextrasModule extends KrollModule {
 				TiApplication appContext = TiApplication.getInstance();
 				activity = (AppCompatActivity) appContext.getCurrentActivity();
 			}
+			if (activity == null) {
+				return;
+			}
 			Window win = activity.getWindow();
 			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 			win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -380,6 +387,9 @@ public class ActionbarextrasModule extends KrollModule {
 			} else {
 				TiApplication appContext = TiApplication.getInstance();
 				activity = (AppCompatActivity) appContext.getCurrentActivity();
+			}
+			if (activity == null) {
+				return;
 			}
 			Window win = activity.getWindow();
 			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -785,6 +795,10 @@ public class ActionbarextrasModule extends KrollModule {
 				TiApplication appContext = TiApplication.getInstance();
 				activity = (AppCompatActivity) appContext.getCurrentActivity();
 			}
+
+			if (activity == null) {
+				return;
+			}
 			
 			// Fetching app package name and resources 
 			String packageName = activity.getPackageName();
@@ -869,6 +883,10 @@ public class ActionbarextrasModule extends KrollModule {
 			} else {
 				TiApplication appContext = TiApplication.getInstance();
 				activity = (AppCompatActivity) appContext.getCurrentActivity();
+			}
+
+			if (activity == null) {
+				return;
 			}
 			
 			// Fetching app package name and resources 
@@ -1095,13 +1113,17 @@ public class ActionbarextrasModule extends KrollModule {
 				TiApplication appContext = TiApplication.getInstance();
 				activity = (AppCompatActivity) appContext.getCurrentActivity();
 			}
+
+			if (activity == null) {
+				return;
+			}
 			
 			// Retrieve the AppCompact Toolbar
-	    Toolbar toolbar = (Toolbar) activity.findViewById(TiRHelper.getResource("id.toolbar", true));
-	    activity.setSupportActionBar(toolbar);
+			Toolbar toolbar = (Toolbar) activity.findViewById(TiRHelper.getResource("id.toolbar", true));
+			activity.setSupportActionBar(toolbar);
 
-	  	// Set the padding 
-	    toolbar.setPadding(0, TiConvert.toInt(value), 0, 0);
+			// Set the padding
+			toolbar.setPadding(0, TiConvert.toInt(value), 0, 0);
 		}catch(Exception e){
 			Log.e(TAG, e.toString());
 		}
@@ -1430,13 +1452,17 @@ public class ActionbarextrasModule extends KrollModule {
 			TiApplication appContext = TiApplication.getInstance();
 			activity = (AppCompatActivity) appContext.getCurrentActivity();
 		}
+
+		if (activity == null) {
+			return 0;
+		}
 		
 		int result = 0;
-    int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
-    if (resourceId > 0) {
-        result = activity.getResources().getDimensionPixelSize(resourceId);
-    }
-    return result;
+		int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0) {
+			result = activity.getResources().getDimensionPixelSize(resourceId);
+		}
+		return result;
 	}
 	
 	/**
