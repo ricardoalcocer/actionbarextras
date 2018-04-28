@@ -118,10 +118,14 @@ public class ActionbarextrasModule extends KrollModule {
 	}
 
 	@Kroll.getProperty @Kroll.method
-    	public String getTitle()
-    	{
-        	return getActionBar().getTitle().toString();
-    	}
+	public String getTitle()
+	{
+		ActionBar actionBar = getActionBar();
+		if (actionBar == null) {
+			return "";
+		}
+		return actionBar.getTitle().toString();
+	}
 	
 	private ActionBar getActionBar(){
 		AppCompatActivity activity;
@@ -1060,7 +1064,12 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param Integer -	value
 	 */
 	private void handleSetElevation(Object value){
-		getActionBar().setElevation(TiConvert.toFloat(value));
+		ActionBar actionBar = getActionBar();
+
+		if (actionBar == null){
+			return;
+		}
+		actionBar.setElevation(TiConvert.toFloat(value));
 	}
 	
 	/**
@@ -1070,13 +1079,12 @@ public class ActionbarextrasModule extends KrollModule {
 	 * @param Integer -	value
 	 */
 	private void handleSetHideOffset(Object value){
-		
-		try{
-			getActionBar().setHideOffset(TiConvert.toInt(value));
-		}catch(Exception e){
-			Log.e(TAG, e.toString());
+		ActionBar actionBar = getActionBar();
+
+		if (actionBar == null){
+			return;
 		}
-		
+		actionBar.setHideOffset(TiConvert.toInt(value));
 	}
 	
 	/**
