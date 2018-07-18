@@ -69,7 +69,7 @@ public class IconDrawable extends Drawable {
         this.icon = icon;
         paint = new TextPaint();
         paint.setTypeface( typeface );
-        paint.setStyle(Paint.Style.STROKE);
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setUnderlineText(false);
         paint.setColor(Color.BLACK);
