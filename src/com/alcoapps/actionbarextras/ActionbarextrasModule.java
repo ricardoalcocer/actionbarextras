@@ -33,6 +33,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.PorterDuff;
 import android.graphics.Bitmap;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
@@ -1095,8 +1096,13 @@ public class ActionbarextrasModule extends KrollModule {
 		
 		ActionBar actionBar = getActionBar();
 		
-		try{
-			final Drawable upArrow = TiUIHelper.getResourceDrawable(TiRHelper.getResource("drawable.abc_ic_ab_back_material", true));
+		try {
+			TiApplication appContext = TiApplication.getInstance();
+			AppCompatActivity _activity = (AppCompatActivity) appContext.getCurrentActivity();
+
+			final int res_id = TiRHelper.getResource("drawable.abc_ic_ab_back_material", true);
+			final Drawable upArrow = ContextCompat.getDrawable(_activity, res_id);
+
 			upArrow.setColorFilter(TiConvert.toColor(color), PorterDuff.Mode.SRC_ATOP);
 			actionBar.setHomeAsUpIndicator(upArrow);
 		}catch(Exception e){
