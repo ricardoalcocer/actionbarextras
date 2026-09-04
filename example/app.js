@@ -63,25 +63,25 @@ var data = [
 
 var actions = {
   titleFont: function(){
-      abx.setTitleFont(opts.titleFont ? "Aller" : "Chunkfive");
+      abx.titleFont = opts.titleFont ? "Aller" : "Chunkfive";
       opts.titleFont = !opts.titleFont;
   },
   subtitleFont: function(){
-      abx.setSubtitleFont(opts.subtitleFont ? "Aller" : "Chunkfive");
+      abx.subtitleFont = opts.subtitleFont ? "Aller" : "Chunkfive";
       opts.subtitleFont = !opts.subtitleFont;
   },
   titleColor: function(){
-      abx.setTitleColor('#'+Math.floor(Math.random()*16777215).toString(16));
+      abx.titleColor = '#'+Math.floor(Math.random()*16777215).toString(16);
   },
   subtitleColor: function(){
-      abx.setSubtitleColor('#'+Math.floor(Math.random()*16777215).toString(16));
+      abx.subtitleColor = '#'+Math.floor(Math.random()*16777215).toString(16);
   },
   backgroundColor: function(){
-      abx.setBackgroundColor('#'+Math.floor(Math.random()*16777215).toString(16));
+      abx.backgroundColor = '#'+Math.floor(Math.random()*16777215).toString(16);
   },
   disableIcon: function(){
       opts.disableIcon = !opts.disableIcon;
-      abx.setDisableIcon( opts.disableIcon );
+      abx.disableIcon = opts.disableIcon;
   },
   hideLogo: function(){
       abx.hideLogo();
@@ -111,22 +111,22 @@ var actions = {
       win.activity.invalidateOptionsMenu();
   },
   fontObject: function(){
-      abx.setTitle({
+      abx.title = {
         text: "Font Object",
         font: {
           fontSize: 26,
           fontFamily: 'Chunkfive'
         }
-      });
+      };
       
-      abx.setSubtitle({
+      abx.subtitle = {
         text: "Subtitle",
         font: {
           fontSize: '14dp',
           fontWeight: 'bold',
           fontFamily: 'Chunkfive'
         }
-      });
+      };
   },
   secondWindow: function(){
       var win2 = Ti.UI.createWindow({ backgroundColor: 'yellow' });
@@ -146,38 +146,38 @@ var actions = {
       win2.open();
   },
   hideSubtitle: function(){
-    abx.setSubtitle(null);
+    abx.subtitle = null;
   },
   actionbarHeight: function(){
     alert( abx.getActionbarHeight() );
   },
   logoFont: function(){
-    abx.setLogo({
+    abx.logo = {
       icon: fa.icon("fa-smile-o"),
       fontFamily: fa.fontfamily,
       color: "yellow"
-    });
+    };
   },
   menuIcon: function(){
     opts.menuIcon = !opts.menuIcon;
     win.activity.invalidateOptionsMenu();
   },
   iconTitle: function(){
-    abx.setTitle({
+    abx.title = {
       text: fa.icon("fa-camera-retro")+"  "+fa.icon("fa-paw")+"  "+fa.icon("fa-android"),
       font: fa.fontfamily,
       color: "green"
-    });
+    };
   },
   statusbarColor: function(){
-    abx.setStatusbarColor('#'+Math.floor(Math.random()*16777215).toString(16));
+    abx.statusbarColor = '#'+Math.floor(Math.random()*16777215).toString(16);
   },
   navigationbarColor: function(){
-    abx.setNavigationbarColor('#'+Math.floor(Math.random()*16777215).toString(16));
+    abx.navigationbarColor = '#'+Math.floor(Math.random()*16777215).toString(16);
   },
   elevation: function(){
     // default Actionbar elevation is 4 dp according to the material design guide
-    abx.setElevation(opts.elevation ? 0 : (4 * Ti.Platform.displayCaps.dpi / 160));
+    abx.elevation = opts.elevation ? 0 : (4 * Ti.Platform.displayCaps.dpi / 160);
     opts.elevation = !opts.elevation;
   },
   materialIcon: function(){
@@ -192,9 +192,9 @@ var actions = {
     if ((params == null) || (params == {})) {
       abx.disableActionbarImage();
     } else {
-      abx.setActionbarImage({
+      abx.actionbarImage = {
         image: params.image
-      });
+      };
     }
   }
 };
@@ -243,7 +243,7 @@ win.addEventListener('open',function(e){
             });
 
             // changing a searchview
-            abx.setSearchView({
+            abx.searchView = {
               searchView: searchView,
               backgroundColor: '#777',
               textColor: "yellow",
@@ -252,7 +252,7 @@ win.addEventListener('open',function(e){
               cancelIcon: "/images/cancel.png",
               searchIcon: "/images/search.png",
               maxWidth: Number.MAX_VALUE
-            });
+            };
 
             if (opts.shareAction){
                 // This is how you add a basic Share Action to your ActionBar
@@ -277,7 +277,7 @@ win.addEventListener('open',function(e){
             
             if (opts.homeup) {
                 activity.actionBar.displayHomeAsUp = true;
-                abx.setHomeAsUpIcon("/images/menu.png");
+                abx.homeAsUpIcon = "/images/menu.png";
             }
             
             if (opts.menuIcon){
@@ -295,14 +295,14 @@ win.addEventListener('open',function(e){
               });
 
               // ...then, let abx apply the custom font
-              abx.setMenuItemIcon({
+              abx.menuItemIcon = {
                 menu: e.menu,
                 menuItem: settingsItem,
                 fontFamily: fa.fontfamily,
                 icon: fa.icon("fa-gear"),
                 color: "#333333",
                 size: 30
-              });
+              };
 
             }
 
@@ -321,20 +321,20 @@ win.addEventListener('open',function(e){
               });
 
               // ...then, let abx apply the custom font
-              abx.setMenuItemIcon({
+              abx.menuItemIcon = {
                 menu: e.menu,
                 menuItem: settingsItem,
                 fontFamily: 'MaterialIcons-Regular',
                 icon: String.fromCharCode(0xe86a),
                 color: "#fff",
                 size: 30
-              });
+              };
 
             }
             
             if (opts.upColor){
               activity.actionBar.displayHomeAsUp = true;
-              abx.setUpColor('#'+Math.floor(Math.random()*16777215).toString(16));
+              abx.upColor = '#'+Math.floor(Math.random()*16777215).toString(16);
             }
         };
     }

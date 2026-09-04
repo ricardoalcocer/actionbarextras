@@ -21,6 +21,8 @@ import org.appcelerator.titanium.util.TiRHelper.ResourceNotFoundException;
 import org.appcelerator.titanium.util.TiUIHelper;
 import org.appcelerator.titanium.view.TiDrawableReference;
 import ti.modules.titanium.ui.android.SearchViewProxy;
+import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 
 import androidx.appcompat.app.ActionBar;
@@ -119,6 +121,15 @@ public class ActionbarextrasModule extends KrollModule {
 		return actionBar.getTitle().toString();
 	}
 	
+	/**
+	 * Returns the context used to resolve colors (needed for semantic/theme colors).
+	 * Prefers the current activity and falls back to the application context.
+	 */
+	private Context getColorContext(){
+		Activity activity = TiApplication.getAppCurrentActivity();
+		return activity != null ? activity : TiApplication.getInstance();
+	}
+
 	private ActionBar getActionBar(){
 		AppCompatActivity activity;
 		
@@ -143,7 +154,7 @@ public class ActionbarextrasModule extends KrollModule {
 
 	private IconDrawable getDrawableFromFont(HashMap args) {
 		Typeface iconFontTypeface = TiUIHelper.toTypeface(TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_FONTFAMILY));
-		return new IconDrawable(TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_ICON), iconFontTypeface).actionBarSize().color(TiConvert.toColor((String) args.get(TiC.PROPERTY_COLOR)));
+		return new IconDrawable(TiApplication.getInstance(), (String) args.get(TiC.PROPERTY_ICON), iconFontTypeface).actionBarSize().color(TiConvert.toColor((String) args.get(TiC.PROPERTY_COLOR), getColorContext()));
 	}
 
 	@Override
@@ -266,13 +277,14 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 		
 		SpannableStringBuilder ssb;
+		String text = obj == null ? "" : (String) obj;
 		
 		if (actionBar.getTitle() instanceof SpannableStringBuilder){
 			ssb = (SpannableStringBuilder) actionBar.getTitle();
 			ssb.clear();
-			ssb.append((String) obj);
+			ssb.append(text);
 		} else {
-			ssb = new SpannableStringBuilder((String) obj);
+			ssb = new SpannableStringBuilder(text);
 		}
 		
 		if (titleFont != null){
@@ -280,7 +292,7 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 		
 		if (titleColor != null){
-			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
+			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor, getColorContext())),
 					0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 		}
 		
@@ -317,7 +329,7 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 		
 		if (subtitleColor != null){
-			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
+			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor, getColorContext())),
 					0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 		}
 		
@@ -334,7 +346,7 @@ public class ActionbarextrasModule extends KrollModule {
 			return;
 		}
 		
-		actionBar.setBackgroundDrawable(new ColorDrawable(TiConvert.toColor(color)));
+		actionBar.setBackgroundDrawable(new ColorDrawable(TiConvert.toColor(color, getColorContext())));
 	}
 
 	/**
@@ -356,7 +368,7 @@ public class ActionbarextrasModule extends KrollModule {
 			Window win = activity.getWindow();
 			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 			win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-			win.setStatusBarColor(TiConvert.toColor(color));
+			win.setStatusBarColor(TiConvert.toColor(color, activity));
 		}
 	}
 	
@@ -379,7 +391,7 @@ public class ActionbarextrasModule extends KrollModule {
 			Window win = activity.getWindow();
 			win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 			win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-			win.setNavigationBarColor(TiConvert.toColor(color));
+			win.setNavigationBarColor(TiConvert.toColor(color, activity));
 		}
 	}
 	
@@ -401,7 +413,7 @@ public class ActionbarextrasModule extends KrollModule {
 			ssb.removeSpan(titleFont);
 		} else {
 			String abTitle = TiConvert.toString(actionBar.getTitle());
-			ssb = new SpannableStringBuilder(abTitle);
+			ssb = new SpannableStringBuilder(abTitle == null ? "" : abTitle);
 		}
 		
 		if (font instanceof String){
@@ -478,11 +490,11 @@ public class ActionbarextrasModule extends KrollModule {
 			ssb = (SpannableStringBuilder) actionBar.getTitle();
 		} else {
 			String abTitle = TiConvert.toString(actionBar.getTitle());
-			ssb = new SpannableStringBuilder(abTitle);
+			ssb = new SpannableStringBuilder(abTitle == null ? "" : abTitle);
 		}
 		
 		if (titleColor != null){
-			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor)),
+			ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(titleColor, getColorContext())),
 					0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 		}
 		
@@ -513,7 +525,7 @@ public class ActionbarextrasModule extends KrollModule {
 			}
 			
 			if (subtitleColor != null){
-				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor)),
+				ssb.setSpan(new ForegroundColorSpan(TiConvert.toColor(subtitleColor, getColorContext())),
 						0, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 			}
 
@@ -561,6 +573,9 @@ public class ActionbarextrasModule extends KrollModule {
 		if (actionBar == null) {
 			return;
 		}
+
+		// the toolbar only shows a custom indicator when DISPLAY_HOME_AS_UP is set
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		if (obj instanceof HashMap) {
 			HashMap args = (HashMap) obj;
@@ -918,7 +933,7 @@ public class ActionbarextrasModule extends KrollModule {
 		}
 		
 		if (args.containsKey(TiC.PROPERTY_BACKGROUND_COLOR)){
-			searchView.setBackgroundColor(TiConvert.toColor((String) args.get(TiC.PROPERTY_BACKGROUND_COLOR)));
+			searchView.setBackgroundColor(TiConvert.toColor((String) args.get(TiC.PROPERTY_BACKGROUND_COLOR), searchView.getContext()));
 		}
 		
 		if (args.containsKey("line")){
@@ -944,7 +959,7 @@ public class ActionbarextrasModule extends KrollModule {
 			try {
 				((EditText)searchView
 					.findViewById(TiRHelper.getResource("id.search_src_text", true)))
-					.setTextColor((TiConvert.toColor((String) args.get("textColor"))));
+					.setTextColor(TiConvert.toColor((String) args.get("textColor"), searchView.getContext()));
 			} catch (ResourceNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -962,7 +977,7 @@ public class ActionbarextrasModule extends KrollModule {
 			try {
 				((EditText)searchView
 					.findViewById(TiRHelper.getResource("id.search_src_text", true)))
-					.setHintTextColor((TiConvert.toColor((String) args.get("hintColor"))));
+					.setHintTextColor(TiConvert.toColor((String) args.get("hintColor"), searchView.getContext()));
 			} catch (ResourceNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -1069,7 +1084,9 @@ public class ActionbarextrasModule extends KrollModule {
 			final int res_id = TiRHelper.getResource("drawable.abc_ic_ab_back_material", true);
 			final Drawable upArrow = AppCompatResources.getDrawable(_activity, res_id);
 
-			upArrow.setColorFilter(TiConvert.toColor(color), PorterDuff.Mode.SRC_ATOP);
+			upArrow.setColorFilter(TiConvert.toColor(color, _activity), PorterDuff.Mode.SRC_ATOP);
+			// the toolbar only shows a custom indicator when DISPLAY_HOME_AS_UP is set
+			actionBar.setDisplayHomeAsUpEnabled(true);
 			actionBar.setHomeAsUpIndicator(upArrow);
 		}catch(Exception e){
 			Log.e(TAG, e.toString());
@@ -1178,6 +1195,17 @@ public class ActionbarextrasModule extends KrollModule {
 			@SuppressWarnings("unchecked")
 			HashMap<String, String> d = (HashMap<String, String>) obj;
 			title = d.get(TiC.PROPERTY_TEXT);
+		}else{
+			return;
+		}
+		
+		// set the text first so color and font can be applied to it afterwards
+		Message message = getMainHandler().obtainMessage(MSG_TITLE, title);
+		message.sendToTarget();
+		
+		if (obj instanceof HashMap){
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> d = (HashMap<String, String>) obj;
 			
 			if (d.containsKey(TiC.PROPERTY_COLOR)){
 				setTitleColor(d.get(TiC.PROPERTY_COLOR));
@@ -1186,12 +1214,7 @@ public class ActionbarextrasModule extends KrollModule {
 			if (d.containsKey(TiC.PROPERTY_FONT)){
 				setTitleFont(d.get(TiC.PROPERTY_FONT));
 			}
-		}else{
-			return;
 		}
-		
-		Message message = getMainHandler().obtainMessage(MSG_TITLE, title);
-		message.sendToTarget();
 	}
 	
 	/**
@@ -1215,6 +1238,19 @@ public class ActionbarextrasModule extends KrollModule {
 			@SuppressWarnings("unchecked")
 			HashMap<String, String> d = (HashMap<String, String>) obj;
 			subtitle = d.get(TiC.PROPERTY_TEXT);
+		}else if(obj == null){
+			subtitle = null;
+		}else{
+			return;
+		}
+		
+		// set the text first so color and font can be applied to it afterwards
+		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE, subtitle);
+		message.sendToTarget();
+		
+		if (obj instanceof HashMap){
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> d = (HashMap<String, String>) obj;
 			
 			if (d.containsKey(TiC.PROPERTY_COLOR)){
 				setSubtitleColor(d.get(TiC.PROPERTY_COLOR));
@@ -1223,14 +1259,7 @@ public class ActionbarextrasModule extends KrollModule {
 			if (d.containsKey(TiC.PROPERTY_FONT)){
 				setSubtitleFont(d.get(TiC.PROPERTY_FONT));
 			}
-		}else if(obj == null){
-			subtitle = null;
-		}else{
-			return;
 		}
-		
-		Message message = getMainHandler().obtainMessage(MSG_SUBTITLE, subtitle);
-		message.sendToTarget();
 	}
 	
 	/**

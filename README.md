@@ -1,7 +1,7 @@
-![](https://raw.githubusercontent.com/ricardoalcocer/actionbarextras/master/documentation/header.png)
+![](assets/header.png)
 
 # ActionBarExtras 
-[![gittio](http://img.shields.io/badge/gittio-1.7.3-00B4CC.svg)](http://gitt.io/component/com.alcoapps.actionbarextras)
+[![version](https://img.shields.io/badge/version-3.0.1-00B4CC.svg)](android/dist/)
 [![License](http://img.shields.io/badge/license-MIT-orange.svg)](http://mit-license.org)
 [![issues](http://img.shields.io/github/issues/ricardoalcocer/actionbarextras.svg)](https://github.com/ricardoalcocer/actionbarextras/issues)
 
@@ -9,7 +9,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Example](example/)
-- [API docs](documentation/index.md)
+- [API docs](assets/index.md)
 - [Apps](#some-apps-using-actionbarextras)
 - [Contributors](#contributors)
 - [License](#license)
@@ -26,10 +26,9 @@ This module provides some extra functionality to configure the ActionBar that Ti
   * and many more...
 
 ## Installation
-### Get it [![gitTio](http://gitt.io/badge.png)](http://gitt.io/component/com.alcoapps.actionbarextras)
-Download the latest distribution ZIP-file and consult the [Titanium Documentation](http://docs.appcelerator.com/titanium/latest/#!/guide/Using_a_Module) on how install it, or simply use the [gitTio CLI](http://gitt.io/cli):
+Download the latest ZIP from [android/dist](android/dist/) and consult the [Titanium documentation](https://titaniumsdk.com/guide/Titanium_SDK/Titanium_SDK_How-tos/Using_Modules/Using_a_Module.html) on how to install it.
 
-`$ gittio install com.alcoapps.actionbarextras`
+To build the module yourself, run `ti build -p android --build-only` inside the `android/` folder.
 
 ### Using it
 
@@ -55,7 +54,7 @@ win.addEventListener('open',function(e){
 
 To see what else you can do, see:
 * [Example project](example/)
-* [Documentation](documentation/index.md)
+* [Documentation](assets/index.md)
 
 ## Some apps using ActionBarExtras
 
