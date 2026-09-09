@@ -1,6 +1,4 @@
-tmp
-bin
-build
-.apt_generated
-dist/actionbarextras.jar
 node_modules
+tmp
+android/build
+android/dist/*.jar
